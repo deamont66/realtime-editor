@@ -1,0 +1,35 @@
+{
+  "name": "fb-realtime-editor",
+  "version": "1.0.0",
+  "main": "bin/www",
+  "repository": "git@gitlab.simecekjiri.cz:deamont66/fb-realtime-editor.git",
+  "author": "Jiří Šimeček <simecekjiri95@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"cd client && npm start\"",
+    "build": "cd client && npm run build && rm -rf build-prod && mv build build-prod",
+    "server": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "~1.17.1",
+    "concurrently": "^3.5.0",
+    "connect-mongodb-session": "^1.4.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "dotenv": "^4.0.0",
+    "express": "~4.15.2",
+    "express-session": "^1.15.5",
+    "hbs": "~4.0.1",
+    "moment": "^2.18.1",
+    "mongoose": "^4.13.3",
+    "morgan": "~1.8.1",
+    "nodemailer": "^4.1.0",
+    "nodemailer-express-handlebars": "^2.0.0",
+    "nodemon": "^1.12.0",
+    "pg-promise": "^5.9.7",
+    "promise": "^8.0.1",
+    "serve-favicon": "~2.4.2",
+    "socket.io": "^2.0.4"
+  }
+}

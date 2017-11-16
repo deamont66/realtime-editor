@@ -1,0 +1,51 @@
+version: '3'
+services:
+  app_prod:
+    build:
+      context: .
+      args:
+        - app_env=production
+    environment:
+      - SERVER_PORT=3000
+    ports:
+      - "3000:3000"
+    networks:
+      - app-tier
+
+  app_dev:
+    build:
+      context: .
+      args:
+        - app_env=development
+    volumes:
+      - ./app/package.json:/app/package.json
+      - ./app/yarn.lock:/app/yarn.lock
+      - ./app/bin:/app/bin
+      - ./app/src:/app/src
+      - ./app/client/package.json:/app/client/package.json
+      - ./app/client/yarn.lock:/app/client/yarn.lock
+      - ./app/client/public:/app/client/public
+      - ./app/client/src:/app/client/src
+    environment:
+          - SERVER_PORT=3001
+    ports:
+      - "3000:3000"
+    networks:
+      - app-tier
+
+  mongodb:
+    image: 'bitnami/mongodb:latest'
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongo:/bitnami
+    environment:
+      - MONGODB_USERNAME=admin
+      - MONGODB_PASSWORD=password123
+      - MONGODB_DATABASE=realtime-editor
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
