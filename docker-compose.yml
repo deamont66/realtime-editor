@@ -11,6 +11,8 @@ services:
       - "3000:3000"
     networks:
       - app-tier
+    depends_on:
+      - "mongodb"
 
   app_dev:
     build:
@@ -32,6 +34,8 @@ services:
       - "3000:3000"
     networks:
       - app-tier
+    depends_on:
+      - "mongodb"
 
   mongodb:
     image: 'bitnami/mongodb:latest'

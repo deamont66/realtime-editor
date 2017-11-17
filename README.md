@@ -9,7 +9,7 @@ Aktuálně není k dispozici žádné demo.
 Ke spuštění je potřeba nainstalovaný docker a docker-compose.
 
 ```bash
-docker-compose up -d mongodb app_prod
+docker-compose up -d app_prod
 ```
 
 Docker compose vytvoří docker image projektu (po kompilaci) a ten poté spustí. Image je dále možné šířit (například nahrát na hub) bez nutnosti kopírování zdrojových kódů.
@@ -18,7 +18,6 @@ Docker compose vytvoří docker image projektu (po kompilaci) a ten poté spust�
 Ke spuštění je potřeba nainstalovaný docker a docker-compose.
 
 ```bash
-docker-compose up -d mongodb
 docker-compose up app_dev
 ```
 
