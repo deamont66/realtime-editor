@@ -3,7 +3,7 @@
 ## Ukázka (demo)
 Aktuálně není k dispozici žádné demo.
 
-![alt Demo](https://i.imgur.com/vP61Bn1.gif "Ukázka")
+[![Ukázka](https://i.imgur.com/vP61Bn1.png "Click for video")](https://i.imgur.com/vP61Bn1.gifv)
 
 ## Production
 Ke spuštění je potřeba nainstalovaný docker a docker-compose.
