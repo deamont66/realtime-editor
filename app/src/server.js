@@ -38,7 +38,7 @@ const sessionSettings = {
 app.enable('trust proxy');
 
 if (app.get('env') === 'production') {
-    sessionSettings.cookie.secure = true; // serve secure cookies
+    // sessionSettings.cookie.secure = true; // serve secure cookies
 }
 app.use(session(sessionSettings));
 
@@ -53,8 +53,8 @@ app.use(cookieParser());
 
 app.use('/api', api);
 
-app.use('/static', express.static(path.join(__dirname, 'client/build-prod/static')));
-app.use('/resources', express.static(path.join(__dirname, 'client/build-prod/resources')));
+app.use('/static', express.static(path.join(__dirname, '../client/build-prod/static')));
+app.use('/resources', express.static(path.join(__dirname, '../client/build-prod/resources')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(/^\/(?!api).*$/, function (req, res, next) {
