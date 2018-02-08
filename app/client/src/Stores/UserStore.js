@@ -1,8 +1,7 @@
-
-import AbstractStore from "./AbstractStore";
+import EventEmitter from 'event-emitter-es6';
 import axios from '../Utils/Axios';
 
-class UserStore extends AbstractStore {
+class UserStore extends EventEmitter {
 
     singIn(username, password) {
         return new Promise((resolve, reject) => {
@@ -11,7 +10,7 @@ class UserStore extends AbstractStore {
                 password: password
             }).then((res) => {
                 resolve(res.data.user);
-                this.notify(res.data.user);
+                this.emitSync('value', res.data.user);
             }).catch((res) => {
                 reject(res);
             });
@@ -26,7 +25,7 @@ class UserStore extends AbstractStore {
                 name: name
             }).then((res) => {
                 resolve(res.data.user);
-                this.notify(res.data.user);
+                this.emitSync('value', res.data.user);
             }).catch((res) => {
                 reject(res);
             });
@@ -36,9 +35,9 @@ class UserStore extends AbstractStore {
     checkLoggedIn() {
         return new Promise((resolve) => {
             axios.get('/user/').then((res) => {
-                this.notify(res.data.user);
+                this.emitSync('value', res.data.user);
             }).catch(() => {
-                this.notify(null);
+                this.emitSync('value', null);
             }).then(() => {
                 resolve();
             });
@@ -47,8 +46,8 @@ class UserStore extends AbstractStore {
 
     logOut () {
         return new Promise((resolve) => {
-            axios.delete('/user/').then((res) => {
-                this.notify(null);
+            axios.delete('/user/').then(() => {
+                this.emit('value', null);
             }).then(() => {
                 resolve();
             });

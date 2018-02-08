@@ -20,22 +20,21 @@ class App extends Component {
     }
 
     componentDidMount() {
-        UserStore.registerChangeListener(this.handleUserChange);
+        UserStore.on('value', this.handleUserChange);
         this.userCheckInterval = setInterval(() => {
             UserStore.checkLoggedIn();
-        }, 10 * 1000);
+        }, 10 * 60 * 1000);
         UserStore.checkLoggedIn().then(() => {
             this.setState({loading: false});
         });
     }
 
     componentWillUnmount() {
-        UserStore.removeChangeListener(this.handleUserChange);
+        UserStore.off('value', this.handleUserChange);
         clearInterval(this.userCheckInterval);
     }
 
     handleUserChange(user) {
-        console.log(user);
         this.setState({
             user: user
         });
