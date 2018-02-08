@@ -2,7 +2,6 @@ import React from 'react';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
 
-
 class ChatMenuIcon extends React.Component {
 
     render() {

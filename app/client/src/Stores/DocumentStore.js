@@ -46,6 +46,8 @@ class DocumentStore extends EventEmitter {
             this.emit('connect');
         });
 
+        this.socket.on('disconnect', () => this.emit('disconnect'));
+
         this.socket.on('revision');
         this.socket.on('value');
         this.socket.on('cursor');

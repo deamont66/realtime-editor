@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Editor from "./Editor/Editor";
 import RightMenus from "./RightMenus/RightMenus";
 import DocumentTitle from "./DocumentTitle";
@@ -16,17 +15,25 @@ class SingleDocument extends React.Component {
 
         this.state = {
             connected: false,
+            disconnected: false,
             error: null,
+
         }
     }
 
     componentDidMount() {
-        DocumentStore.once('connect', () => {
-           this.setState({
-               connected: true
-           });
+        DocumentStore.on('connect', () => {
+            this.setState({
+                connected: true,
+                disconnected: false
+            });
         });
-        DocumentStore.once('error', (error) => {
+        DocumentStore.on('disconnect', () => {
+            this.setState({
+                disconnected: true
+            });
+        });
+        DocumentStore.on('error', (error) => {
             this.setState({
                 error: error
             });
@@ -35,32 +42,42 @@ class SingleDocument extends React.Component {
     }
 
     componentWillUnmount() {
+        DocumentStore.off('connect');
+        DocumentStore.off('disconnect');
+        DocumentStore.off('error');
         DocumentStore.disconnect();
     }
 
     render() {
-        if(!this.state.connected)
+        if (!this.state.connected)
             return <Loading fullScreen={false}/>;
 
-        if(this.state.error !== null)
+        if (this.state.error !== null)
             return <DocumentError error={this.state.error}/>;
 
         return (
             <div className="Comp-SingleDocument">
-                    <div className="editor-header">
-                        <DocumentTitle onChange={(title) => {this.setState({title: title}); console.log(title)}} value={this.state.title}/>
-                    </div>
-                    <div className="editor-body">
-                        <Editor/>
-                        <RightMenus/>
-                    </div>
+                <div className="editor-header">
+                    <DocumentTitle onChange={(title) => {
+                        this.setState({title: title});
+                        console.log(title)
+                    }} value={this.state.title}/>
+
+                    {this.state.disconnected
+                    && <span className="warning text-warning" title="No connection">
+                        <i className="fas fa-exclamation-triangle"/>
+                        <span className="sr-only">No connection</span>
+                    </span>}
+                </div>
+                <div className="editor-body">
+                    <Editor/>
+                    <RightMenus/>
+                </div>
             </div>
         );
     }
 }
 
-SingleDocument.propTypes = {
-
-};
+SingleDocument.propTypes = {};
 
 export default SingleDocument;

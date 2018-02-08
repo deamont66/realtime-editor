@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import UserStore from "../../Stores/UserStore";
-import Header from "../Components/Header";
 
 class SignIn extends React.Component {
 

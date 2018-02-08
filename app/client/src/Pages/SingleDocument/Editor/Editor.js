@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 
 import 'brace/mode/javascript';
@@ -7,6 +6,7 @@ import 'brace/theme/monokai';
 
 import './Editor.css';
 import DocumentStore from "../../../Stores/DocumentStore";
+import Loading from "../../Components/Loading";
 
 class Editor extends React.Component {
 
@@ -17,9 +17,7 @@ class Editor extends React.Component {
             value: '',
             lastSendValue: '',
 
-            settings: {
-                theme: 'monokai'
-            }
+            settings: null
         };
 
         this.handleSettingsChange = this.handleSettingsChange.bind(this);
@@ -39,6 +37,7 @@ class Editor extends React.Component {
     }
 
     handleSettingsChange(settings) {
+        if(!settings) return;
         this.setState({
            settings: settings
         });
@@ -51,12 +50,15 @@ class Editor extends React.Component {
     }
 
     render() {
+        if(!this.state.settings) {
+            return <Loading fullScreen={false}/>
+        }
         return (
             <AceEditor
                 name="brace-editor"
                 mode="javascript"
                 theme={this.state.settings.theme}
-                readOnly={true}
+                readOnly={this.state.settings.readOnly}
                 onChange={(value) => {
                     this.setState({
                         value: value
@@ -72,7 +74,6 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
-    //user: PropTypes.object.isRequired,
 };
 
 export default Editor;

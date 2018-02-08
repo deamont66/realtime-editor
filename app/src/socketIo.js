@@ -12,7 +12,7 @@ module.exports = function (io) {
             if (/* not found*/ false) {
                 fn(null, null, {code: 404, message: 'Document not found'});
             }
-            fn({content: 'Hello world!', revision: 0}, {title: 'Test'})
+            fn({content: 'Hello world!', revision: 0}, {title: 'Test', theme: 'monokai', readOnly: false})
         })
     });
 };
