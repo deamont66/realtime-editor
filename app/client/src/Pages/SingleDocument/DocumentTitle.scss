@@ -1,0 +1,25 @@
+.Comp-DocumentTitle {
+
+    h1 {
+
+        &:not(:hover) {
+
+            + button {
+
+                &:not(:hover) {
+                    opacity: .4;
+                }
+
+            }
+        }
+    }
+
+    input {
+
+    }
+
+    button {
+        opacity: 1;
+    }
+
+}

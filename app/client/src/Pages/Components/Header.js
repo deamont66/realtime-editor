@@ -10,7 +10,7 @@ class Header extends React.Component {
             <div className="Comp-Header header">
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                     <div className="container">
-                        <Link className="navbar-brand" to="/">Realtime editor</Link>
+                        <Link className="navbar-brand" to="/">Home</Link>
                         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"/>
@@ -18,10 +18,13 @@ class Header extends React.Component {
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" exact to="/">Home</NavLink>
+                                    <NavLink className="nav-link" exact to="/documents">My documents</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" to="/editor">Documents</NavLink>
+                                    <NavLink className="nav-link" exact to="/documents/shared">Shared documents</NavLink>
+                                </li>
+                                <li className="nav-item">
+                                    <NavLink className="nav-link" exact to="/documents/history">Last documents</NavLink>
                                 </li>
                             </ul>
                         </div>
@@ -33,7 +36,7 @@ class Header extends React.Component {
                                     {this.props.user.name}
                                 </button>
                                 <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item disabled">Profile</a>
+                                    <a className="dropdown-item disabled">Settings</a>
                                     <div className="dropdown-divider"/>
                                     <a className="dropdown-item" href="#logout" onClick={() => UserStore.logOut()}>Logout</a>
                                 </div>
@@ -53,6 +56,10 @@ class Header extends React.Component {
 
 Header.propTypes = {
     user: PropTypes.object,
+};
+
+Header.defaultProps = {
+    user: null
 };
 
 export default Header;

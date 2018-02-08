@@ -1,0 +1,24 @@
+.Comp-SingleDocument {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    height: 100vh;
+
+    .editor-header {
+        flex: 30px 0 0;
+    }
+
+    .editor-body {
+        flex: 100px 1 0;
+        display: flex;
+    }
+
+    #brace-editor {
+    }
+
+    .editor-footer {
+        background-color: #343a40;
+        color: rgba(255,255,255,.5);
+        flex: 30px 0 0;
+    }
+}

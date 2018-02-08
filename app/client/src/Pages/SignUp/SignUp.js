@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import UserStore from "../../Stores/UserStore";
+import Header from "../Components/Header";
 
 class SignUp extends React.Component {
 
@@ -21,11 +22,11 @@ class SignUp extends React.Component {
         evt.preventDefault();
 
         let message = null;
-        if(!this.state.username) {
+        if (!this.state.username) {
             message = 'Field username is required'
-        } else if(!this.state.password) {
+        } else if (!this.state.password) {
             message = 'Field password is required'
-        } else if(!this.state.name) {
+        } else if (!this.state.name) {
             message = 'Field name is required'
         }
 
@@ -33,7 +34,7 @@ class SignUp extends React.Component {
             message: message
         });
 
-        if(message !== null) return;
+        if (message !== null) return;
 
         UserStore.singUp(this.state.username, this.state.password, this.state.name).then((user) => {
             this.props.history.push('/sign-in');

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import UserStore from "../../Stores/UserStore";
+import Header from "../Components/Header";
 
 class SignIn extends React.Component {
 
@@ -23,7 +24,7 @@ class SignIn extends React.Component {
         });
 
         UserStore.singIn(this.state.username, this.state.password).then((user) => {
-            this.props.history.push('/editor');
+            this.props.history.push('/');
         }).catch((error) => {
             this.setState({
                 message: error.response.data.message
@@ -56,7 +57,7 @@ class SignIn extends React.Component {
                                 {this.state.message}
                             </div>}
 
-                            {/*<p><Link to="/forgot-password">I forgot my password.</Link></p>*/}
+                            <p><Link to="/forgot-password">I forgot my password.</Link></p>
                             <p><Link to="/sign-up">I don't have an account yet.</Link></p>
 
                             <button type="submit" className="btn btn-primary">Sign In</button>

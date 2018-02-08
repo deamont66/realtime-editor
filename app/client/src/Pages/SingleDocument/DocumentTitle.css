@@ -1,0 +1,5 @@
+.Comp-DocumentTitle h1:not(:hover) + button:not(:hover) {
+  opacity: .4; }
+
+.Comp-DocumentTitle button {
+  opacity: 1; }

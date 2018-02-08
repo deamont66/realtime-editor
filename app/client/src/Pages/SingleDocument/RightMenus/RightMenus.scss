@@ -1,0 +1,18 @@
+.Comp-RightMenus {
+    display: flex;
+
+    .menu-icons {
+
+        .menu-icon {
+
+            &.active, &:hover, &:active {
+                background-color: #ccc;
+            }
+        }
+
+    }
+
+    .menu-content {
+
+    }
+}
