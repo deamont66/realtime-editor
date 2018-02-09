@@ -17,7 +17,6 @@ class SingleDocument extends React.Component {
             connected: false,
             disconnected: false,
             error: null,
-
         }
     }
 
@@ -58,10 +57,7 @@ class SingleDocument extends React.Component {
         return (
             <div className="Comp-SingleDocument">
                 <div className="editor-header">
-                    <DocumentTitle onChange={(title) => {
-                        this.setState({title: title});
-                        console.log(title)
-                    }} value={this.state.title}/>
+                    <DocumentTitle/>
 
                     {this.state.disconnected
                     && <span className="warning text-warning" title="No connection">
@@ -71,7 +67,7 @@ class SingleDocument extends React.Component {
                 </div>
                 <div className="editor-body">
                     <Editor/>
-                    <RightMenus/>
+                    <RightMenus documentId={this.props.match.params.documentId}/>
                 </div>
             </div>
         );

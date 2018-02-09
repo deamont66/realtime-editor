@@ -1,12 +1,15 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 
-import 'brace/mode/javascript';
-import 'brace/theme/monokai';
+import EditorModes from '../../../Utils/EditorModes';
+import EditorThemes from '../../../Utils/EditorThemes';
 
 import './Editor.css';
 import DocumentStore from "../../../Stores/DocumentStore";
 import Loading from "../../Components/Loading";
+
+EditorModes.require();
+EditorThemes.require();
 
 class Editor extends React.Component {
 
@@ -56,7 +59,7 @@ class Editor extends React.Component {
         return (
             <AceEditor
                 name="brace-editor"
-                mode="javascript"
+                mode={this.state.settings.mode}
                 theme={this.state.settings.theme}
                 readOnly={this.state.settings.readOnly}
                 onChange={(value) => {

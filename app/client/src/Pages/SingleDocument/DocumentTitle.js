@@ -43,15 +43,12 @@ class DocumentTitle extends React.Component {
 
     handleTitleButtonClick() {
         this.setState((oldState) => {
-            let title = oldState.title;
             if (oldState.editingTitle) {
-                // send to DocumentStore
-                title = oldState.newTitle;
+                DocumentStore.updateSettings({title: oldState.newTitle});
             }
             return {
                 editingTitle: !oldState.editingTitle,
-                title: title,
-                newTitle: title
+                newTitle: oldState.title
             };
         });
     }

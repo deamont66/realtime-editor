@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ShareMenu from "./ShareMenu";
 import './RightMenus.css';
@@ -11,7 +12,7 @@ class RightMenus extends React.Component {
         super();
 
         this.state = {
-            activeMenu: -1,
+            activeMenu: 2,
         };
 
         this.menus = [
@@ -48,7 +49,8 @@ class RightMenus extends React.Component {
                 </div>
                 <div className="menu-content">
                     {this.state.activeMenu !== -1 && React.createElement(this.menus[this.state.activeMenu].menu, {
-                        onClose: this.handleMenuClose.bind(this)
+                        onClose: this.handleMenuClose.bind(this),
+                        documentId: this.props.documentId
                     })}
                 </div>
             </div>
@@ -56,6 +58,8 @@ class RightMenus extends React.Component {
     }
 }
 
-RightMenus.propTypes = {};
+RightMenus.propTypes = {
+    documentId: PropTypes.any.isRequired
+};
 
 export default RightMenus;

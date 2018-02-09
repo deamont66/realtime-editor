@@ -24,9 +24,10 @@ class Router extends React.Component {
                                 <p>Forgot password form</p>//<ForgotPassword {...props}/>
                             )}/>}
 
-                            <Route exact path={'/editor'} render={(props) => (
-                                <SingleDocument {...props} user={{}}/>
-                            )}/>
+                            <Route exact path={'/editor'} render={(props) => {
+                                props.match.params.documentId = 'temp';
+                                return <SingleDocument {...props} user={{}}/>;
+                            }}/>
 
                             {this.props.user === null && <Redirect to={'/sign-in'}/>}
 

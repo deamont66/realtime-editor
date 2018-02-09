@@ -22,6 +22,8 @@ class DocumentStore extends EventEmitter {
             } else {
                 return this.lastMessages[event];
             }
+        } else {
+            return false;
         }
     }
 
@@ -51,7 +53,7 @@ class DocumentStore extends EventEmitter {
         this.socket.on('revision');
         this.socket.on('value');
         this.socket.on('cursor');
-        this.socket.on('settings');
+        this.socket.on('settings', (settings) => this.emit('settings', settings));
         this.socket.on('message');
     }
 
@@ -59,6 +61,13 @@ class DocumentStore extends EventEmitter {
         if(this.socket)
             this.socket.close();
         this.socket = null;
+    }
+
+    updateSettings(update) {
+        if(this.last('settings')) {
+            const newSettings = Object.assign({}, this.last('settings'), update);
+            this.socket.emit('settings', newSettings);
+        }
     }
 }
 
