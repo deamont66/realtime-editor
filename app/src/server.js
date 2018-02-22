@@ -1,24 +1,19 @@
 const http = require('http');
-const sharedsession = require("express-socket.io-session");
 
 const session = require('./session');
+require('./mongoose');
+require('./passport');
 
 module.exports = function (port) {
-    const express = require('./express')(session);
-
+    const express = require('./express')(session.session);
     express.set('port', port);
 
     const server = http.createServer(express);
-
-    require('./mongoose');
-
     const io = require('socket.io')(server, {
         path: '/api/socket.io',
         serveClient: false,
     });
-    io.use(sharedsession(session));
-
-    require('../src/socketIo')(io);
+    require('../src/socketIo')(io, session);
 
     return server;
 };

@@ -2,5 +2,5 @@
   display: flex; }
   .Comp-RightMenus .menu-icons .menu-icon.active, .Comp-RightMenus .menu-icons .menu-icon:hover, .Comp-RightMenus .menu-icons .menu-icon:active {
     background-color: #ccc; }
-  .Comp-RightMenus .menu-content {
+  .Comp-RightMenus .menu-content.active {
     width: 250px; }

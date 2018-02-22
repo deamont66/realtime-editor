@@ -66,7 +66,7 @@ class SingleDocument extends React.Component {
                     </span>}
                 </div>
                 <div className="editor-body">
-                    <Editor/>
+                    <Editor documentId={this.props.match.params.documentId || 'temp'}/>
                     <RightMenus documentId={this.props.match.params.documentId}/>
                 </div>
             </div>

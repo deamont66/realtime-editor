@@ -1,4 +1,57 @@
 const Themes = {
+    '3024-day': '3024-day',
+    '3024-night': '3024-night',
+    'abcdef': 'abcdef',
+    'ambiance-mobile': 'ambiance-mobile',
+    'ambiance': 'ambiance',
+    'base16-dark': 'base16-dark',
+    'base16-light': 'base16-light',
+    'bespin': 'bespin',
+    'blackboard': 'blackboard',
+    'cobalt': 'cobalt',
+    'colorforth': 'colorforth',
+    'dracula': 'dracula',
+    'duotone-dark': 'duotone-dark',
+    'duotone-light': 'duotone-light',
+    'eclipse': 'eclipse',
+    'elegant': 'elegant',
+    'erlang-dark': 'erlang-dark',
+    'hopscotch': 'hopscotch',
+    'icecoder': 'icecoder',
+    'isotope': 'isotope',
+    'lesser-dark': 'lesser-dark',
+    'liquibyte': 'liquibyte',
+    'material': 'material',
+    'mbo': 'mbo',
+    'mdn-like': 'mdn-like',
+    'midnight': 'midnight',
+    'monokai': 'monokai',
+    'neat': 'neat',
+    'neo': 'neo',
+    'night': 'night',
+    'oceanic-next': 'oceanic-next',
+    'panda-syntax': 'panda-syntax',
+    'paraiso-dark': 'paraiso-dark',
+    'paraiso-light': 'paraiso-light',
+    'pastel-on-dark': 'pastel-on-dark',
+    'railscasts': 'railscasts',
+    'rubyblue': 'rubyblue',
+    'seti': 'seti',
+    'shadowfox': 'shadowfox',
+    'solarized': 'solarized',
+    'the-matrix': 'the-matrix',
+    'tomorrow-night-bright': 'tomorrow-night-bright',
+    'tomorrow-night-eighties': 'tomorrow-night-eighties',
+    'ttcn': 'ttcn',
+    'twilight': 'twilight',
+    'vibrant-ink': 'vibrant-ink',
+    'xq-dark': 'xq-dark',
+    'xq-light': 'xq-light',
+    'yeti': 'yeti',
+    'zenburn': 'zenburn',
+};
+
+/* const OldThemes = {
     ambiance: 'Ambiance',
     chaos: 'Chaos',
     chrome: 'Chrome',
@@ -33,13 +86,13 @@ const Themes = {
     twilight: 'Twilight',
     vibrant_ink: 'Vibrant Ink',
     xcode: 'xCode'
-};
+}; */
 
 module.exports = {
     all: Themes,
     require: () => {
         Object.keys(Themes).forEach((themeKey) => {
-            require('brace/theme/' + themeKey)
+            require('codemirror/theme/' + themeKey + '.css')
         });
     }
 };

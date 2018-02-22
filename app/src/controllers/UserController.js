@@ -3,24 +3,24 @@ const Errors = require('../utils/Errors');
 
 module.exports = {
     postSignIn: function (req, res, next) {
-        let user = null;
-        UserRepository.getUserByUsername(req.body.username).then(function (userData) {
-            if (!userData) return Promise.reject(Errors.userInvalidCredential);
-            user = userData;
-            return UserRepository.validatePassword(user.password, req.body.password);
-        }).then(function (valid) {
-            if (!valid) return Promise.reject(Errors.userInvalidCredential);
-            delete user.password;
-            req.session.uid = user._id;
+        passport.authenticate('local', function (err, user, info) {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return next(Errors.userInvalidCredential);
+            }
+            req.login(user, function (err) {
+                if (err) {
+                    return next(err);
+                }
 
-            res.status(200).json({
-                status: 'success',
-                user: user
+                res.status(200).json({
+                    status: 'success',
+                    user: user
+                });
             });
-        }).catch(function (err) {
-            err.json = true;
-            next(err);
-        });
+        })(req, res, next);
     },
     postSignUp: function (req, res, next) {
         UserRepository.createUser({
@@ -28,15 +28,22 @@ module.exports = {
             username: req.body.username,
             password: req.body.password,
         }).then(function (user) {
-            delete user.password;
-            req.session.uid = user._id;
+            return new Promise((resolve, reject) => {
+                req.login(user, function (err) {
+                    if (err) {
+                        reject(err);
+                    }
+                    resolve(user);
+                });
+            });
+        }).then((user) => {
             res.status(200).json({
                 status: 'success',
-                user: user
+                user: user.toJSON()
             });
         }).catch(function (err) {
             err.json = true;
-            if(err.code === 11000)
+            if (err.code === 11000)
                 next(Errors.usernameAlreadyUsed);
             else
                 next(err);
@@ -45,7 +52,7 @@ module.exports = {
     getUser: function (req, res, next) {
         res.status(200).json({
             status: 'success',
-            user: req.user
+            user: req.user.toJSON()
         });
     },
     deleteSignOut: function (req, res, next) {

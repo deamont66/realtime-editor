@@ -22,4 +22,7 @@ if (process.env.ENV === 'production') {
     // sessionSettings.cookie.secure = true; // serve secure cookies
 }
 
-module.exports = session(sessionSettings);
+module.exports = {
+    session: session(sessionSettings),
+    sessionStore: store
+};

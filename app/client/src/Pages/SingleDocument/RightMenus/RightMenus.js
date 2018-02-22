@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ClassNames from 'classnames';
 
 import ShareMenu from "./ShareMenu";
 import './RightMenus.css';
@@ -47,7 +48,9 @@ class RightMenus extends React.Component {
                         });
                     })}
                 </div>
-                <div className="menu-content">
+                <div className={ClassNames('menu-content', {
+                    'active': this.state.activeMenu !== -1
+                })}>
                     {this.state.activeMenu !== -1 && React.createElement(this.menus[this.state.activeMenu].menu, {
                         onClose: this.handleMenuClose.bind(this),
                         documentId: this.props.documentId

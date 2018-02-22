@@ -28,6 +28,9 @@ class DocumentStore extends EventEmitter {
     }
 
     connect(documentId) {
+        this.emit('connect');
+
+        return;
         if (this.socket !== null)
             this.disconnect();
 
@@ -37,24 +40,27 @@ class DocumentStore extends EventEmitter {
         });
 
         this.socket.on('connect', () => {
-            this.socket.emit('init', (value, setting, error) => {
+            this.socket.on('doc', (data) => {
+                this.emitAndSave('value', data.document);
+            });
+
+            this.socket.emit('joinRoom', { room: documentId, username: 'username' });
+
+            /*this.socket.emit('init', documentId, (value, setting, error) => {
                 if (error) {
                     this.emitAndSave('error', error);
                 } else {
                     this.emitAndSave('value', value);
                     this.emitAndSave('settings', setting);
                 }
-            });
-            this.emit('connect');
+            });*/
+
+            // this.emit('connect');
         });
 
         this.socket.on('disconnect', () => this.emit('disconnect'));
 
-        this.socket.on('revision');
-        this.socket.on('value');
-        this.socket.on('cursor');
-        this.socket.on('settings', (settings) => this.emit('settings', settings));
-        this.socket.on('message');
+        this.socket.on('settings', (settings) => this.emitAndSave('settings', settings));
     }
 
     disconnect() {

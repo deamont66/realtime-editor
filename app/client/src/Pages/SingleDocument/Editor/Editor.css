@@ -1,0 +1,9 @@
+.Comp-Editor {
+  width: 100%;
+  height: 100%;
+  overflow: auto; }
+  .Comp-Editor .codemirror-editor {
+    min-width: 100%;
+    min-height: 100%; }
+    .Comp-Editor .codemirror-editor .CodeMirror {
+      height: 90vh; }

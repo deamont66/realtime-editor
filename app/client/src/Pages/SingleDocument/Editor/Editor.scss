@@ -1,0 +1,18 @@
+.Comp-Editor {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+
+    .codemirror-editor {
+        min-width: 100%;
+        min-height: 100%;
+
+        .CodeMirror {
+            height: 90vh;
+        }
+    }
+
+    #brace-editor {
+    }
+}
+

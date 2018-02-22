@@ -9,10 +9,6 @@ const getUserById = function (userId) {
     return User.findOne({_id: userId});
 };
 
-const validatePassword = function (hash, password) {
-    return bcrypt.compare(password, hash);
-};
-
 const createUser = function (user) {
     return bcrypt.hash(user.password, 10)
         .then(function (hash) {
@@ -23,6 +19,5 @@ const createUser = function (user) {
 module.exports = {
     getUserByUsername: getUserByUsername,
     getUserById: getUserById,
-    validatePassword: validatePassword,
     createUser: createUser,
 };
