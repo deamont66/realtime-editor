@@ -1,5 +1,5 @@
 import React from 'react';
-import DocumentStore from "../../Stores/DocumentStore";
+import PropTypes from 'prop-types';
 
 import './DocumentTitle.css';
 
@@ -10,28 +10,16 @@ class DocumentTitle extends React.Component {
 
         this.state = {
             editingTitle: false,
-            title: null,
-            newTitle: ''
+            newTitle: props.title
         };
 
         this.handleTitleButtonClick = this.handleTitleButtonClick.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
-
-        this.handleSettingsChange = this.handleSettingsChange.bind(this);
     }
 
-    componentDidMount() {
-        DocumentStore.on('settings', this.handleSettingsChange);
-        DocumentStore.last('settings', this.handleSettingsChange);
-    }
-
-    componentWillUnmount() {
-        DocumentStore.off('settings', this.handleSettingsChange);
-    }
-
-    handleSettingsChange(settings) {
+    componentWillReceiveProps(nextProps) {
         this.setState({
-            title: settings.title
+            newTitle: nextProps.title
         });
     }
 
@@ -44,11 +32,10 @@ class DocumentTitle extends React.Component {
     handleTitleButtonClick() {
         this.setState((oldState) => {
             if (oldState.editingTitle) {
-                DocumentStore.updateSettings({title: oldState.newTitle});
+                this.props.onSettingsChange({title: oldState.newTitle});
             }
             return {
                 editingTitle: !oldState.editingTitle,
-                newTitle: oldState.title
             };
         });
     }
@@ -57,21 +44,23 @@ class DocumentTitle extends React.Component {
         return (
             <div className="Comp-DocumentTitle">
                 {!this.state.editingTitle
-                && <h1 onClick={this.handleTitleButtonClick}>{this.state.title}</h1>}
+                && <h1 onClick={this.handleTitleButtonClick}>{this.props.title}</h1>}
 
                 {this.state.editingTitle
                 && <input type="text" value={this.state.newTitle} onChange={this.handleTitleChange}/>}
 
-                {this.state.title && <button onClick={this.handleTitleButtonClick} title={this.state.editingTitle ? 'Save title' : 'Edit title'}>
+                <button onClick={this.handleTitleButtonClick} title={this.state.editingTitle ? 'Save title' : 'Edit title'}>
                     <i className="fas fa-edit"/>
                     <span className="sr-only">{this.state.editingTitle ? 'Save title' : 'Edit title'}</span>
-                </button>}
+                </button>
             </div>
         );
     }
 }
 
 DocumentTitle.propTypes = {
+    onSettingsChange: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired
 };
 
 DocumentTitle.defaultProps = {

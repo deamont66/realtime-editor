@@ -1,5 +1,4 @@
 const Errors = require('../utils/Errors');
-const UserRepository = require('../repositories/UserRepository');
 
 const validateSigIn = function (req, res, next) {
 
@@ -12,20 +11,14 @@ const validateSigUp = function (req, res, next) {
 };
 
 const validateLoggedIn = function (req, res, next) {
-    if (!req.session.uid)
+    if (!req.user) {
         next(Errors.userNotLoggedIn);
-
-    UserRepository.getUserById(req.session.uid).then(function (userData) {
-        req.user = userData;
-        next();
-    }).catch(function () {
-        delete req.session.uid;
-        next(Errors.userNotLoggedIn);
-    });
+    }
+    next();
 };
 
 const validateNotLoggedIn = function (req, res, next) {
-    if(req.session.uid) {
+    if(req.user) {
         next(Errors.userAlreadyLoggedIn);
     }
     next();

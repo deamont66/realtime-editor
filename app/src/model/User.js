@@ -9,7 +9,7 @@ const userSchema = new Schema({
     defaultSettings: {type: mongoose.Schema.Types.ObjectId, ref: 'DocumentSettings', required: true},
     recoverHash: String,
     recoverEnd: Date,
-    lastLogin: Date
+    lastLogin: { type: Date, required: true, default: Date.now() }
 });
 
 userSchema.methods.toJSON = function () {
@@ -21,7 +21,7 @@ userSchema.methods.toJSON = function () {
     return obj;
 };
 
-userSchema.statics.validatePassword = function (password) {
+userSchema.methods.validatePassword = function (password) {
     return bcrypt.compare(password, this.password);
 };
 

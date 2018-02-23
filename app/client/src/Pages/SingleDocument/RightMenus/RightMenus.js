@@ -53,7 +53,9 @@ class RightMenus extends React.Component {
                 })}>
                     {this.state.activeMenu !== -1 && React.createElement(this.menus[this.state.activeMenu].menu, {
                         onClose: this.handleMenuClose.bind(this),
-                        documentId: this.props.documentId
+                        documentId: this.props.documentId,
+                        settings: this.props.settings,
+                        onSettingsChange: this.props.onSettingsChange
                     })}
                 </div>
             </div>
@@ -62,7 +64,9 @@ class RightMenus extends React.Component {
 }
 
 RightMenus.propTypes = {
-    documentId: PropTypes.any.isRequired
+    documentId: PropTypes.string.isRequired,
+    onSettingsChange: PropTypes.func.isRequired,
+    settings: PropTypes.object.isRequired
 };
 
 export default RightMenus;

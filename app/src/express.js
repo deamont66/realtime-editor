@@ -25,11 +25,6 @@ module.exports = function (session) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use((req, res, next) => {
-        console.log(req.headers.cookie);
-        next();
-    });
-
     app.use('/api', api);
 
     app.use('/static', express.static(path.join(__dirname, '../client/build-prod/static')));

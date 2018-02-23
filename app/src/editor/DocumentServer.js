@@ -7,14 +7,14 @@ const EventEmitter = require('events');
 class DocumentServer extends EventEmitter {
 
     /**
-     *
-     * @param {String} document
+     * @param {String} value
      * @param {WrappedOperation[]} operationsHistory
      */
-    constructor(document, operationsHistory = []) {
+    constructor(value, operationsHistory = []) {
         super();
-        this.document = document;
+        this.value = value;
         this.operations = operationsHistory;
+        this.revisionOffset = (operationsHistory[0] && operationsHistory[0].revision) || 0;
     }
 
     /**
@@ -28,12 +28,15 @@ class DocumentServer extends EventEmitter {
      * @returns WrappedOperation transformed operation
      */
     receiveOperation(revision, operation) {
-        operation = this.transformReceivedOperation(revision, operation);
+        operation = this.transformReceivedOperation(revision - this.revisionOffset, operation);
+
         this.applyReceivedOperation(operation);
         return operation;
     }
 
     /**
+     * Transforms received operation.
+     *
      * @param {Number} revision
      * @param operation
      * @returns {WrappedOperation}
@@ -55,16 +58,26 @@ class DocumentServer extends EventEmitter {
     }
 
     /**
-     * Applies operation to the document.
+     * Applies operation to the document
+     *
      * @param {WrappedOperation} operation
      */
     applyReceivedOperation(operation) {
         // Apply operation to the document.
-        this.document = operation.apply(this.document);
+        this.value = operation.apply(this.value);
         // Store operation in history.
         this.operations.push(operation);
         // Emit document change event.
-        this.emit('document_change', this.document, operation);
+        this.emit('document_change', this.value, operation);
+    }
+
+    /**
+     * Calculates real revision number.
+     *
+     * @return {number} revision
+     */
+    getRevision() {
+        return this.operations.length + this.revisionOffset;
     }
 }
 

@@ -1,5 +1,6 @@
 const UserRepository = require('../repositories/UserRepository');
 const Errors = require('../utils/Errors');
+const passport = require('passport');
 
 module.exports = {
     postSignIn: function (req, res, next) {
@@ -24,7 +25,7 @@ module.exports = {
     },
     postSignUp: function (req, res, next) {
         UserRepository.createUser({
-            name: req.body.name,
+            email: req.body.email,
             username: req.body.username,
             password: req.body.password,
         }).then(function (user) {
@@ -56,7 +57,7 @@ module.exports = {
         });
     },
     deleteSignOut: function (req, res, next) {
-        delete req.session.uid;
+        req.logout();
         res.sendStatus(204);
     }
 };

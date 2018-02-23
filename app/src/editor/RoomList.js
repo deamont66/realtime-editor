@@ -1,18 +1,62 @@
 
 const debug = require('debug')('editor:roomlist');
+const DocumentSocketIOServer = require('./DocumentSocketIOServer');
+
+const DocumentRepository = require('../repositories/DocumentRepository');
+const OperationRepository = require('../repositories/OperationRepository');
 
 class RoomList {
 
+    /**
+     * @param io Socket.io namespace
+     */
     constructor(io) {
         this.rooms = {};
 
         io.on('connection', (socket) => {
-            debug('Document incoming socket:', socket.handshake.query.documentId, socket.handshake.session.uid);
+            const documentId = socket.handshake.query.documentId;
+            debug('Incoming socket:', socket.handshake.address, documentId, socket.request.user._id);
 
-            if(!socket.request.user.is_logged_in) {
-                socket.disconnect(true, );
+            if(!socket.request.user.logged_in) {
+                debug('Disconnected: not logged in');
+                socket.disconnect(true, 'Not logged in');
             }
+
+            this.getDocumentServer(documentId).then((server) => {
+                socket.on('join', (cb) => {
+                    debug('Joining:', documentId, socket.request.user._id);
+                    server.addClient(socket, cb);
+                });
+            }).catch((error) => {
+                debug('Disconnected:', error);
+                socket.disconnect(true, error);
+            });
         });
+    }
+
+    /**
+     * Retrieves or creates DocumentServer instance for given documentId.
+     * @param {mongoose.Types.ObjectId} documentId
+     *
+     * @returns {Promise} DocumentServer instance
+     */
+    getDocumentServer(documentId) {
+        return Promise.resolve(this.rooms[documentId]).then((server) => {
+            if(!server) {
+                return Promise.all([
+                    DocumentRepository.getDocumentById(documentId),
+                    OperationRepository.getLastOperationsByDocument(documentId)
+                ]).then(([document, operations]) => {
+                    if(!document) {
+                        debug();
+                        return Promise.reject('document not found')
+                    }
+                    this.rooms[documentId] = new DocumentSocketIOServer(document, operations);
+                    return this.rooms[documentId]
+                });
+            }
+            return server;
+        })
     }
 }
 

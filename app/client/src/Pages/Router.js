@@ -5,6 +5,7 @@ import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
 import Header from "./Components/Header";
 import SingleDocument from "./SingleDocument/SingleDocument";
+import MyDocuments from "./Documents/MyDocuments";
 
 class Router extends React.Component {
 
@@ -35,19 +36,19 @@ class Router extends React.Component {
                                 <p>Homepage</p>//<Homepage {...props}/>
                             )}/>
 
-                            <Route exact path={'/documents'} render={(props) => (
-                                <p>My document list</p>//<Editor {...props} user={this.props.user}/>
+                            <Route exact path={'/document'} render={(props) => (
+                                <MyDocuments {...props} user={this.props.user}/>
                             )}/>
 
-                            <Route path={'/documents/shared'} render={(props) => (
+                            <Route path={'/document/shared'} render={(props) => (
                                 <p>Shared with me document list</p>//<Editor {...props} user={this.props.user}/>
                             )}/>
 
-                            <Route path={'/documents/history'} render={(props) => (
+                            <Route path={'/document/history'} render={(props) => (
                                 <p>My last document list</p>//<Editor {...props} user={this.props.user}/>
                             )}/>
 
-                            <Route path={'/documents/:documentId'} render={(props) => (
+                            <Route path={'/document/:documentId'} render={(props) => (
                                 <SingleDocument {...props} user={this.props.user}/>
                             )}/>
 

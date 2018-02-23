@@ -17,12 +17,12 @@ class UserStore extends EventEmitter {
         });
     }
 
-    singUp(username, password, name) {
+    singUp(username, password, email) {
         return new Promise((resolve, reject) => {
             axios.post('/user/', {
                 username: username,
                 password: password,
-                name: name
+                email: email
             }).then((res) => {
                 resolve(res.data.user);
                 this.emitSync('value', res.data.user);

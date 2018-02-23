@@ -18,13 +18,13 @@ class Header extends React.Component {
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" exact to="/documents">My documents</NavLink>
+                                    <NavLink className="nav-link" exact to="/document">My documents</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" exact to="/documents/shared">Shared documents</NavLink>
+                                    <NavLink className="nav-link" exact to="/document/shared">Shared documents</NavLink>
                                 </li>
                                 <li className="nav-item">
-                                    <NavLink className="nav-link" exact to="/documents/history">Last documents</NavLink>
+                                    <NavLink className="nav-link" exact to="/document/history">Last documents</NavLink>
                                 </li>
                             </ul>
                         </div>
@@ -33,7 +33,7 @@ class Header extends React.Component {
                                 <button type="button" className="nav-item btn btn-info btn-sm dropdown-toggle"
                                         data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
-                                    {this.props.user.name}
+                                    {this.props.user.username}
                                 </button>
                                 <div className="dropdown-menu dropdown-menu-right">
                                     <a className="dropdown-item disabled">Settings</a>

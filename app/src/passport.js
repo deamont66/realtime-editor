@@ -10,7 +10,9 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
     UserRepository.getUserById(id).then(function (user) {
-        if (!user) done(Errors.notFound, null);
+        if (!user) {
+            done(false, null);
+        }
         done(null, user);
     });
 });
@@ -26,13 +28,15 @@ passport.use(
             }
             return user.authenticate(password).then((valid) => {
                 if (!valid) return Promise.reject(Errors.userInvalidCredential);
+                user.lastLogin = Date.now();
+                user.save();
                 return user;
             });
         }).then((user) => {
             done(null, user);
         }).catch((error) => {
             setTimeout(function () {
-                done(error, null);
+                done(error, false);
             }, 3000);
         });
     })

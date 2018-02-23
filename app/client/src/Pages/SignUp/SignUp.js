@@ -8,16 +8,16 @@ class SignUp extends React.Component {
         super();
 
         this.state = {
+            email: '',
             username: '',
             password: '',
-            name: '',
 
             message: null
         }
     }
 
 
-    handleSumbit(evt) {
+    handleSubmit(evt) {
         evt.preventDefault();
 
         let message = null;
@@ -25,8 +25,10 @@ class SignUp extends React.Component {
             message = 'Field username is required'
         } else if (!this.state.password) {
             message = 'Field password is required'
-        } else if (!this.state.name) {
-            message = 'Field name is required'
+        } else if (!this.state.email) {
+            message = 'Field email is required'
+        } else if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.email)) {
+            message = 'Field email has to be valid email address'
         }
 
         this.setState({
@@ -35,7 +37,7 @@ class SignUp extends React.Component {
 
         if (message !== null) return;
 
-        UserStore.singUp(this.state.username, this.state.password, this.state.name).then((user) => {
+        UserStore.singUp(this.state.username, this.state.password, this.state.email).then(() => {
             this.props.history.push('/sign-in');
         }).catch((error) => {
             this.setState({
@@ -51,7 +53,13 @@ class SignUp extends React.Component {
                     <div className="col">
                         <p/>
                         <h1>Sign Up</h1>
-                        <form onSubmit={this.handleSumbit.bind(this)}>
+                        <form onSubmit={this.handleSubmit.bind(this)}>
+                            <div className="form-group">
+                                <label htmlFor="nameInput">Email</label>
+                                <input type="name" className="form-control" id="nameInput"
+                                       placeholder="Enter email" value={this.state.email} required
+                                       onChange={(evt) => this.setState({email: evt.target.value})}/>
+                            </div>
                             <div className="form-group">
                                 <label htmlFor="usernameInput">Username</label>
                                 <input type="text" className="form-control" id="usernameInput"
@@ -63,12 +71,6 @@ class SignUp extends React.Component {
                                 <input type="password" className="form-control" id="passwordInput"
                                        placeholder="Enter password" value={this.state.password} required
                                        onChange={(evt) => this.setState({password: evt.target.value})}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="nameInput">Name</label>
-                                <input type="name" className="form-control" id="nameInput"
-                                       placeholder="Enter name" value={this.state.name} required
-                                       onChange={(evt) => this.setState({name: evt.target.value})}/>
                             </div>
 
                             {this.state.message !== null && <div className="alert alert-danger" role="alert">
