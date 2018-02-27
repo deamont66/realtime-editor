@@ -12,3 +12,4 @@ router.post('/', userValidator.validateLoggedIn, controller.postCreateDocument);
 router.delete('/:documentId', userValidator.validateLoggedIn, controller.deleteDocument);
 
 module.exports = router;
+
