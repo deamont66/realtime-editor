@@ -1,8 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types';
 import axios from '../../Utils/Axios';
 import Loading from "../Components/Loading";
+import DocumentList from "./DocumentList/DocumentList";
 
 class MyDocuments extends React.Component {
     constructor() {
@@ -27,20 +26,22 @@ class MyDocuments extends React.Component {
         });
     }
 
+    createNewDocument(evt) {
+        evt.preventDefault();
+
+        axios.post('/document/').then((res) => {
+            this.props.history.push('/document/' + res.data.document);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
     render() {
         return (
             <div className="Comp-MyDocuments">
+                <button onClick={this.createNewDocument.bind(this)}>Create new document</button>
                 {this.state.documents === null && <Loading/>}
-                {this.state.documents !== null && <ul>
-                    {this.state.documents.map((document) => {
-                        return (
-                            <li key={document._id}>
-                                <Link to={'/document/' + document._id}>{document.title}</Link>
-                            </li>
-                        )
-                    })}
-                </ul>}
-
+                {this.state.documents !== null && <DocumentList documents={this.state.documents}/>}
             </div>
         );
     }
