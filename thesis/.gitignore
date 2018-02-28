@@ -1,4 +1,5 @@
-template
+template/*
+!template/.gitkeep
 
 # Created by .ignore support plugin (hsz.mobi)
 ### TeX template
