@@ -1,6 +1,8 @@
 import React from 'react';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+
 import EditorModes from '../../../Utils/EditorModes';
 import EditorThemes from '../../../Utils/EditorThemes';
 
@@ -15,7 +17,7 @@ class SettingsMenuIcon extends React.Component {
                     evt.preventDefault();
                     this.props.onClick();
                 }}>
-                    <i className="fas fa-cog"/>
+                    <FontAwesomeIcon icon="cog"/>
                     <span className="sr-only">Settings</span>
                 </a>
             </div>

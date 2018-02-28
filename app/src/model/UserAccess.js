@@ -6,7 +6,7 @@ const userAccessSchema = new Schema({
     document: {type: mongoose.Schema.Types.ObjectId, ref: 'Document'},
     accessTime: Date
 }, {
-    capped: 16384
+    // capped: 16384
 });
 
 const UserAccess = mongoose.model('UserAccess', userAccessSchema);

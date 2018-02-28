@@ -6,6 +6,8 @@ import SignUp from "./SignUp/SignUp";
 import Header from "./Components/Header";
 import SingleDocument from "./SingleDocument/SingleDocument";
 import MyDocuments from "./Documents/MyDocuments";
+import SharedDocuments from "./Documents/SharedDocuments";
+import LastDocuments from "./Documents/LastDocuments";
 
 class Router extends React.Component {
 
@@ -41,11 +43,11 @@ class Router extends React.Component {
                             )}/>
 
                             <Route path={'/document/shared'} render={(props) => (
-                                <p>Shared with me document list</p>//<Editor {...props} user={this.props.user}/>
+                                <SharedDocuments {...props} user={this.props.user}/>
                             )}/>
 
                             <Route path={'/document/history'} render={(props) => (
-                                <p>My last document list</p>//<Editor {...props} user={this.props.user}/>
+                                <LastDocuments {...props} user={this.props.user}/>
                             )}/>
 
                             <Route path={'/document/:documentId'} render={(props) => (

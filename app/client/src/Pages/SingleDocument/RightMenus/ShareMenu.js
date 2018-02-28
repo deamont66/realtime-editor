@@ -1,6 +1,7 @@
 import React from 'react';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 
 class ShareMenuIcon extends React.Component {
@@ -14,7 +15,7 @@ class ShareMenuIcon extends React.Component {
                     evt.preventDefault();
                     this.props.onClick();
                 }}>
-                    <i className="fas fa-share-square"/>
+                    <FontAwesomeIcon icon="share-square"/>
                     <span className="sr-only">Share</span>
                 </a>
             </div>

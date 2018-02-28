@@ -10,6 +10,7 @@ import EditorClient from "../../OperationalTransformation/EditorClient";
 import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
 import io from "socket.io-client";
 import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
+import DocumentStatus from "./DocumentStatus";
 
 class SingleDocument extends React.Component {
 
@@ -19,6 +20,7 @@ class SingleDocument extends React.Component {
         this.state = {
             connected: false,
             disconnected: false,
+            clientState: 'Synchronized',
             error: null,
 
             settings: {
@@ -40,7 +42,6 @@ class SingleDocument extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.documentId);
         this.socket = io('/documents', {
             path: '/api/socket.io',
             query: 'documentId=' + this.documentId
@@ -86,6 +87,11 @@ class SingleDocument extends React.Component {
         this.cmClient = new EditorClient(
             revision, clients, serverAdapter, new CodeMirrorAdapter(this.editor)
         );
+        this.cmClient.emitter.on('stateChange', (state) => {
+            this.setState({
+                clientState: state
+            });
+        })
     }
 
     onSettings(settings) {
@@ -109,15 +115,10 @@ class SingleDocument extends React.Component {
         return (
             <div className="Comp-SingleDocument">
                 <div className="editor-header">
-                    {this.state.connected &&
                     <DocumentTitle title={this.state.settings.title}
-                                   onSettingsChange={this.handleSettingsChange.bind(this)}/>}
+                                   onSettingsChange={this.handleSettingsChange.bind(this)}/>
 
-                    {this.state.disconnected &&
-                    <span className="warning text-warning" title="No connection">
-                        <i className="fas fa-exclamation-triangle"/>
-                        <span className="sr-only">No connection</span>
-                    </span>}
+                    <DocumentStatus disconnected={this.state.disconnected} state={this.state.clientState}/>
                 </div>
                 <div className="editor-body">
                     <Editor settings={this.state.settings}

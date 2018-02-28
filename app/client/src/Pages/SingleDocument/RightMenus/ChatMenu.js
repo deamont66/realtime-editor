@@ -1,6 +1,7 @@
 import React from 'react';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 class ChatMenuIcon extends React.Component {
 
@@ -13,7 +14,7 @@ class ChatMenuIcon extends React.Component {
                     evt.preventDefault();
                     this.props.onClick();
                 }}>
-                    <i className="fas fa-comments"/>
+                    <FontAwesomeIcon icon="comments"/>
                     <span className="sr-only">Comments</span>
                 </a>
             </div>

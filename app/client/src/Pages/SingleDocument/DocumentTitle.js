@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import './DocumentTitle.css';
 
@@ -50,7 +51,7 @@ class DocumentTitle extends React.Component {
                 && <input type="text" value={this.state.newTitle} onChange={this.handleTitleChange}/>}
 
                 <button onClick={this.handleTitleButtonClick} title={this.state.editingTitle ? 'Save title' : 'Edit title'}>
-                    <i className="fas fa-edit"/>
+                    <FontAwesomeIcon icon="edit"/>
                     <span className="sr-only">{this.state.editingTitle ? 'Save title' : 'Edit title'}</span>
                 </button>
             </div>

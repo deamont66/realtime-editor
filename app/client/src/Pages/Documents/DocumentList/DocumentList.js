@@ -14,7 +14,7 @@ class DocumentList extends React.Component {
                             <li key={document._id}>
                                 <Link to={'/document/' + document._id}>
                                     <span>{document.title} - </span>
-                                    <small>{moment(document.lastChange).format('llll')}</small>
+                                    <small>{moment(document.lastAccessed || document.lastChange).format('llll')}</small>
                                 </Link>
                             </li>
                         )

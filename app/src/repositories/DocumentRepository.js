@@ -1,5 +1,6 @@
 const Document = require('../model/Document');
 const DocumentSettings = require('../model/DocumentSettings');
+const UserAccess = require('../model/UserAccess');
 
 /**
  * Gets documents by User owner.
@@ -20,16 +21,28 @@ const getDocumentsByOwner = (user) => {
  * @param {User} user
  */
 const getSharedDocumentsByUser = (user) => {
-
+    return Promise.resolve([]);
 };
 
 /**
  * Gets last documents by User.
  *
  * @param {User} user
+ * @returns {Promise}
  */
 const getLastDocumentsByUser = (user) => {
-
+    return UserAccess.find({user:user})
+        .sort('-accessTime')
+        .select('document accessTime')
+        .populate('document')
+        .exec()
+        .then((userAccessArray) => {
+            return userAccessArray.map((userAccess) => {
+                const document = userAccess.document.toJSON();
+                document.lastAccessed = userAccess.accessTime;
+                return document;
+            })
+        });
 };
 
 /**
@@ -90,6 +103,23 @@ const updateSettings = (document, settings) => {
     });
 };
 
+/**
+ *
+ *
+ * @param document
+ * @param user
+ */
+const updateUserAccess = (document, user) => {
+    return UserAccess.findOneAndUpdate({
+        document: document,
+        user: user
+    }, {
+        accessTime: Date.now()
+    }, {
+        upsert: true
+    }).exec();
+};
+
 
 module.exports = {
     getDocumentsByOwner: getDocumentsByOwner,
@@ -99,4 +129,5 @@ module.exports = {
     createDocument: createDocument,
     updateLastContent: updateLastContent,
     updateSettings: updateSettings,
+    updateUserAccess: updateUserAccess,
 };

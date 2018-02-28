@@ -9,10 +9,18 @@ module.exports = {
         });
     },
     getLastDocuments: (req, res, next) => {
-        next()
+        DocumentRepository.getLastDocumentsByUser(req.user).then((documents) => {
+            res.json(documents);
+        }).catch((err) => {
+            next(err);
+        });
     },
     getSharedDocuments: (req, res, next) => {
-        next()
+        DocumentRepository.getSharedDocumentsByUser(req.user).then((documents) => {
+            res.json(documents);
+        }).catch((err) => {
+            next(err);
+        });
     },
     postCreateDocument: (req, res, next) => {
         DocumentRepository.createDocument(req.user).then((document) => {

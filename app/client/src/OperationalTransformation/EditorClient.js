@@ -8,6 +8,7 @@
 import {Client, Selection, TextOperation} from 'ot';
 import WrappedOperation from './WrappedOperation';
 import UndoManager from './UndoManager';
+import EventEmitter from 'event-emitter-es6';
 
 class SelfMeta {
     constructor(selectionBefore, selectionAfter) {
@@ -127,6 +128,8 @@ class EditorClient extends Client {
         this.editorAdapter = editorAdapter;
         this.undoManager = new UndoManager();
 
+        this.emitter = new EventEmitter();
+
         this.initializeClientList();
         this.initializeClients(clients);
 
@@ -203,6 +206,11 @@ class EditorClient extends Client {
                 self.serverReconnect();
             }
         });
+    }
+
+    setState(state) {
+        super.setState(state);
+        this.emitter.emit('stateChange', state.constructor.name);
     }
 
     addClient(clientId, clientObj) {
