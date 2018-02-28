@@ -13,7 +13,7 @@ class DocumentList extends React.Component {
                         return (
                             <li key={document._id}>
                                 <Link to={'/document/' + document._id}>
-                                    {document.title}
+                                    <span>{document.title} - </span>
                                     <small>{moment(document.lastChange).format('llll')}</small>
                                 </Link>
                             </li>

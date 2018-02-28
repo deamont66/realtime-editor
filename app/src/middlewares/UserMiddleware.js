@@ -1,11 +1,11 @@
 const Errors = require('../utils/Errors');
 
-const validateSigIn = function (req, res, next) {
+const validateSignIn = function (req, res, next) {
 
     next();
 };
 
-const validateSigUp = function (req, res, next) {
+const validateSignUp = function (req, res, next) {
 
     next();
 };
@@ -25,8 +25,8 @@ const validateNotLoggedIn = function (req, res, next) {
 };
 
 module.exports = {
-    validateSigIn: validateSigIn,
-    validateSigUp: validateSigUp,
+    validateSignIn: validateSignIn,
+    validateSignUp: validateSignUp,
     validateLoggedIn: validateLoggedIn,
     validateNotLoggedIn: validateNotLoggedIn,
 };

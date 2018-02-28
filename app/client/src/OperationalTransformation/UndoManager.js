@@ -1,108 +1,154 @@
-const UndoManager = (function () {
+/**
+ * Most of this code is taken from OT.js library:
+ * https://github.com/Operational-Transformation/ot.js/
+ *
+ * Only minor functional changes were made (mostly rewritten to ES6).
+ */
 
-    var NORMAL_STATE = 'normal';
-    var UNDOING_STATE = 'undoing';
-    var REDOING_STATE = 'redoing';
+const NORMAL_STATE = 'normal';
+const UNDOING_STATE = 'undoing';
+const REDOING_STATE = 'redoing';
 
-    // Create a new UndoManager with an optional maximum history size.
-    function UndoManager(maxItems) {
-        this.maxItems = maxItems || 50;
+/**
+ * Transforms given stack according to new operation.
+ *
+ * @param {Operation[]} stack
+ * @param {Operation} operation
+ * @returns {Operation[]} transformedStack
+ */
+const transformStack = (stack, operation) => {
+    const newStack = [];
+    const Operation = operation.constructor;
+    for (let i = stack.length - 1; i >= 0; i--) {
+        const pair = Operation.transform(stack[i], operation);
+        if (typeof pair[0].isNoop !== 'function' || !pair[0].isNoop()) {
+            newStack.push(pair[0]);
+        }
+        operation = pair[1];
+    }
+    return newStack.reverse();
+};
+
+class UndoManager {
+
+    /**
+     * Create a new UndoManager with an optional maximum history size.
+     *
+     * @param {Number} maxItems
+     */
+    constructor(maxItems = 50) {
+        this.maxItems = maxItems;
         this.state = NORMAL_STATE;
         this.dontCompose = false;
         this.undoStack = [];
         this.redoStack = [];
     }
 
-    // Add an operation to the undo or redo stack, depending on the current state
-    // of the UndoManager. The operation added must be the inverse of the last
-    // edit. When `compose` is true, compose the operation with the last operation
-    // unless the last operation was alread pushed on the redo stack or was hidden
-    // by a newer operation on the undo stack.
-    UndoManager.prototype.add = function (operation, compose) {
-        if (this.state === UNDOING_STATE) {
-            this.redoStack.push(operation);
-            this.dontCompose = true;
-        } else if (this.state === REDOING_STATE) {
-            this.undoStack.push(operation);
-            this.dontCompose = true;
-        } else {
-            var undoStack = this.undoStack;
-            if (!this.dontCompose && compose && undoStack.length > 0) {
-                undoStack.push(operation.compose(undoStack.pop()));
-            } else {
-                undoStack.push(operation);
-                if (undoStack.length > this.maxItems) {
-                    undoStack.shift();
+    /**
+     * Adds operation to stack depending on state.
+     *
+     * @param {Operation} operation
+     * @param {Boolean} compose
+     */
+    add(operation, compose) {
+        switch(this.state) {
+            case UNDOING_STATE: {
+                this.redoStack.push(operation);
+                this.dontCompose = true;
+                break;
+            }
+            case REDOING_STATE: {
+                this.undoStack.push(operation);
+                this.dontCompose = true;
+                break;
+            }
+            // NORMAL_STATE
+            default: {
+                if (!this.dontCompose && compose && this.undoStack.length > 0) {
+                    this.undoStack.push(operation.compose(this.undoStack.pop()));
+                } else {
+                    this.undoStack.push(operation);
+                    if (this.undoStack.length > this.maxItems) {
+                        this.undoStack.shift();
+                    }
                 }
+                this.dontCompose = false;
+                this.redoStack = [];
             }
-            this.dontCompose = false;
-            this.redoStack = [];
         }
-    };
-
-    function transformStack(stack, operation) {
-        var newStack = [];
-        var Operation = operation.constructor;
-        for (var i = stack.length - 1; i >= 0; i--) {
-            var pair = Operation.transform(stack[i], operation);
-            if (typeof pair[0].isNoop !== 'function' || !pair[0].isNoop()) {
-                newStack.push(pair[0]);
-            }
-            operation = pair[1];
-        }
-        return newStack.reverse();
     }
 
-    // Transform the undo and redo stacks against a operation by another client.
-    UndoManager.prototype.transform = function (operation) {
+    /**
+     * Transforms both stack based on passed operation.
+     *
+     * @param {Operation} operation
+     */
+    transform(operation) {
         this.undoStack = transformStack(this.undoStack, operation);
         this.redoStack = transformStack(this.redoStack, operation);
-    };
+    }
 
-    // Perform an undo by calling a function with the latest operation on the undo
-    // stack. The function is expected to call the `add` method with the inverse
-    // of the operation, which pushes the inverse on the redo stack.
-    UndoManager.prototype.performUndo = function (fn) {
+    /**
+     * Performs single undo. Calls callback with undo operation.
+     *
+     * @param {function} callback
+     */
+    performUndo(callback) {
         this.state = UNDOING_STATE;
         if (this.undoStack.length === 0) {
             throw new Error("undo not possible");
         }
-        fn(this.undoStack.pop());
+        callback(this.undoStack.pop());
         this.state = NORMAL_STATE;
-    };
+    }
 
-    // The inverse of `performUndo`.
-    UndoManager.prototype.performRedo = function (fn) {
+    /**
+     * Performs single redo (inverse to performUndo). Calls callback with redo operation.
+     *
+     * @param {function} callback
+     */
+    performRedo(callback) {
         this.state = REDOING_STATE;
         if (this.redoStack.length === 0) {
             throw new Error("redo not possible");
         }
-        fn(this.redoStack.pop());
+        callback(this.redoStack.pop());
         this.state = NORMAL_STATE;
-    };
+    }
 
-    // Is the undo stack not empty?
-    UndoManager.prototype.canUndo = function () {
+    /**
+     * Decides whenever is undo available (based on undoStack size).
+     *
+     * @returns {boolean} is undo available
+     */
+    canUndo() {
         return this.undoStack.length !== 0;
     };
 
-    // Is the redo stack not empty?
-    UndoManager.prototype.canRedo = function () {
+    /**
+     * Decides whenever is redo available (based on redoStack size).
+     *
+     * @returns {boolean} is redo available
+     */
+    canRedo() {
         return this.redoStack.length !== 0;
     };
 
-    // Whether the UndoManager is currently performing an undo.
-    UndoManager.prototype.isUndoing = function () {
+    /**
+     * Checks state of this UndoManager instance.
+     * @returns {boolean} is undoing operation in process
+     */
+    isUndoing() {
         return this.state === UNDOING_STATE;
     };
 
-    // Whether the UndoManager is currently performing a redo.
-    UndoManager.prototype.isRedoing = function () {
+    /**
+     * Checks state of this UndoManager instance.
+     * @returns {boolean} is redoing operation in process
+     */
+    isRedoing() {
         return this.state === REDOING_STATE;
     };
-
-    return UndoManager;
-
-}());
+}
 
 export default UndoManager;

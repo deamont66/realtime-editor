@@ -5,12 +5,12 @@ const controller = require('../controllers/UserController');
 
 router.post('/signIn', [
     validator.validateNotLoggedIn,
-    validator.validateSigIn
+    validator.validateSignIn
 ], controller.postSignIn);
 
 router.post('/', [
     validator.validateNotLoggedIn,
-    validator.validateSigUp
+    validator.validateSignUp
 ], controller.postSignUp);
 
 

@@ -15,10 +15,8 @@ import 'codemirror/keymap/emacs';
 import 'codemirror/keymap/sublime';
 import 'codemirror/keymap/vim';
 
-
 EditorModes.require();
 EditorThemes.require();
-
 
 class Editor extends React.Component {
 
@@ -42,12 +40,11 @@ class Editor extends React.Component {
                         readOnly: this.props.settings.readOnly,
                     }}
                     editorDidMount={(editor) => {
-                        console.log('mount');
                         this.props.onEditorDidMount(editor);
                         editor.focus();
                     }}
                     onChange={(editor, data, value) => {
-
+                        // this handler is required by plugin
                     }}
                 />
             </div>
