@@ -1,17 +1,17 @@
 import React from 'react';
-import Editor from "./Editor/Editor";
-import RightMenus from "./RightMenus/RightMenus";
-import DocumentTitle from "./DocumentTitle";
+import io from "socket.io-client";
 
-import './SingleDocument.css';
-import Loading from "../Components/Loading";
+import Editor from "./Editor/Editor";
 import DocumentError from "./DocumentError";
+import RightMenus from "./RightMenus/RightMenus";
+import DocumentHeader from "./DocumentHeader/DocumentHeader";
+
+import Loading from "../Components/Loading";
 import EditorClient from "../../OperationalTransformation/EditorClient";
 import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
-import io from "socket.io-client";
 import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
-import DocumentStatus from "./DocumentStatus";
-import DocumentHeader from "./DocumentHeader/DocumentHeader";
+
+import './SingleDocument.css';
 
 class SingleDocument extends React.Component {
 
@@ -96,7 +96,11 @@ class SingleDocument extends React.Component {
         });
         this.editorClient.emitter.on('clientsChanged', (clients) => {
             this.setState({
-                clients: clients
+                clients: Object.keys(clients).map((clientId) => {
+                    return Object.assign({
+                        id: clientId
+                    }, clients[clientId]);
+                })
             });
         });
     }
@@ -121,7 +125,9 @@ class SingleDocument extends React.Component {
         return (
             <div className="Comp-SingleDocument">
                 <DocumentHeader disconnected={this.state.disconnected} clientState={this.state.clientState}
-                    title={this.state.settings.title} onSettingsChange={this.handleSettingsChange.bind(this)}
+                                title={this.state.settings.title}
+                                onSettingsChange={this.handleSettingsChange.bind(this)}
+                                clients={this.state.clients}
                 />
                 <div className="editor-body">
                     <Editor settings={this.state.settings}
