@@ -1,4 +1,5 @@
 const Themes = {
+    'default': 'default',
     '3024-day': '3024-day',
     '3024-night': '3024-night',
     'abcdef': 'abcdef',
@@ -92,7 +93,8 @@ module.exports = {
     all: Themes,
     require: () => {
         Object.keys(Themes).forEach((themeKey) => {
-            require('codemirror/theme/' + themeKey + '.css')
+            if(themeKey !== 'default')
+                require('codemirror/theme/' + themeKey + '.css')
         });
     }
 };

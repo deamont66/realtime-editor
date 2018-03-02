@@ -8,7 +8,7 @@ const documentSettings = new Schema({
     indentUnit: {type: Number, min: 2, max: 8, required: true, default: 4},
     indentWithTabs: {type: Boolean, required: true, default: true},
     fontSize: {type: Number, min: 6, max: 72, required: true, default: 14},
-    keyMap: {type: String, enum: ['default', 'emacs', 'ace', 'vim'], required: true, default: 'default'},
+    keyMap: {type: String, enum: ['default', 'emacs', 'sublime', 'vim'], required: true, default: 'default'},
     styleActiveLine: {type: String, enum: ['true', 'false', 'nonEmpty'], required: true, default: 'nonEmpty'},
     lineWrapping: {type: Boolean, required: true, default: true},
     lineNumbers: {type: Boolean, required: true, default: true},

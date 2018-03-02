@@ -54,17 +54,10 @@ class OtherMeta {
 }
 
 class OtherClient {
-    constructor(id, listEl, editorAdapter, name, selection) {
+    constructor(id, editorAdapter, name, selection) {
         this.id = id;
-        this.listEl = listEl;
         this.editorAdapter = editorAdapter;
         this.name = name;
-
-        this.li = document.createElement('li');
-        if (name) {
-            this.li.textContent = name;
-            this.listEl.appendChild(this.li);
-        }
 
         this.setColor(name ? hueFromName(name) : Math.random());
         if (selection) {
@@ -73,7 +66,6 @@ class OtherClient {
     }
 
     setColor(hue) {
-        //this.hue = hue;
         this.color = hsl2hex(hue, 0.75, 0.5);
         this.lightColor = hsl2hex(hue, 0.5, 0.9);
         if (this.li) {
@@ -86,12 +78,6 @@ class OtherClient {
             return;
         }
         this.name = name;
-
-        this.li.textContent = name;
-        if (!this.li.parentNode) {
-            this.listEl.appendChild(this.li);
-        }
-
         this.setColor(hueFromName(name));
     }
 
@@ -101,14 +87,11 @@ class OtherClient {
         this.mark = this.editorAdapter.setOtherSelection(
             selection,
             selection.position === selection.selectionEnd ? this.color : this.lightColor,
-            this.id
+            this.name || 'Anonymous'
         );
     }
 
     remove() {
-        if (this.li) {
-            removeElement(this.li);
-        }
         this.removeSelection();
     }
 
@@ -130,62 +113,61 @@ class EditorClient extends Client {
 
         this.emitter = new EventEmitter();
 
-        this.initializeClientList();
         this.initializeClients(clients);
 
-        const self = this;
-
         this.editorAdapter.registerCallbacks({
-            change: function (operation, inverse) {
-                self.onChange(operation, inverse);
+            change: (operation, inverse) => {
+                this.onChange(operation, inverse);
             },
-            selectionChange: function () {
-                self.onSelectionChange();
+            selectionChange: () => {
+                this.onSelectionChange();
             },
-            blur: function () {
-                self.onBlur();
+            blur: () => {
+                this.onBlur();
             }
         });
-        this.editorAdapter.registerUndo(function () {
-            self.undo();
+        this.editorAdapter.registerUndo(() => {
+            this.undo();
         });
-        this.editorAdapter.registerRedo(function () {
-            self.redo();
+        this.editorAdapter.registerRedo(() => {
+            this.redo();
         });
 
         this.serverAdapter.registerCallbacks({
-            client_left: function (clientId) {
-                self.onClientLeft(clientId);
+            client_left: (clientId) => {
+                this.onClientLeft(clientId);
+                this.emitter.emit('clientsChanged', this.clients);
             },
-            set_name: function (clientId, name) {
-                self.getClientObject(clientId).setName(name);
+            set_name: (clientId, name) => {
+                this.getClientObject(clientId).setName(name);
+                this.emitter.emit('clientsChanged', this.clients);
             },
-            ack: function () {
-                self.serverAck();
+            ack: () => {
+                this.serverAck();
             },
-            operation: function (operation) {
-                self.applyServer(TextOperation.fromJSON(operation));
+            operation: (operation) => {
+                this.applyServer(TextOperation.fromJSON(operation));
             },
-            selection: function (clientId, selection) {
+            selection: (clientId, selection) => {
                 if (selection) {
-                    self.getClientObject(clientId).updateSelection(
-                        self.transformSelection(Selection.fromJSON(selection))
+                    this.getClientObject(clientId).updateSelection(
+                        this.transformSelection(Selection.fromJSON(selection))
                     );
                 } else {
-                    self.getClientObject(clientId).removeSelection();
+                    this.getClientObject(clientId).removeSelection();
                 }
             },
-            clients: function (clients) {
+            clients: (clients) => {
                 let clientId;
-                for (clientId in self.clients) {
-                    if (self.clients.hasOwnProperty(clientId) && !clients.hasOwnProperty(clientId)) {
-                        self.onClientLeft(clientId);
+                for (clientId in this.clients) {
+                    if (this.clients.hasOwnProperty(clientId) && !clients.hasOwnProperty(clientId)) {
+                        this.onClientLeft(clientId);
                     }
                 }
 
                 for (clientId in clients) {
                     if (clients.hasOwnProperty(clientId)) {
-                        const clientObject = self.getClientObject(clientId);
+                        const clientObject = this.getClientObject(clientId);
 
                         if (clients[clientId].name) {
                             clientObject.setName(clients[clientId].name);
@@ -193,17 +175,18 @@ class EditorClient extends Client {
 
                         const selection = clients[clientId].selection;
                         if (selection) {
-                            self.clients[clientId].updateSelection(
-                                self.transformSelection(Selection.fromJSON(selection))
+                            this.clients[clientId].updateSelection(
+                                this.transformSelection(Selection.fromJSON(selection))
                             );
                         } else {
-                            self.clients[clientId].removeSelection();
+                            this.clients[clientId].removeSelection();
                         }
                     }
                 }
+                this.emitter.emit('clientsChanged', this.clients);
             },
-            reconnect: function () {
-                self.serverReconnect();
+            reconnect: () => {
+                this.serverReconnect();
             }
         });
     }
@@ -216,7 +199,6 @@ class EditorClient extends Client {
     addClient(clientId, clientObj) {
         this.clients[clientId] = new OtherClient(
             clientId,
-            this.clientListEl,
             this.editorAdapter,
             clientObj.name || clientId,
             clientObj.selection ? Selection.fromJSON(clientObj.selection) : null
@@ -230,6 +212,7 @@ class EditorClient extends Client {
                 this.addClient(clientId, clients[clientId]);
             }
         }
+        this.emitter.emit('clientsChanged', this.clients);
     }
 
     getClientObject(clientId) {
@@ -239,7 +222,6 @@ class EditorClient extends Client {
         }
         return this.clients[clientId] = new OtherClient(
             clientId,
-            this.clientListEl,
             this.editorAdapter
         );
     }
@@ -252,10 +234,6 @@ class EditorClient extends Client {
         }
         client.remove();
         delete this.clients[clientId];
-    }
-
-    initializeClientList() {
-        this.clientListEl = document.createElement('ul');
     }
 
     applyUnredo(operation) {

@@ -30,7 +30,6 @@ class DocumentStatus extends React.Component {
     render() {
         let state = STATES.disconnected;
         if(!this.props.disconnected) {
-            console.log(this.props.state);
             if(this.props.state === 'Synchronized') {
                 state = STATES.synchronized;
             } else {

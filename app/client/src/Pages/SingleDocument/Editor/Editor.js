@@ -20,9 +20,17 @@ EditorThemes.require();
 
 class Editor extends React.Component {
 
+    componentDidUpdate() {
+        // Renders all dynamically generated parts of CodeMirror editor.
+        this.editor.refresh();
+    }
+
     render() {
         return (
-            <div className={'Comp-Editor'} style={{fontSize: this.props.settings.fontSize, display: (this.props.visible) ? 'block' : 'none'}}>
+            <div className={'Comp-Editor'} style={{
+                fontSize: this.props.settings.fontSize,
+                display: (this.props.visible) ? 'block' : 'none'
+            }}>
                 <CodeMirror
                     className={'codemirror-editor'}
                     options={{
@@ -33,7 +41,8 @@ class Editor extends React.Component {
                         indentWithTabs: this.props.settings.indentWithTabs,
 
                         keyMap: this.props.settings.keyMap,
-                        styleActiveLine: this.props.settings.styleActiveLine,
+                        styleActiveLine: this.props.settings.styleActiveLine === 'nonEmpty'
+                            ? {nonEmpty: true} : (this.props.settings.styleActiveLine === 'true'),
                         lineWrapping: this.props.settings.lineWrapping,
                         lineNumbers: this.props.settings.lineNumbers,
 
@@ -41,10 +50,11 @@ class Editor extends React.Component {
                     }}
                     editorDidMount={(editor) => {
                         this.props.onEditorDidMount(editor);
+                        this.editor = editor;
                         editor.focus();
                     }}
                     onChange={(editor, data, value) => {
-                        // this handler is required by plugin
+                        // this handler is required by react-codemirror2 plugin
                     }}
                 />
             </div>

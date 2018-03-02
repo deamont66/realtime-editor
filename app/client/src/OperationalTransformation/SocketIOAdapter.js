@@ -22,7 +22,7 @@ class SocketIOAdapter {
                 this.trigger('ack');
             })
             .on('operation', (clientId, operation, selection) => {
-                console.log('recieved op: ', operation);
+                // console.log('recieved op: ', operation);
                 this.trigger('operation', operation);
                 this.trigger('selection', clientId, selection);
             })
@@ -39,7 +39,7 @@ class SocketIOAdapter {
      * @param {Selection|null} selection - meta selection data
      */
     sendOperation(revision, operation, selection) {
-        console.log('emitted op: ', revision, operation);
+        // console.log('emitted op: ', revision, operation);
         this.socket.emit('operation', revision, operation, selection);
     };
 

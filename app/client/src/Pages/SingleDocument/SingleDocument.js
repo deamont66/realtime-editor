@@ -11,6 +11,7 @@ import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter
 import io from "socket.io-client";
 import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
 import DocumentStatus from "./DocumentStatus";
+import DocumentHeader from "./DocumentHeader/DocumentHeader";
 
 class SingleDocument extends React.Component {
 
@@ -21,6 +22,7 @@ class SingleDocument extends React.Component {
             connected: false,
             disconnected: false,
             clientState: 'Synchronized',
+            clients: [],
             error: null,
 
             settings: {
@@ -55,7 +57,7 @@ class SingleDocument extends React.Component {
 
             this.socket.emit('join', (obj) => {
                 console.log(obj);
-                this.init(obj.value, obj.revision, obj.clients, this.cmClient ? this.cmClient.serverAdapter : new SocketIOAdapter(this.socket));
+                this.init(obj.value, obj.revision, obj.clients, this.editorClient ? this.editorClient.serverAdapter : new SocketIOAdapter(this.socket));
                 this.onSettings(obj.settings);
             });
         });
@@ -80,22 +82,26 @@ class SingleDocument extends React.Component {
     }
 
     init(str, revision, clients, serverAdapter) {
-        if (this.cmClient) {
-            this.cmClient.editorAdapter.detach();
+        if (this.editorClient) {
+            this.editorClient.editorAdapter.detach();
         }
         this.editor.setValue(str);
-        this.cmClient = new EditorClient(
+        this.editorClient = new EditorClient(
             revision, clients, serverAdapter, new CodeMirrorAdapter(this.editor)
         );
-        this.cmClient.emitter.on('stateChange', (state) => {
+        this.editorClient.emitter.on('stateChange', (state) => {
             this.setState({
                 clientState: state
             });
-        })
+        });
+        this.editorClient.emitter.on('clientsChanged', (clients) => {
+            this.setState({
+                clients: clients
+            });
+        });
     }
 
     onSettings(settings) {
-        console.log('Settings:', settings);
         this.setState({
             settings: settings
         })
@@ -114,15 +120,12 @@ class SingleDocument extends React.Component {
 
         return (
             <div className="Comp-SingleDocument">
-                <div className="editor-header">
-                    <DocumentTitle title={this.state.settings.title}
-                                   onSettingsChange={this.handleSettingsChange.bind(this)}/>
-
-                    <DocumentStatus disconnected={this.state.disconnected} state={this.state.clientState}/>
-                </div>
+                <DocumentHeader disconnected={this.state.disconnected} clientState={this.state.clientState}
+                    title={this.state.settings.title} onSettingsChange={this.handleSettingsChange.bind(this)}
+                />
                 <div className="editor-body">
                     <Editor settings={this.state.settings}
-                            visible={this.state.connected !== null}
+                            visible={this.state.connected !== false}
                             onEditorDidMount={this.handleEditorMount.bind(this)}/>
 
                     {this.state.connected &&

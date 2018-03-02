@@ -44,21 +44,6 @@ function codemirrorDocLength(doc) {
         doc.getLine(doc.lastLine()).length;
 }
 
-const addStyleRule = (function () {
-    const added = {};
-    const styleElement = document.createElement('style');
-    document.documentElement.getElementsByTagName('head')[0].appendChild(styleElement);
-    const styleSheet = styleElement.sheet;
-
-    return function (css) {
-        if (added[css]) {
-            return;
-        }
-        added[css] = true;
-        styleSheet.insertRule(css, (styleSheet.cssRules || styleSheet.rules).length);
-    };
-}());
-
 class CodeMirrorAdapter {
 
     /**
@@ -273,31 +258,31 @@ class CodeMirrorAdapter {
         this.cm.setSelections(ranges);
     }
 
-    setOtherCursor(position, color, clientId) {
+    setOtherCursor(position, color, name) {
         const cursorPos = this.cm.posFromIndex(position);
         const cursorCoords = this.cm.cursorCoords(cursorPos);
+        console.log(cursorCoords);
         const cursorEl = document.createElement('span');
         cursorEl.className = 'other-client';
+        cursorEl.title = name;
         cursorEl.style.display = 'inline-block';
         cursorEl.style.padding = '0';
         cursorEl.style.marginLeft = cursorEl.style.marginRight = '-1px';
         cursorEl.style.borderLeftWidth = '2px';
         cursorEl.style.borderLeftStyle = 'solid';
         cursorEl.style.borderLeftColor = color;
-        cursorEl.style.height = (cursorCoords.bottom - cursorCoords.top) * 0.9 + 'px';
-        cursorEl.style.zIndex = 0;
-        cursorEl.setAttribute('data-clientid', clientId);
-        return this.cm.setBookmark(cursorPos, {widget: cursorEl, insertLeft: true});
+        cursorEl.style.height = (cursorCoords.bottom - cursorCoords.top) + 'px';
+        cursorEl.style.maxHeight = '100%';
+        cursorEl.style.verticalAlign = 'top';
+        cursorEl.style.zIndex = '1';
+        return this.cm.setBookmark(cursorPos, {widget: cursorEl, insertLeft: true, handleMouseEvents: true});
     }
 
-    setOtherSelectionRange(range, color, clientId) {
+    setOtherSelectionRange(range, color, name) {
         const match = /^#([0-9a-fA-F]{6})$/.exec(color);
         if (!match) {
             throw new Error("only six-digit hex colors are allowed.");
         }
-        const selectionClassName = 'selection-' + match[1];
-        const rule = '.' + selectionClassName + ' { background: ' + color + '; }';
-        addStyleRule(rule);
 
         const anchorPos = this.cm.posFromIndex(range.anchor);
         const headPos = this.cm.posFromIndex(range.head);
@@ -305,18 +290,22 @@ class CodeMirrorAdapter {
         return this.cm.markText(
             minPos(anchorPos, headPos),
             maxPos(anchorPos, headPos),
-            {className: selectionClassName}
+            {
+                className: 'other-client other-client-selection',
+                css: 'background: ' + color,
+                title: name
+            }
         );
     }
 
-    setOtherSelection(selection, color, clientId) {
+    setOtherSelection(selection, color, name) {
         const selectionObjects = [];
         for (let i = 0; i < selection.ranges.length; i++) {
             const range = selection.ranges[i];
             if (range.isEmpty()) {
-                selectionObjects[i] = this.setOtherCursor(range.head, color, clientId);
+                selectionObjects[i] = this.setOtherCursor(range.head, color, name);
             } else {
-                selectionObjects[i] = this.setOtherSelectionRange(range, color, clientId);
+                selectionObjects[i] = this.setOtherSelectionRange(range, color, name);
             }
         }
         return {
