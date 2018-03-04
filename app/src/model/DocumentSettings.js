@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const documentSettings = new Schema({
+const documentSettingsSchema = new Schema({
     theme: {type: String, required: true, default: 'material'},
     mode: {type: String, required: true, default: 'javascript'},
     tabSize: {type: Number, min: 2, max: 8, required: true, default: 4},
@@ -14,12 +14,11 @@ const documentSettings = new Schema({
     lineNumbers: {type: Boolean, required: true, default: true},
 });
 
-documentSettings.methods.toJSON = function () {
+documentSettingsSchema.methods.toJSON = function () {
     const obj = this.toObject();
     delete obj.__v;
     delete obj._id;
     return obj;
 };
 
-const DocumentSettings = mongoose.model('DocumentSettings', documentSettings);
-module.exports = DocumentSettings;
+module.exports = mongoose.model('DocumentSettings', documentSettingsSchema);

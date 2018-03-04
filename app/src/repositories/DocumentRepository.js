@@ -66,7 +66,6 @@ const createDocument = (owner) => {
     const settings = owner.defaultSettings.toObject();
     delete settings._id;
     delete settings.__v;
-    console.log(settings);
 
     return new DocumentSettings(settings).save().then((settings) => {
         return new Document({settings: settings, owner: owner}).save();

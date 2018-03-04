@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const operation = new Schema({
+const operationSchema = new Schema({
     revision: {type: Number, min: 0, required: true},
     operations: {type: String, required: true},
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
@@ -9,6 +9,4 @@ const operation = new Schema({
     created: {type: Date, required: true, default: Date.now()},
 });
 
-const Operation = mongoose.model('Operation', operation);
-
-module.exports = Operation;
+module.exports = mongoose.model('Operation', operationSchema);

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const document = new Schema({
+const documentSchema = new Schema({
     title: {type: String, required: true, default: 'Unnamed document'},
     settings: {type: mongoose.Schema.Types.ObjectId, ref: 'DocumentSettings', required: true},
     owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
@@ -11,6 +11,4 @@ const document = new Schema({
     lastChange: {type: Date, required: true, default: Date.now()}
 });
 
-const Document = mongoose.model('Document', document);
-
-module.exports = Document;
+module.exports = mongoose.model('Document', documentSchema);
