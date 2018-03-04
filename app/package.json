@@ -8,7 +8,8 @@
   "scripts": {
     "start": "concurrently \"npm run server\" \"cd client && npm start\"",
     "build": "cd client && npm run build && rm -rf build-prod && mv build build-prod",
-    "server": "nodemon ./bin/www"
+    "server": "nodemon ./bin/www",
+    "test": "nyc mocha --recursive"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -37,5 +38,9 @@
     "promise": "^8.0.1",
     "serve-favicon": "~2.4.2",
     "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "nyc": "^11.4.1"
   }
 }
