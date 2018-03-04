@@ -9,7 +9,7 @@
     "start": "concurrently \"npm run server\" \"cd client && npm start\"",
     "build": "cd client && npm run build && rm -rf build-prod && mv build build-prod",
     "server": "nodemon ./bin/www",
-    "test": "nyc mocha --recursive"
+    "test": "nyc --reporter=html --all --include=src/**/*.js mocha --recursive"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
