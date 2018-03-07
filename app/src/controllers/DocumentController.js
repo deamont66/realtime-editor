@@ -1,4 +1,5 @@
 const DocumentRepository = require('../repositories/DocumentRepository');
+const MessageRepository = require('../repositories/MessageRepository');
 
 module.exports = {
     getDocuments: (req, res, next) => {
@@ -34,5 +35,33 @@ module.exports = {
     },
     deleteDocument: (req, res, next) => {
         next()
+    },
+
+    getMessages: (req, res, next) => {
+        DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
+            return MessageRepository.getLastMessages(document, req.query.lastDate, req.query.number).then((messages) => {
+                return messages;
+            });
+        }).then((messages) => {
+            res.json({
+                status: 'success',
+                messages: messages
+            });
+        }).catch((err) => {
+            next(err);
+        });
+    },
+    postCreateMessage: (req, res, next) => {
+        DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
+            return MessageRepository.createMessage(document, req.user, req.body.message).then((document) => {
+
+            });
+        }).then(() => {
+            res.json({
+                status: 'success'
+            });
+        }).catch((err) => {
+            next(err);
+        });
     },
 };
