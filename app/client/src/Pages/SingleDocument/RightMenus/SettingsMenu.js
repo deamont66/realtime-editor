@@ -64,8 +64,8 @@ class SettingsMenu extends React.Component {
                         const value = event.target.options[event.target.selectedIndex].value;
                         this.props.onSettingsChange({mode: value});
                     }}>
-                        {Object.keys(EditorModes.all).map((modeKey) => {
-                            return <option key={modeKey} value={modeKey}>{EditorModes.all[modeKey]}</option>
+                        {EditorModes.all.map((mode, index) => {
+                            return <option key={index} value={index}>{mode.lang}</option>
                         })}
                     </select>
                 </div>

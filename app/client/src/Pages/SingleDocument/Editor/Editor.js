@@ -26,6 +26,7 @@ class Editor extends React.Component {
     }
 
     render() {
+        console.log(this.props.settings.mode);
         return (
             <div className={'Comp-Editor'} style={{
                 fontSize: this.props.settings.fontSize,
@@ -34,7 +35,7 @@ class Editor extends React.Component {
                 <CodeMirror
                     className={'codemirror-editor'}
                     options={{
-                        mode: this.props.settings.mode,
+                        mode: EditorModes.all[this.props.settings.mode].mode,
                         theme: this.props.settings.theme,
                         tabSize: this.props.settings.tabSize,
                         indentUnit: this.props.settings.indentUnit,

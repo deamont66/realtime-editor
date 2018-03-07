@@ -1,9 +1,10 @@
+const Modes = require('../../client/src/Utils/EditorModes');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const documentSettingsSchema = new Schema({
     theme: {type: String, required: true, default: 'material'},
-    mode: {type: String, required: true, default: 'javascript'},
+    mode: {type: Number, min: 0, max: Modes.all.length - 1, default: 0},
     tabSize: {type: Number, min: 2, max: 8, required: true, default: 4},
     indentUnit: {type: Number, min: 2, max: 8, required: true, default: 4},
     indentWithTabs: {type: Boolean, required: true, default: true},
