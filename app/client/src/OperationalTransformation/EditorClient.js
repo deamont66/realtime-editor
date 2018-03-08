@@ -8,6 +8,7 @@
 import {Client, Selection, TextOperation} from 'ot';
 import WrappedOperation from './WrappedOperation';
 import UndoManager from './UndoManager';
+import createColor from '../Utils/ColorGenerator';
 import EventEmitter from 'event-emitter-es6';
 
 class SelfMeta {
@@ -59,18 +60,16 @@ class OtherClient {
         this.editorAdapter = editorAdapter;
         this.name = name;
 
-        this.setColor(name ? hueFromName(name) : Math.random());
+        this.setColor(name);
         if (selection) {
             this.updateSelection(selection);
         }
     }
 
-    setColor(hue) {
-        this.color = hsl2hex(hue, 0.75, 0.5);
-        this.lightColor = hsl2hex(hue, 0.5, 0.9);
-        if (this.li) {
-            this.li.style.color = this.color;
-        }
+    setColor(name) {
+        const color = createColor(name);
+        this.color = color.dark;
+        this.lightColor = color.light;
     }
 
     setName(name) {
@@ -78,7 +77,7 @@ class OtherClient {
             return;
         }
         this.name = name;
-        this.setColor(hueFromName(name));
+        this.setColor(name);
     }
 
     updateSelection(selection) {
@@ -314,49 +313,6 @@ class EditorClient extends Client {
     }
 }
 
-function rgb2hex(r, g, b) {
-    function digits(n) {
-        const m = Math.round(255 * n).toString(16);
-        return m.length === 1 ? '0' + m : m;
-    }
-
-    return '#' + digits(r) + digits(g) + digits(b);
-}
-
-function hsl2hex(h, s, l) {
-    if (s === 0) {
-        return rgb2hex(l, l, l);
-    }
-    const var2 = l < 0.5 ? l * (1 + s) : (l + s) - (s * l);
-    const var1 = 2 * l - var2;
-    const hue2rgb = function (hue) {
-        if (hue < 0) {
-            hue += 1;
-        }
-        if (hue > 1) {
-            hue -= 1;
-        }
-        if (6 * hue < 1) {
-            return var1 + (var2 - var1) * 6 * hue;
-        }
-        if (2 * hue < 1) {
-            return var2;
-        }
-        if (3 * hue < 2) {
-            return var1 + (var2 - var1) * 6 * (2 / 3 - hue);
-        }
-        return var1;
-    };
-    return rgb2hex(hue2rgb(h + 1 / 3), hue2rgb(h), hue2rgb(h - 1 / 3));
-}
-
-function hueFromName(name) {
-    let a = 1;
-    for (let i = 0; i < name.length; i++) {
-        a = 17 * (a + name.charCodeAt(i)) % 360;
-    }
-    return a / 360;
-}
 
 function last(arr) {
     return arr[arr.length - 1];
