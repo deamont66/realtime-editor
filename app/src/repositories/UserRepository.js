@@ -37,6 +37,22 @@ const createUser = (user) => {
         });
 };
 
+const updateUser = (user, data) => {
+    if(data.username) user.username = data.username;
+    if(data.email) user.email = data.email;
+
+    let promise = Promise.resolve();
+    if(data.newPassword) {
+        promise = bcrypt.hash(data.newPassword, 10)
+            .then(function (hash) {
+                user.password = hash;
+            });
+    }
+    return promise.then(() => {
+        return user.save();
+    });
+};
+
 const updateDefaultDocumentSettings = (user, settings) => {
     return DocumentSettings.findOneAndUpdate({_id: user.defaultSettings._id}, settings, { new: true });
 };
@@ -45,5 +61,6 @@ module.exports = {
     getUserByUsername: getUserByUsername,
     getUserById: getUserById,
     createUser: createUser,
+    updateUser: updateUser,
     updateDefaultDocumentSettings: updateDefaultDocumentSettings
 };

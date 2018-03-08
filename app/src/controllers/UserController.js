@@ -56,6 +56,21 @@ module.exports = {
             user: req.user.toJSON()
         });
     },
+    putUser: function (req, res, next) {
+        req.user.authenticate(req.body.password).then((res) => {
+            if(!res) {
+                return Promise.reject(Errors.userInvalidCredential);
+            }
+            return UserRepository.updateUser(req.user, req.body);
+        }).then(() => {
+            res.sendStatus(204);
+        }).catch(function (err) {
+            err.json = true;
+            if (err.code === 11000)
+                next(Errors.usernameAlreadyUsed);
+            next(err);
+        });
+    },
     deleteSignOut: function (req, res, next) {
         req.logout();
         res.sendStatus(204);

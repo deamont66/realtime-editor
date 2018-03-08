@@ -18,6 +18,10 @@ router.get('/', [
     validator.validateLoggedIn
 ], controller.getUser);
 
+router.put('/', [
+    validator.validateLoggedIn
+], controller.putUser);
+
 router.delete('/', [
     validator.validateLoggedIn
 ], controller.deleteSignOut);
