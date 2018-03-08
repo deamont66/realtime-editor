@@ -8,7 +8,7 @@ const DocumentSettings = require('../model/DocumentSettings');
  * @param {String} username
  * @returns {Promise}
  */
-const getUserByUsername = function (username) {
+const getUserByUsername = (username) => {
     return User.findOne({username: username}).populate('defaultSettings').exec();
 };
 
@@ -18,7 +18,7 @@ const getUserByUsername = function (username) {
  * @param {ObjectId|String} userId
  * @returns {Promise}
  */
-const getUserById = function (userId) {
+const getUserById = (userId) => {
     return User.findOne({_id: userId}).populate('defaultSettings').exec();
 };
 
@@ -28,7 +28,7 @@ const getUserById = function (userId) {
  * @param {object} user data
  * @returns {Promise}
  */
-const createUser = function (user) {
+const createUser = (user) => {
     return bcrypt.hash(user.password, 10)
         .then(function (hash) {
             return new DocumentSettings().save().then((defaultSettings) => {
@@ -37,8 +37,13 @@ const createUser = function (user) {
         });
 };
 
+const updateDefaultDocumentSettings = (user, settings) => {
+    return DocumentSettings.findOneAndUpdate({_id: user.defaultSettings._id}, settings, { new: true });
+};
+
 module.exports = {
     getUserByUsername: getUserByUsername,
     getUserById: getUserById,
     createUser: createUser,
+    updateDefaultDocumentSettings: updateDefaultDocumentSettings
 };

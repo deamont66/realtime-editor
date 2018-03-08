@@ -8,6 +8,7 @@ import SingleDocument from "./SingleDocument/SingleDocument";
 import MyDocuments from "./Documents/MyDocuments";
 import SharedDocuments from "./Documents/SharedDocuments";
 import LastDocuments from "./Documents/LastDocuments";
+import Settings from "./Settings/Settings";
 
 class Router extends React.Component {
 
@@ -27,10 +28,9 @@ class Router extends React.Component {
                                 <p>Forgot password form</p>//<ForgotPassword {...props}/>
                             )}/>}
 
-                            <Route exact path={'/editor'} render={(props) => {
-                                props.match.params.documentId = 'temp';
-                                return <SingleDocument {...props} user={{}}/>;
-                            }}/>
+                            <Route path={'/document/:documentId'} render={(props) => (
+                                <SingleDocument {...props} user={this.props.user}/>
+                            )}/>
 
                             {this.props.user === null && <Redirect to={'/sign-in'}/>}
 
@@ -50,8 +50,8 @@ class Router extends React.Component {
                                 <LastDocuments {...props} user={this.props.user}/>
                             )}/>
 
-                            <Route path={'/document/:documentId'} render={(props) => (
-                                <SingleDocument {...props} user={this.props.user}/>
+                            <Route path={'/settings'} render={(props) => (
+                                <Settings {...props} user={this.props.user}/>
                             )}/>
 
                             <Route render={(props) => (

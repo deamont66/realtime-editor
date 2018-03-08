@@ -2,6 +2,7 @@ const debug = require('debug')('editor:socketroomserrver');
 
 const DocumentServer = require('./DocumentServer');
 const DocumentRepository = require('../repositories/DocumentRepository');
+const MessageRepository = require('../repositories/MessageRepository');
 const OperationRepository = require('../repositories/OperationRepository');
 
 const WrappedOperation = require('../../client/src/OperationalTransformation/WrappedOperation');
@@ -58,6 +59,10 @@ class DocumentSocketIOServer extends DocumentServer {
             this.onSettings(socket, settings);
         });
 
+        socket.on('chat_message', (message, callback) => {
+           this.onMessage(socket, message, callback);
+        });
+
         socket.on('disconnect', () => {
             this.onDisconnect(socket);
         });
@@ -68,11 +73,14 @@ class DocumentSocketIOServer extends DocumentServer {
             debug(err);
         });
 
-        responseCallback({
-            value: this.value,
-            revision: this.getRevision(),
-            clients: this.users,
-            settings: Object.assign({title: this.document.title}, this.document.settings.toJSON())
+        MessageRepository.getLastMessages(this.document).then((messages) => {
+            responseCallback({
+                value: this.value,
+                revision: this.getRevision(),
+                clients: this.users,
+                settings: Object.assign({title: this.document.title}, this.document.settings.toJSON()),
+                messages: messages,
+            });
         });
     }
 
@@ -123,6 +131,13 @@ class DocumentSocketIOServer extends DocumentServer {
         socket.nsp.to(this.document._id).emit('settings', settings);
         DocumentRepository.updateSettings(this.document, settings).then((document) => {
             this.document = document;
+        });
+    }
+
+    onMessage(socket, message, callback) {
+        MessageRepository.createMessage(this.document, socket.request.user, message).then((messageObj) => {
+            socket.to(this.document._id).emit('chat_message', messageObj);
+            callback(messageObj);
         });
     }
 

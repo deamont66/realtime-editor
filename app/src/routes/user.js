@@ -22,4 +22,12 @@ router.delete('/', [
     validator.validateLoggedIn
 ], controller.deleteSignOut);
 
+router.get('/document-settings', [
+    validator.validateLoggedIn
+], controller.getDefaultDocumentSettings);
+
+router.put('/document-settings', [
+    validator.validateLoggedIn
+], controller.putDefaultDocumentSettings);
+
 module.exports = router;

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
     message: {type: String, required: true},
-    date: {type: Date, required: true, default: Date.now()},
+    date: {type: Date, required: true, default: () => Date.now()},
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     document: {type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true},
 });

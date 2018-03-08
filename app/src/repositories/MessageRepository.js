@@ -1,12 +1,13 @@
 const Message = require('../model/Message');
 
-const getLastMessages = (document, lastDate = new Date(), number = 10) => {
+const getLastMessages = (document, lastDate, number = 10) => {
+    if(!lastDate) lastDate = new Date();
     return Message.find({document: document, date: {$lte: lastDate}})
         .sort('-date')
         .populate('user')
         .select('-document')
         .limit(number)
-        .exec();
+        .exec().then((messages) => messages.reverse());
 };
 
 const createMessage = (document, user, message) => {

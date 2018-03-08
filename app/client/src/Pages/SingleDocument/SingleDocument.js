@@ -11,6 +11,8 @@ import EditorClient from "../../OperationalTransformation/EditorClient";
 import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
 import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
 
+import createColor from '../../Utils/ColorGenerator';
+
 import './SingleDocument.css';
 
 class SingleDocument extends React.Component {
@@ -38,6 +40,7 @@ class SingleDocument extends React.Component {
                 lineWrapping: true,
                 lineNumbers: true,
             },
+            messages: [],
         };
 
         this.documentId = this.props.match.params.documentId;
@@ -59,6 +62,12 @@ class SingleDocument extends React.Component {
                 console.log(obj);
                 this.init(obj.value, obj.revision, obj.clients, this.editorClient ? this.editorClient.serverAdapter : new SocketIOAdapter(this.socket));
                 this.onSettings(obj.settings);
+
+                this.setState({
+                    messages: []
+                }, () => {
+                    obj.messages.forEach((message) => this.addChatMessage(message));
+                });
             });
         });
 
@@ -70,6 +79,11 @@ class SingleDocument extends React.Component {
 
         this.socket.on('settings', (settings) => {
             this.onSettings(settings);
+        });
+
+        this.socket.on('chat_message', (messageObj) => {
+
+            this.addChatMessage(messageObj);
         });
     }
 
@@ -115,6 +129,22 @@ class SingleDocument extends React.Component {
         this.socket.emit('settings', Object.assign({}, this.state.settings, settings));
     }
 
+    addChatMessage(messageObj) {
+        messageObj.user.color = createColor(messageObj.user.username);
+        this.setState((oldState) => {
+            return {
+                messages: [...oldState.messages, messageObj]
+            };
+        });
+    }
+
+    handleMessageSubmit(message, callback) {
+        this.socket.emit('chat_message', message, (messageObj) => {
+            this.addChatMessage(messageObj);
+            callback();
+        });
+    }
+
     render() {
         if (!this.state.connected)
             return <Loading fullScreen={false}/>;
@@ -137,7 +167,10 @@ class SingleDocument extends React.Component {
                     {this.state.connected &&
                     <RightMenus documentId={this.documentId}
                                 settings={this.state.settings}
-                                onSettingsChange={this.handleSettingsChange.bind(this)}/>}
+                                messages={this.state.messages}
+                                onSettingsChange={this.handleSettingsChange.bind(this)}
+                                onMessageSubmit={this.handleMessageSubmit.bind(this)}
+                    />}
                 </div>
             </div>
         );

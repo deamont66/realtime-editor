@@ -59,5 +59,26 @@ module.exports = {
     deleteSignOut: function (req, res, next) {
         req.logout();
         res.sendStatus(204);
+    },
+    getDefaultDocumentSettings: function (req, res, next) {
+        const settings = req.user.defaultSettings.toObject();
+        delete settings._id;
+        delete settings.__v;
+
+        res.status(200).json({
+            status: 'success',
+            settings: settings
+        });
+    },
+    putDefaultDocumentSettings: function (req, res, next) {
+        UserRepository.updateDefaultDocumentSettings(req.user, req.body.settings).then((settings) => {
+            res.status(200).json({
+                status: 'success',
+                settings: settings.toJSON()
+            });
+        }).catch(function (err) {
+            err.json = true;
+            next(err);
+        });
     }
 };

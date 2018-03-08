@@ -36,7 +36,7 @@ class Header extends React.Component {
                                     {this.props.user.username}
                                 </button>
                                 <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item disabled">Settings</a>
+                                    <NavLink to="/settings" className="dropdown-item">Settings</NavLink>
                                     <div className="dropdown-divider"/>
                                     <a className="dropdown-item" href="#logout" onClick={() => UserStore.logOut()}>Logout</a>
                                 </div>
