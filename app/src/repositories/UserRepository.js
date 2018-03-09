@@ -6,7 +6,7 @@ const DocumentSettings = require('../model/DocumentSettings');
  * Gets User by username.
  *
  * @param {String} username
- * @returns {Promise}
+ * @returns {Promise<User>}
  */
 const getUserByUsername = (username) => {
     return User.findOne({username: username}).populate('defaultSettings').exec();
@@ -16,7 +16,7 @@ const getUserByUsername = (username) => {
  * Gets User by id.
  *
  * @param {ObjectId|String} userId
- * @returns {Promise}
+ * @returns {Promise<User>}
  */
 const getUserById = (userId) => {
     return User.findOne({_id: userId}).populate('defaultSettings').exec();
@@ -25,8 +25,8 @@ const getUserById = (userId) => {
 /**
  * Creates and stores new User.
  *
- * @param {object} user data
- * @returns {Promise}
+ * @param {object} user - data
+ * @returns {Promise<User>} created user document
  */
 const createUser = (user) => {
     return bcrypt.hash(user.password, 10)
@@ -37,6 +37,17 @@ const createUser = (user) => {
         });
 };
 
+/**
+ * Updates user information.
+ *
+ * @param {User} user - User instance document to be updated
+ * @param {Object} data - New user data
+ * @param {String} [data.username] - New username
+ * @param {String} [data.email] - New email
+ * @param {String} [data.newPassword] - New password
+ *
+ * @returns {Promise<User>} Promise resolved with new updated user document
+ */
 const updateUser = (user, data) => {
     if(data.username) user.username = data.username;
     if(data.email) user.email = data.email;
@@ -53,6 +64,13 @@ const updateUser = (user, data) => {
     });
 };
 
+/**
+ * Updates default document settings for user.
+ *
+ * @param {User} user - User document whose default settings to be updated.
+ * @param {Object} settings - Settings to be updated.
+ * @return {Promise<DocumentSettings>}
+ */
 const updateDefaultDocumentSettings = (user, settings) => {
     return DocumentSettings.findOneAndUpdate({_id: user.defaultSettings._id}, settings, { new: true });
 };

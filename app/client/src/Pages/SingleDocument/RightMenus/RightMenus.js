@@ -13,7 +13,7 @@ class RightMenus extends React.Component {
         super();
 
         this.state = {
-            activeMenu: 1,
+            activeMenu: 0,
         };
 
         this.menus = [

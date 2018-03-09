@@ -68,4 +68,18 @@ module.exports = {
             next(err);
         });
     },
+
+    getRights: (req, res, next) => {
+        next();
+    },
+    putLinkRights: (req, res, next) => {
+        next();
+    },
+
+    putUserRights: (req, res, next) => {
+        next();
+    },
+    deleteUserRights: (req, res, next) => {
+        next();
+    }
 };

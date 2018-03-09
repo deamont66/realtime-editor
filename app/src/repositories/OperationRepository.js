@@ -1,4 +1,3 @@
-
 const Operation = require('../model/Operation');
 
 const WrappedOperation = require('../../client/src/OperationalTransformation/WrappedOperation');
@@ -15,7 +14,7 @@ const getLastOperationsByDocument = (documentId, last = 50) => {
         document: documentId,
     }).sort('field -created').limit(last).exec().then((dbOperations) => {
         return dbOperations.map((dbOperation) => {
-           return new WrappedOperation(TextOperation.fromJSON(JSON.parse(dbOperation.operations)), null);
+            return new WrappedOperation(TextOperation.fromJSON(JSON.parse(dbOperation.operations)), null);
         });
     });
 };
