@@ -41,22 +41,21 @@ class RoomList {
      * @returns {Promise} DocumentServer instance
      */
     getDocumentServer(documentId) {
-        return Promise.resolve(this.rooms[documentId]).then((server) => {
-            if(!server) {
-                return Promise.all([
-                    DocumentRepository.getDocumentById(documentId),
-                    OperationRepository.getLastOperationsByDocument(documentId)
-                ]).then(([document, operations]) => {
-                    if(!document) {
-                        debug();
-                        return Promise.reject('document not found')
-                    }
-                    this.rooms[documentId] = new DocumentSocketIOServer(document, operations);
-                    return this.rooms[documentId]
-                });
+        return DocumentRepository.getDocumentById(documentId).then((document) => {
+            if(!document) {
+                return Promise.reject('document not found')
             }
-            return server;
-        })
+            return Promise.resolve(this.rooms[documentId]).then((server) => {
+                if(!server) {
+                    return OperationRepository.getLastOperationsByDocument(documentId).then((operations) => {
+                        this.rooms[documentId] = new DocumentSocketIOServer(document, operations);
+                        return this.rooms[documentId]
+                    });
+                }
+                return server;
+            });
+        });
+
     }
 }
 
