@@ -34,7 +34,11 @@ module.exports = {
         });
     },
     deleteDocument: (req, res, next) => {
-        next()
+        DocumentRepository.removeDocumentById(req.params.documentId).then(() => {
+            res.sendStatus(204);
+        }).catch((err) => {
+            next(err);
+        });
     },
 
     getMessages: (req, res, next) => {

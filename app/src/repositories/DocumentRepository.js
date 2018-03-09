@@ -1,6 +1,9 @@
 const Document = require('../model/Document');
 const DocumentSettings = require('../model/DocumentSettings');
+const DocumentInvite = require('../model/DocumentInvite');
 const UserAccess = require('../model/UserAccess');
+const Operation = require('../model/Operation');
+const Message = require('../model/Message');
 
 /**
  * Gets documents by User owner.
@@ -72,6 +75,20 @@ const createDocument = (owner) => {
     });
 };
 
+const removeDocumentById = (documentId) => {
+    return getDocumentById(documentId).then((document) => {
+        return Promise.all([
+            UserAccess.find({document: document}).remove().exec(),
+            DocumentInvite.find({document: document}).remove().exec(),
+            Message.find({document: document}).remove().exec(),
+            // content
+            Operation.find({document: document}).remove().exec(),
+            DocumentSettings.findOne({_id: document.settings}).remove().exec(),
+            document.remove(),
+        ]);
+    });
+};
+
 /**
  * Updates lastAckContent and lastChange of Document.
  *
@@ -126,6 +143,7 @@ module.exports = {
     getLastDocumentsByUser: getLastDocumentsByUser,
     getDocumentById: getDocumentById,
     createDocument: createDocument,
+    removeDocumentById: removeDocumentById,
     updateLastContent: updateLastContent,
     updateSettings: updateSettings,
     updateUserAccess: updateUserAccess,

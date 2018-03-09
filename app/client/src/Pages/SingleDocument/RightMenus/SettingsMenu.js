@@ -1,10 +1,11 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
-import EditorModes from '../../../Utils/EditorModes';
-import EditorThemes from '../../../Utils/EditorThemes';
+import axios from '../../../Utils/Axios';
+
 import DocumentSettingsForm from "../../Settings/DefaultDocumentSettings/DocumentSettingsForm";
 
 class SettingsMenuIcon extends React.Component {
@@ -42,11 +43,21 @@ class SettingsMenu extends React.Component {
         super();
     }
 
+    handleRemoveDocumentClick() {
+        axios.delete('/document/'+this.props.documentId).then(() => {
+            this.props.history.push('/document');
+        }).catch((err) => {
+            console.error(err);
+        })
+    }
 
     render() {
         return (
             <div className="Comp-ShareMenu">
                 <DocumentSettingsForm settings={this.props.settings} onSettingsChange={this.props.onSettingsChange}/>
+                <br/>
+                <p>Removing document cannot be taken back!</p>
+                <button onClick={this.handleRemoveDocumentClick.bind(this)}>Remove document</button>
                 <br/>
                 <button onClick={this.props.onClose}>Close</button>
             </div>
@@ -58,6 +69,7 @@ SettingsMenu.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSettingsChange: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
+    documentId: PropTypes.string.isRequired,
 };
 
 SettingsMenu.defaultProps = {
@@ -65,7 +77,7 @@ SettingsMenu.defaultProps = {
 };
 
 export default {
-    menu: SettingsMenu,
+    menu: withRouter(SettingsMenu),
     icon: SettingsMenuIcon
 };
 
