@@ -28,9 +28,6 @@ class Router extends React.Component {
                                 <p>Forgot password form</p>//<ForgotPassword {...props}/>
                             )}/>}
 
-                            <Route path={'/document/:documentId'} render={(props) => (
-                                <SingleDocument {...props} user={this.props.user}/>
-                            )}/>
 
                             {this.props.user === null && <Redirect to={'/sign-in'}/>}
 
@@ -48,6 +45,10 @@ class Router extends React.Component {
 
                             <Route path={'/document/history'} render={(props) => (
                                 <LastDocuments {...props} user={this.props.user}/>
+                            )}/>
+
+                            <Route path={'/document/:documentId'} render={(props) => (
+                                <SingleDocument {...props} user={this.props.user}/>
                             )}/>
 
                             <Route path={'/settings'} render={(props) => (
