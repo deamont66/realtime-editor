@@ -27,6 +27,7 @@ class SignUp extends React.Component {
             message = 'Field password is required'
         } else if (!this.state.email) {
             message = 'Field email is required'
+            // eslint-disable-next-line no-useless-escape
         } else if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.email)) {
             message = 'Field email has to be valid email address'
         }

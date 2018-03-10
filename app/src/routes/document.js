@@ -16,8 +16,8 @@ router.post('/:documentId/messages', userValidator.validateLoggedIn, controller.
 router.get('/:documentId/rights', userValidator.validateLoggedIn, controller.getRights);
 router.put('/:documentId/rights', userValidator.validateLoggedIn, controller.putLinkRights);
 
-router.put('/:documentId/rights/:userId', userValidator.validateLoggedIn, controller.putUserRights);
-router.delete('/:documentId/rights/:userId', userValidator.validateLoggedIn, controller.deleteUserRights);
+router.put('/:documentId/rights/invite', userValidator.validateLoggedIn, controller.putUserRights);
+router.delete('/:documentId/rights/:toUserID', userValidator.validateLoggedIn, controller.deleteUserRights);
 
 router.delete('/:documentId', userValidator.validateLoggedIn, controller.deleteDocument);
 

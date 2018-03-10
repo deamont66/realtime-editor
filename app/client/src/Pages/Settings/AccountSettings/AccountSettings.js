@@ -69,6 +69,7 @@ class AccountSettings extends React.Component {
             isEmpty = false;
         }
         if (this.state.email !== this.props.user.email) {
+            // eslint-disable-next-line no-useless-escape
             if((!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.email))) {
                 errorMessage = 'Field email has to be valid email address';
             } else {

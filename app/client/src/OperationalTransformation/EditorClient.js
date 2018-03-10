@@ -33,7 +33,7 @@ class SelfMeta {
     }
 }
 
-class OtherMeta {
+/*class OtherMeta {
     constructor(clientId, selection) {
         this.clientId = clientId;
         this.selection = selection;
@@ -52,7 +52,7 @@ class OtherMeta {
             this.selection && this.selection.transform(operation)
         );
     }
-}
+}*/
 
 class OtherClient {
     constructor(id, editorAdapter, name, selection) {
@@ -270,7 +270,7 @@ class EditorClient extends Client {
         // const operation = new WrappedOperation(textOperation, meta);
 
         const compose = this.undoManager.undoStack.length > 0 &&
-            inverse.shouldBeComposedWithInverted(last(this.undoManager.undoStack).wrapped);
+            inverse.shouldBeComposedWithInverted(this.undoManager.undoStack[this.undoManager.undoStack.length - 1].wrapped);
         const inverseMeta = new SelfMeta(this.selection, selectionBefore);
         this.undoManager.add(new WrappedOperation(inverse, inverseMeta), compose);
         this.applyClient(textOperation);
@@ -313,16 +313,5 @@ class EditorClient extends Client {
     }
 }
 
-
-function last(arr) {
-    return arr[arr.length - 1];
-}
-
-// Remove an element from the DOM.
-function removeElement(el) {
-    if (el.parentNode) {
-        el.parentNode.removeChild(el);
-    }
-}
 
 export default EditorClient;

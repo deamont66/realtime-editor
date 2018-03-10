@@ -23,10 +23,6 @@ function cmpPos(a, b) {
     return 0;
 }
 
-function posEq(a, b) {
-    return cmpPos(a, b) === 0;
-}
-
 function posLe(a, b) {
     return cmpPos(a, b) <= 0;
 }
@@ -147,15 +143,13 @@ class CodeMirrorAdapter {
             const restLength = docEndLength - fromIndex - sumLengths(change.text);
 
             operation = new TextOperation()
-                .retain(fromIndex)
-                ['delete'](sumLengths(change.removed))
+                .retain(fromIndex)['delete'](sumLengths(change.removed))
                 .insert(change.text.join('\n'))
                 .retain(restLength)
                 .compose(operation);
 
             inverse = inverse.compose(new TextOperation()
-                .retain(fromIndex)
-                ['delete'](sumLengths(change.text))
+                .retain(fromIndex)['delete'](sumLengths(change.text))
                 .insert(change.removed.join('\n'))
                 .retain(restLength)
             );
@@ -261,7 +255,6 @@ class CodeMirrorAdapter {
     setOtherCursor(position, color, name) {
         const cursorPos = this.cm.posFromIndex(position);
         const cursorCoords = this.cm.cursorCoords(cursorPos);
-        console.log(cursorCoords);
         const cursorEl = document.createElement('span');
         cursorEl.className = 'other-client';
         cursorEl.title = name;

@@ -24,7 +24,19 @@ const getDocumentsByOwner = (user) => {
  * @param {User} user
  */
 const getSharedDocumentsByUser = (user) => {
-    return Promise.resolve([]);
+    return DocumentInvite.find({to:user})
+        .sort('-date')
+        .select('document date from')
+        .populate('document from')
+        .exec()
+        .then((documentInvites) => {
+            return documentInvites.map((documentInvite) => {
+                const document = documentInvite.document.toJSON();
+                document.from = documentInvite.from;
+                document.lastAccessed = documentInvite.date;
+                return document;
+            })
+        });
 };
 
 /**
@@ -136,6 +148,44 @@ const updateUserAccess = (document, user) => {
     }).exec();
 };
 
+const getDocumentInvites = (document) => {
+    return DocumentInvite.find({document: document, rights: {$gt: 0}})
+        .select('to rights')
+        .populate('to')
+        .exec();
+};
+
+const getHighestDocumentInviteByUser = (document, user) => {
+    return DocumentInvite.findOne({document: document, to: user, rights: {$gt: 0}})
+        .select('rights')
+        .sort('-rights')
+        .exec();
+};
+
+const updateDocumentShareLinkRights = (document, shareLinkRights) => {
+    document.shareLinkRights = shareLinkRights;
+    return document.save();
+};
+
+const updateDocumentInvite = (document, from, to, rights) => {
+    return DocumentInvite.findOneAndUpdate({
+        document: document,
+        to: to
+    }, {
+        from: from,
+        rights: rights,
+        date: new Date()
+    }, {
+        upsert: true
+    }).exec();
+};
+
+const removeDocumentInvite = (document, to) => {
+    return DocumentInvite.findOneAndRemove({
+        document: document,
+        to: to
+    }).exec();
+};
 
 module.exports = {
     getDocumentsByOwner: getDocumentsByOwner,
@@ -147,4 +197,9 @@ module.exports = {
     updateLastContent: updateLastContent,
     updateSettings: updateSettings,
     updateUserAccess: updateUserAccess,
+    getDocumentInvites: getDocumentInvites,
+    getHighestDocumentInviteByUser: getHighestDocumentInviteByUser,
+    updateDocumentShareLinkRights: updateDocumentShareLinkRights,
+    updateDocumentInvite: updateDocumentInvite,
+    removeDocumentInvite: removeDocumentInvite
 };

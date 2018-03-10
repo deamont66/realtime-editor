@@ -14,7 +14,8 @@ class DocumentList extends React.Component {
                             <li key={document._id}>
                                 <Link to={'/document/' + document._id}>
                                     <span>{document.title} - </span>
-                                    <small>{moment(document.lastAccessed || document.lastChange).format('llll')}</small>
+                                    <small>{moment(document.lastAccessed || document.lastChange).format('llll')}</small>&nbsp;
+                                    {document.from && <small>(shared by {document.from.username})</small>}
                                 </Link>
                             </li>
                         )

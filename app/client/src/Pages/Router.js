@@ -19,40 +19,45 @@ class Router extends React.Component {
                     <div>
                         <Header user={this.props.user}/>
                         <Switch>
-                            {this.props.user === null &&
-                            <Route exact path={'/sign-up'} render={(props) => (<SignUp {...props}/>)}/>}
-                            {this.props.user === null &&
-                            <Route exact path={'/sign-in'} render={(props) => (<SignIn {...props}/>)}/>}
-                            {this.props.user === null &&
+
+                            <Route exact path={'/sign-up'} render={(props) => (
+                                this.props.user === null ? <SignUp {...props}/> : <Redirect to={'/'}/>)}/>
+
+                            <Route exact path={'/sign-in'} render={(props) => (
+                                this.props.user === null ? <SignIn {...props}/> : <Redirect to={'/'}/>)}/>
+
                             <Route exact path={'/forgot-password'} render={(props) => (
-                                <p>Forgot password form</p>//<ForgotPassword {...props}/>
-                            )}/>}
-
-
-                            {this.props.user === null && <Redirect to={'/sign-in'}/>}
+                                this.props.user === null ? <p>Forgot password form</p> : <Redirect to={'/'}/>//<ForgotPassword {...props}/>
+                            )}/>
 
                             <Route exact path={'/'} render={(props) => (
                                 <p>Homepage</p>//<Homepage {...props}/>
                             )}/>
 
                             <Route exact path={'/document'} render={(props) => (
-                                <MyDocuments {...props} user={this.props.user}/>
+                                this.props.user !== null ? <MyDocuments {...props} user={this.props.user}/> :
+                                    <Redirect to={'/sign-in'}/>
                             )}/>
 
                             <Route path={'/document/shared'} render={(props) => (
-                                <SharedDocuments {...props} user={this.props.user}/>
+                                this.props.user !== null ? <SharedDocuments {...props} user={this.props.user}/> :
+                                    <Redirect to={'/sign-in'}/>
                             )}/>
 
                             <Route path={'/document/history'} render={(props) => (
-                                <LastDocuments {...props} user={this.props.user}/>
+                                this.props.user !== null ? <LastDocuments {...props} user={this.props.user}/> :
+                                    <Redirect to={'/sign-in'}/>
                             )}/>
 
                             <Route path={'/document/:documentId'} render={(props) => (
-                                <SingleDocument {...props} user={this.props.user}/>
+                                this.props.user !== null ? <SingleDocument {...props} user={this.props.user}/> :
+                                    <Redirect to={'/sign-in'}/>
                             )}/>
 
+
                             <Route path={'/settings'} render={(props) => (
-                                <Settings {...props} user={this.props.user}/>
+                                this.props.user !== null ? <Settings {...props} user={this.props.user}/> :
+                                    <Redirect to={'/sign-in'}/>
                             )}/>
 
                             <Route render={(props) => (

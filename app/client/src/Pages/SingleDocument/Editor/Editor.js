@@ -26,7 +26,6 @@ class Editor extends React.Component {
     }
 
     render() {
-        console.log(this.props.settings.mode);
         return (
             <div className={'Comp-Editor'} style={{
                 fontSize: this.props.settings.fontSize,
