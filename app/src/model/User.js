@@ -9,7 +9,7 @@ const userSchema = new Schema({
     defaultSettings: {type: mongoose.Schema.Types.ObjectId, ref: 'DocumentSettings', required: true},
     recoverHash: String,
     recoverEnd: Date,
-    lastLogin: { type: Date, required: true, default: Date.now() }
+    lastLogin: { type: Date, required: true, default: () => Date.now() }
 });
 
 userSchema.methods.toJSON = function () {

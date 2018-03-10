@@ -6,7 +6,7 @@ const operationSchema = new Schema({
     operations: {type: String, required: true},
     author: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     document: {type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true},
-    created: {type: Date, required: true, default: Date.now()},
+    created: {type: Date, required: true, default: () => Date.now()},
 });
 
 module.exports = mongoose.model('Operation', operationSchema);
