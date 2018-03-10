@@ -4,4 +4,5 @@ module.exports = [
     {title: 'Chat access'},
     {title: 'Write access'},
     {title: 'Share access'},
+    {title: 'Remove access', assignable: false}
 ];

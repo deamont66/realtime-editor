@@ -43,6 +43,13 @@ module.exports = {
         return error;
     },
 
+    insufficientPermission: {
+        json: true,
+        message: 'Insufficient permission',
+        code: 4006,
+        status: 403
+    },
+
     serverError: {
         json: true,
         message: 'Server error',

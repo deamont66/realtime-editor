@@ -39,10 +39,6 @@ SettingsMenuIcon.defaultProps = {
 
 class SettingsMenu extends React.Component {
 
-    constructor() {
-        super();
-    }
-
     handleRemoveDocumentClick() {
         axios.delete('/document/'+this.props.documentId).then(() => {
             this.props.history.push('/document');

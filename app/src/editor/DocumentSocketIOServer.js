@@ -1,6 +1,7 @@
 const debug = require('debug')('editor:socketroomserrver');
 
 const DocumentServer = require('./DocumentServer');
+const DocumentVoter = require('../security/DocumentVoter');
 const DocumentRepository = require('../repositories/DocumentRepository');
 const MessageRepository = require('../repositories/MessageRepository');
 const OperationRepository = require('../repositories/OperationRepository');
@@ -73,12 +74,16 @@ class DocumentSocketIOServer extends DocumentServer {
             debug(err);
         });
 
-        MessageRepository.getLastMessages(this.document).then((messages) => {
+        Promise.all([
+            DocumentVoter.getAllowedOperations(socket.request.user, this.document),
+            MessageRepository.getLastMessages(this.document)
+        ]).then(([operations, messages]) => {
             responseCallback({
                 value: this.value,
                 revision: this.getRevision(),
                 clients: this.users,
                 settings: Object.assign({title: this.document.title}, this.document.settings.toJSON()),
+                operations: operations,
                 messages: messages,
             });
         });

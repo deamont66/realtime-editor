@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 
 import ShareMenu from "./ShareMenu";
