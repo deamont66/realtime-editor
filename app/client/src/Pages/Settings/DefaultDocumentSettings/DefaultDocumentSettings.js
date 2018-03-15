@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import withStyles from 'material-ui/styles/withStyles';
 
-import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import Snackbar from 'material-ui/Snackbar';
 import IconButton from 'material-ui/IconButton';
@@ -85,8 +84,6 @@ class DefaultDocumentSettings extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
-
         return (
             <div className="Comp-DefaultDocumentSettings">
                 {this.state.settings === null && <LinearProgress/>}

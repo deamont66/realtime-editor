@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch, Route, Redirect, NavLink, withRouter} from 'react-router-dom';
+import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import withStyles from 'material-ui/styles/withStyles'

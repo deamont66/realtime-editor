@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import withStyles from 'material-ui/styles/withStyles';
 
-import {FormControl, FormControlLabel, FormHelperText} from 'material-ui/Form';
-import Input, {InputLabel} from 'material-ui/Input';
+import {FormControl, FormControlLabel} from 'material-ui/Form';
+import {InputLabel} from 'material-ui/Input';
 import {MenuItem} from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 import Checkbox from 'material-ui/Checkbox';

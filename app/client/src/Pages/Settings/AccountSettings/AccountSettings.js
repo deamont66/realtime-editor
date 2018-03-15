@@ -6,7 +6,6 @@ import withStyles from 'material-ui/styles/withStyles';
 import {FormControl, FormHelperText} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import Snackbar from 'material-ui/Snackbar';
-import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';

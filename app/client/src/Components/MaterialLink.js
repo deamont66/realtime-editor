@@ -11,7 +11,7 @@ const styles = theme => ({
 });
 
 class MaterialLink extends React.Component {
-    
+
     render() {
         return (
             <Link to={this.props.to} className={this.props.classes.link}>

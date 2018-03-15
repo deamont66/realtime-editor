@@ -5,9 +5,8 @@ import withStyles from 'material-ui/styles/withStyles';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
-import {FormControl, FormHelperText, FormControlLabel} from 'material-ui/Form';
+import {FormControl, FormHelperText} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
-import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
 
 import UserStore from "../../Stores/UserStore";
