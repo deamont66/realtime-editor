@@ -2,6 +2,8 @@ import React from 'react';
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import Typography from 'material-ui/Typography';
+
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
 import SingleDocument from "./SingleDocument/SingleDocument";
@@ -27,11 +29,11 @@ class Router extends React.Component {
                                     this.props.user === null ? <SignIn {...props}/> : <Redirect to={'/'}/>)}/>
 
                                 <Route exact path={'/forgot-password'} render={(props) => (
-                                    this.props.user === null ? <p>Forgot password form</p> : <Redirect to={'/'}/>//<ForgotPassword {...props}/>
+                                    this.props.user === null ? <Typography>Forgot password form</Typography> : <Redirect to={'/'}/>//<ForgotPassword {...props}/>
                                 )}/>
 
                                 <Route exact path={'/'} render={(props) => (
-                                    <p>Homepage</p>//<Homepage {...props}/>
+                                    <Typography>Homepage</Typography>//<Homepage {...props}/>
                                 )}/>
 
                                 <Route exact path={'/document'} render={(props) => (
@@ -61,7 +63,7 @@ class Router extends React.Component {
                                 )}/>
 
                                 <Route render={(props) => (
-                                    <p>404 Not found</p>//<NotFoundPage {...props}/>
+                                    <Typography>404 Not found</Typography>//<NotFoundPage {...props}/>
                                 )}/>
                             </Switch>
                         </Layout>

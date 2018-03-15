@@ -59,12 +59,14 @@ class AppBarMenu extends React.Component {
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Typography className={classes.title}
+                <Typography className={classes.title} component="p"
                             variant="title" color="inherit" noWrap onClick={() => {
                     this.props.history.push('/')
                 }}>Realtime editor</Typography>
 
-                {!this.props.user && <Button color="inherit">Login</Button>}
+                {!this.props.user && <Button color="inherit" onClick={() => {
+                    this.props.history.push('/sign-in')
+                }}>Sign in</Button>}
                 {this.props.user && <div>
                     <Tooltip id="tooltip-icon" title={`Logged in as ${this.props.user.username}`}>
                         <IconButton
