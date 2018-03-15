@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import CssBaseline from 'material-ui/CssBaseline';
 
-import red from 'material-ui/colors/red';
-import lightBlue from 'material-ui/colors/lightBlue';
+import primaryColor from 'material-ui/colors/indigo';
+import secondaryColor from 'material-ui/colors/pink';
 
 import Router from './Pages/Router';
 import UserStore from './Stores/UserStore';
 
-import './App.css';
 import Loading from "./Components/Loading";
 
 import fontAwesome from '@fortawesome/fontawesome';
@@ -24,7 +24,7 @@ class App extends Component {
         this.state = {
             user: null,
             loading: true,
-            theme: 'light'
+            theme: localStorage.getItem('theme') || 'light'
         };
 
         this.handleUserChange = this.handleUserChange.bind(this);
@@ -52,22 +52,25 @@ class App extends Component {
     }
 
     handleDarkThemeToggle = () => {
-        this.setState((oldState) => ({
-            theme: oldState.theme === 'light' ? 'dark' : 'light'
-        }));
+        const theme = this.state.theme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+        this.setState({
+            theme: theme
+        });
     };
 
     render() {
         const theme = createMuiTheme({
             palette: {
-                primary: red,
-                secondary: lightBlue,
+                primary: primaryColor,
+                secondary: secondaryColor,
                 type: this.state.theme,
             },
         });
 
         return (
             <MuiThemeProvider theme={theme}>
+                <CssBaseline/>
                 {this.state.loading && <Loading/>}
                 {!this.state.loading && <Router user={this.state.user} onDarkThemeToggle={this.handleDarkThemeToggle}/>}
             </MuiThemeProvider>
