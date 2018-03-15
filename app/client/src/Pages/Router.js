@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
-import Header from "./Components/Header";
 import SingleDocument from "./SingleDocument/SingleDocument";
 import MyDocuments from "./Documents/MyDocuments";
 import SharedDocuments from "./Documents/SharedDocuments";
