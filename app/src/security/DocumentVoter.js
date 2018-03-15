@@ -27,7 +27,6 @@ class DocumentVoter {
 
     /**
      *
-     *
      * @param {User} user
      * @param {Document} document
      *

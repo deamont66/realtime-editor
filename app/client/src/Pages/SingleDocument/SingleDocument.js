@@ -6,7 +6,7 @@ import DocumentError from "./DocumentError";
 import RightMenus from "./RightMenus/RightMenus";
 import DocumentHeader from "./DocumentHeader/DocumentHeader";
 
-import Loading from "../Components/Loading";
+import Loading from "../../Components/Loading";
 import EditorClient from "../../OperationalTransformation/EditorClient";
 import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
 import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";

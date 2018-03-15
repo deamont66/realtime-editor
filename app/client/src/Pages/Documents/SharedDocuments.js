@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from '../../Utils/Axios';
-import Loading from "../Components/Loading";
+import Loading from "../../Components/Loading";
 import DocumentList from "./DocumentList/DocumentList";
 
 class SharedDocuments extends React.Component {

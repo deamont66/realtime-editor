@@ -93,7 +93,6 @@ const removeDocumentById = (documentId) => {
             UserAccess.find({document: document}).remove().exec(),
             DocumentInvite.find({document: document}).remove().exec(),
             Message.find({document: document}).remove().exec(),
-            // content
             Operation.find({document: document}).remove().exec(),
             DocumentSettings.findOne({_id: document.settings}).remove().exec(),
             document.remove(),
