@@ -8,7 +8,6 @@ import List, {ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction} fro
 import Divider from 'material-ui/Divider';
 import Switch from 'material-ui/Switch';
 import IconButton from 'material-ui/IconButton';
-import Tooltip from 'material-ui/Tooltip';
 
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';

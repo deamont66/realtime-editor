@@ -29,7 +29,6 @@ const styles = theme => ({
         flex: 1,
         cursor: 'pointer'
     },
-
 });
 
 
