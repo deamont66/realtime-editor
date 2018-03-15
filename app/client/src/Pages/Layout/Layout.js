@@ -52,6 +52,7 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
+        paddingTop: theme.spacing.unit,
         backgroundColor: theme.palette.background.default,
         [theme.breakpoints.up('md')]: {
             padding: theme.spacing.unit * 3,
