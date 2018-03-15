@@ -7,7 +7,11 @@ import {MenuItem} from 'material-ui/Menu'
 class LinkMenuItem extends React.Component {
 
     handleClick = (evt) => {
-        this.props.history.push(this.props.to);
+        const event = evt || window.event;
+        if (!event.ctrlKey && !event.metaKey && event.which !== 2) {
+            evt.preventDefault();
+            this.props.history.push(this.props.to);
+        }
         this.props.onClick(evt);
     };
 
