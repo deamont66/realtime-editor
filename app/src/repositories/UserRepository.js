@@ -49,18 +49,30 @@ const createUser = (user) => {
  * @returns {Promise<User>} Promise resolved with new updated user document
  */
 const updateUser = (user, data) => {
-    if(data.username) user.username = data.username;
-    if(data.email) user.email = data.email;
+    let promises = [];
 
-    let promise = Promise.resolve();
-    if(data.newPassword) {
-        promise = bcrypt.hash(data.newPassword, 10)
+    if (data.username) {
+        promises.push(validateUniqueUsername(user, data.username).then(() => {
+            user.username = data.username;
+        }));
+    }
+    if (data.email) user.email = data.email;
+
+    if (data.newPassword) {
+        promises.push(bcrypt.hash(data.newPassword, 10)
             .then(function (hash) {
                 user.password = hash;
-            });
+            }));
     }
-    return promise.then(() => {
+
+    return Promise.all(promises).then(() => {
         return user.save();
+    });
+};
+
+const validateUniqueUsername = (user, username) => {
+    return getUserByUsername(username).then((foundUser) => {
+        return (foundUser === null || user._id === foundUser._id) ? Promise.resolve() : Promise.reject({code: 11000});
     });
 };
 
@@ -72,7 +84,7 @@ const updateUser = (user, data) => {
  * @return {Promise<DocumentSettings>}
  */
 const updateDefaultDocumentSettings = (user, settings) => {
-    return DocumentSettings.findOneAndUpdate({_id: user.defaultSettings._id}, settings, { new: true });
+    return DocumentSettings.findOneAndUpdate({_id: user.defaultSettings._id}, settings, {new: true});
 };
 
 module.exports = {

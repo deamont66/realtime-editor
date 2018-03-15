@@ -19,7 +19,7 @@ module.exports = {
     },
     userInvalidCredential: {
         json: true,
-        message: 'User invalid credential',
+        message: 'User invalid credentials',
         code: 4003,
         status: 422
     },

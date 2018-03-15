@@ -50,11 +50,12 @@ module.exports = function (session) {
                 message: err.message,
                 error: true
             };
+            if(err.code) {
+                response.code = err.code;
+            }
 
             if (req.app.get('env') === 'development') {
-                Object.assign(response, {
-                    stack: err
-                });
+                response.stack = err;
             }
             res.status(err.status || 500).json(response);
         } else {

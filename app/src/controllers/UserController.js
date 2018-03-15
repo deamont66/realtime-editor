@@ -2,6 +2,8 @@ const UserRepository = require('../repositories/UserRepository');
 const Errors = require('../utils/Errors');
 const passport = require('passport');
 
+const debug = require('debug')('userController');
+
 module.exports = {
     postSignIn: function (req, res, next) {
         passport.authenticate('local', function (err, user, info) {
