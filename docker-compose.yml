@@ -33,6 +33,7 @@ services:
           - SERVER_PORT=3001
     ports:
       - "3000:3000"
+      - "3001:3001"
     networks:
       - app-tier
     depends_on:
