@@ -1,6 +1,40 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+
+import withStyles from 'material-ui/styles/withStyles';
+
+import Paper from 'material-ui/Paper';
+import Typography from 'material-ui/Typography';
+import Grid from 'material-ui/Grid';
+import {FormControl, FormHelperText, FormControlLabel} from 'material-ui/Form';
+import Input, {InputLabel} from 'material-ui/Input';
+import Checkbox from 'material-ui/Checkbox';
+import Button from 'material-ui/Button';
+
 import UserStore from "../../Stores/UserStore";
+import MaterialLink from "../../Components/MaterialLink";
+
+const styles = theme => ({
+    root: theme.mixins.gutters({
+        paddingTop: theme.typography.pxToRem(16),
+        paddingBottom: theme.typography.pxToRem(16),
+        marginTop: theme.typography.pxToRem(theme.spacing.unit * 3),
+        maxWidth: theme.typography.pxToRem(450),
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    }),
+    formControl: {
+        margin: `${theme.typography.pxToRem(theme.spacing.unit)} 0`,
+    },
+    link: {
+        [theme.breakpoints.up('sm')]: {
+            marginTop: theme.typography.pxToRem(14),
+            textAlign: 'right',
+        }
+    },
+    signUp: {
+        fontSize: theme.typography.pxToRem(16)
+    }
+});
 
 class SignIn extends React.Component {
 
@@ -15,59 +49,89 @@ class SignIn extends React.Component {
         }
     }
 
+    handleChange = key => evt => {
+        this.setState({[key]: evt.target.value});
+    };
 
-    handleSumbit(evt) {
+
+    handleSubmit = evt => {
         evt.preventDefault();
         this.setState({
             message: null
         });
 
-        UserStore.singIn(this.state.username, this.state.password).then((user) => {
-            this.props.history.push('/');
+        UserStore.singIn(this.state.username, this.state.password).then(() => {
+            this.props.history.push('/document');
         }).catch((error) => {
             this.setState({
                 message: error.response.data.message
             });
         });
-    }
+    };
 
     render() {
+        const {classes} = this.props;
+
         return (
-            <div className="Comp-SignIn container">
-                <div className="row">
-                    <div className="col">
-                        <p/>
-                        <h1>Sign In</h1>
-                        <form onSubmit={this.handleSumbit.bind(this)}>
-                            <div className="form-group">
-                                <label htmlFor="usernameInput">Username</label>
-                                <input type="text" className="form-control" id="usernameInput"
-                                       placeholder="Enter username" value={this.state.username} required
-                                       onChange={(evt) => this.setState({username: evt.target.value})}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="passwordInput">Password</label>
-                                <input type="password" className="form-control" id="passwordInput"
-                                       placeholder="Enter password" value={this.state.password} required
-                                       onChange={(evt) => this.setState({password: evt.target.value})}/>
-                            </div>
+            <Paper elevation={4} className={classes.root}>
+                <form onSubmit={this.handleSubmit}>
+                    <Grid container className={classes.root}>
+                        <Grid item xs={12}>
+                            <Typography variant="headline" align="center">
+                                Sign In to your account
+                            </Typography>
+                        </Grid>
 
-                            {this.state.message !== null && <div className="alert alert-danger" role="alert">
-                                {this.state.message}
-                            </div>}
+                        <Grid item xs={12}>
+                            <FormControl fullWidth className={classes.formControl} error={this.state.message !== null}>
+                                <InputLabel htmlFor="username_input">Username</InputLabel>
+                                <Input id="username_input" value={this.state.username}
+                                       onChange={this.handleChange('username')}/>
+                            </FormControl>
+                            <FormControl fullWidth className={classes.formControl} error={this.state.message !== null}>
+                                <InputLabel htmlFor="password_input">Password</InputLabel>
+                                <Input id="password_input" value={this.state.password}
+                                       onChange={this.handleChange('password')} type="password"/>
+                                {this.state.message !== null && <FormHelperText>
+                                    {this.state.message}
+                                </FormHelperText>}
+                            </FormControl>
+                        </Grid>
 
-                            <p><Link to="/forgot-password">I forgot my password.</Link></p>
-                            <p><Link to="/sign-up">I don't have an account yet.</Link></p>
+                        <Grid item sm={6} xs={12}>
+                            <FormControl fullWidth>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox/>
+                                    }
+                                    label="Remember Me"
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid item sm={6} xs={12}>
+                            <Typography component="p" align="left" className={classes.link}>
+                                <MaterialLink to="/forgot-password">Forgot Password?</MaterialLink>
+                            </Typography>
+                        </Grid>
 
-                            <button type="submit" className="btn btn-primary">Sign In</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                        <Grid item xs={12}>
+                            <Button type="submit" fullWidth size="large" variant="raised" color="secondary" className={classes.button}>
+                                Sign In
+                            </Button>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Typography component="p" align={'center'} className={classes.signUp}>
+                                Don't have an account? <MaterialLink to="/sign-up">Create an account</MaterialLink>
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </form>
+            </Paper>
         );
     }
 }
 
 SignIn.propTypes = {};
 
-export default SignIn;
+export default withStyles(styles)(SignIn);
