@@ -52,7 +52,7 @@ class SignIn extends React.Component {
     handleChange = key => evt => {
         this.setState({[key]: evt.target.value});
     };
-    
+
     handleSubmit = evt => {
         evt.preventDefault();
         this.setState({

@@ -20,6 +20,7 @@ const styles = theme => ({
         position: 'relative',
         display: 'flex',
         width: '100%',
+        minHeight: '100vh',
     },
     appBar: {
         position: 'absolute',
@@ -46,6 +47,7 @@ const styles = theme => ({
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
         width: drawerWidth,
+        height: '100%',
         [theme.breakpoints.up('md')]: {
             position: 'relative',
         },
@@ -71,6 +73,7 @@ const styles = theme => ({
             }),
             marginLeft: 0,
         },
+        overflow: 'auto'
     },
 });
 

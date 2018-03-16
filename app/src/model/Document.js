@@ -9,7 +9,8 @@ const documentSchema = new Schema({
     owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     shareLinkRights: {type: Number, min: 0, max: DocumentRightsEnum.length - 1, required: true, default: 0},
     lastAckContent: {type: String, default: ''},
-    lastChange: {type: Date, required: true, default: () => Date.now()}
+    lastChange: {type: Date, required: true, default: () => Date.now()},
+    createdDate: {type: Date, required: true, default: () => Date.now()}
 });
 
 module.exports = mongoose.model('Document', documentSchema);

@@ -16,6 +16,7 @@ import AccountCircle from 'material-ui-icons/AccountCircle';
 
 import NavLinkMenuItem from "../../Components/NavLinkMenuItem";
 import UserStore from "../../Stores/UserStore";
+import axios from "../../Utils/Axios";
 
 const styles = theme => ({
     menuButton: {
@@ -29,6 +30,9 @@ const styles = theme => ({
         flex: 1,
         cursor: 'pointer'
     },
+    createButton: {
+        marginRight: theme.typography.pxToRem(theme.spacing.unit)
+    }
 });
 
 
@@ -44,6 +48,16 @@ class AppBarMenu extends React.Component {
 
     handleClose = () => {
         this.setState({anchorEl: null});
+    };
+
+    createNewDocument = (evt) => {
+        evt.preventDefault();
+
+        axios.post('/document/').then((res) => {
+            this.props.history.push('/document/' + res.data.document);
+        }).catch((err) => {
+            console.log(err);
+        });
     };
 
     render() {
@@ -63,6 +77,12 @@ class AppBarMenu extends React.Component {
                             variant="title" color="inherit" noWrap onClick={() => {
                     this.props.history.push('/')
                 }}>Realtime editor</Typography>
+
+                {this.props.user &&
+                <Button variant="raised" color="secondary" size="small" className={classes.createButton}
+                        onClick={this.createNewDocument}>
+                    Create new document
+                </Button>}
 
                 {!this.props.user && <Button color="inherit" onClick={() => {
                     this.props.history.push('/sign-in')
