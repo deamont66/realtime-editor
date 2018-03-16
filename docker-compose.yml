@@ -6,9 +6,9 @@ services:
       args:
         - app_env=production
     environment:
-      - SERVER_PORT=3000
+      - SERVER_PORT=3003
     ports:
-      - "3000:3000"
+      - "3003:3003"
     networks:
       - app-tier
     depends_on:
