@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import withStyles from 'material-ui/styles/withStyles';
@@ -86,7 +87,7 @@ class AccountSettings extends React.Component {
         if (this.state.email !== this.props.user.email) {
             // eslint-disable-next-line no-useless-escape
             if ((!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.email))) {
-                errorMessage = 'Field email has to be valid email address';
+                errorMessage = this.props.t('email.validation.valid');
                 error = 'email';
             } else {
                 data.email = this.state.email;
@@ -95,27 +96,27 @@ class AccountSettings extends React.Component {
         }
         if (this.state.newPassword) {
             if (this.state.newPassword !== this.state.newPassword2) {
-                errorMessage = 'Fields with new password must match';
+                errorMessage = this.props.t('newPassword.validation.match');
                 error = 'newPassword2';
             }
             data.newPassword = this.state.newPassword;
             isEmpty = false;
         }
         if (!this.state.password) {
-            errorMessage = 'Field password is required';
+            errorMessage = this.props.t('password.validation.required');
             error = 'password';
         } else {
             data.password = this.state.password;
         }
 
         if (isEmpty || errorMessage) {
-            this.showMessage(errorMessage || 'No changes were made', error);
+            this.showMessage(errorMessage || this.props.t('settings.no_changes'), error);
             return;
         }
 
         axios.put('/user', data).then(() => {
             UserStore.checkLoggedIn();
-            this.showMessage('Changes saved');
+            this.showMessage(this.props.t('settings.saved'));
         }).catch((err) => {
             let error = 'username';
             let message = error.message;
@@ -133,48 +134,48 @@ class AccountSettings extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         return (
             <div className="Comp-AccountSettings">
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <Typography variant="title" gutterBottom>
-                        General settings
+                        {t('account_settings.general_title')}
                     </Typography>
                     <FormControl fullWidth className={classes.formControl} error={this.state.error === 'username'}>
-                        <InputLabel htmlFor="username_input">Username</InputLabel>
+                        <InputLabel htmlFor="username_input">{t('username.label')}</InputLabel>
                         <Input id="username_input" value={this.state.username}
                                onChange={this.handleChange('username')}/>
-                        <FormHelperText>{this.state.error === 'username' ? this.state.message : 'Choose how will other users see you'}</FormHelperText>
+                        <FormHelperText>{this.state.error === 'username' ? this.state.message : t('username.helper')}</FormHelperText>
                     </FormControl>
                     <FormControl fullWidth className={classes.formControl} error={this.state.error === 'email'}>
-                        <InputLabel htmlFor="email_input">Email address</InputLabel>
+                        <InputLabel htmlFor="email_input">{t('email.label')}</InputLabel>
                         <Input id="email_input" value={this.state.email} onChange={this.handleChange('email')}/>
                         <FormHelperText>
                             {this.state.error === 'email' ?
-                                this.state.message : 'No one can see this, we\'ll only used it in case of you forgetting your password'}
+                                this.state.message : t('email.helper')}
                         </FormHelperText>
                     </FormControl>
 
                     <Typography variant="title" gutterBottom>
                         <br/>
-                        Password settings
+                        {t('account_settings.password_title')}
                     </Typography>
 
                     <FormControl fullWidth className={classes.formControl}>
-                        <InputLabel htmlFor="new_password_input">New password</InputLabel>
+                        <InputLabel htmlFor="new_password_input">{t('newPassword.label')}</InputLabel>
                         <Input id="new_password_input" value={this.state.newPassword}
                                onChange={this.handleChange('newPassword')} type="password"/>
-                        <FormHelperText>Only enter if you want to change password.</FormHelperText>
+                        <FormHelperText>{t('newPassword.helper')}</FormHelperText>
                     </FormControl>
 
                     <FormControl fullWidth className={classes.formControl} error={this.state.error === 'newPassword2'}>
-                        <InputLabel htmlFor="new_password2_input">New password again</InputLabel>
+                        <InputLabel htmlFor="new_password2_input">{t('newPassword.againLabel')}</InputLabel>
                         <Input id="new_password2_input" value={this.state.newPassword2}
                                onChange={this.handleChange('newPassword2')} type="password"/>
                         <FormHelperText>
                             {this.state.error === 'newPassword2' ?
-                                this.state.message : 'Please enter same password as before.'}
+                                this.state.message : t('newPassword.againHelper')}
                         </FormHelperText>
                     </FormControl>
 
@@ -183,10 +184,10 @@ class AccountSettings extends React.Component {
 
 
                     <FormControl fullWidth className={classes.formControl} error={this.state.error === 'password'}>
-                        <InputLabel htmlFor="password_input">Current password</InputLabel>
+                        <InputLabel htmlFor="password_input">{t('password.currentLabel')}</InputLabel>
                         <Input id="password_input" value={this.state.password}
                                onChange={this.handleChange('password')} type="password"/>
-                        <FormHelperText>Enter your current password so we know it is really you.</FormHelperText>
+                        <FormHelperText>{t('password.currentHelper')}</FormHelperText>
                     </FormControl>
 
                     <SubmitButtons onReset={() => this.setState(this.getInitialState(this.props))}/>
@@ -224,4 +225,4 @@ AccountSettings.propTypes = {
     user: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AccountSettings);
+export default translate()(withStyles(styles)(AccountSettings));

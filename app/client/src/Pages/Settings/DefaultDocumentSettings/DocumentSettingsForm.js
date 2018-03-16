@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import withStyles from 'material-ui/styles/withStyles';
@@ -21,17 +22,16 @@ const styles = theme => ({
 class DocumentSettingsForm extends React.Component {
 
     handleChange = key => (event, checked) => {
-        console.log(key, event.target.value, checked);
         this.props.onSettingsChange({[key]: typeof checked !== 'undefined' ? checked : event.target.value});
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         return (
             <div className="Comp-DocumentSettingsForm">
                 <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel htmlFor="theme">Theme</InputLabel>
+                    <InputLabel htmlFor="theme">{t('document_settings.theme')}</InputLabel>
                     <Select inputProps={{id: 'theme'}}
                             value={this.props.settings.theme} onChange={this.handleChange('theme')}>
                         {Object.keys(EditorThemes.all).map((themeKey) => {
@@ -41,7 +41,7 @@ class DocumentSettingsForm extends React.Component {
                 </FormControl>
 
                 <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel htmlFor="theme">Mode (language)</InputLabel>
+                    <InputLabel htmlFor="mode">{t('document_settings.mode')}</InputLabel>
                     <Select inputProps={{id: 'mode'}}
                             value={this.props.settings.mode} onChange={this.handleChange('mode')}>
                         {EditorModes.all.map((mode, index) => {
@@ -51,7 +51,7 @@ class DocumentSettingsForm extends React.Component {
                 </FormControl>
 
                 <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel htmlFor="tabSize">TabSize</InputLabel>
+                    <InputLabel htmlFor="tabSize">{t('document_settings.tabSize')}</InputLabel>
                     <Select inputProps={{id: 'tabSize'}}
                             value={this.props.settings.tabSize} onChange={this.handleChange('tabSize')}>
                         {Array.from(Array(4).keys()).map((size) => {
@@ -61,7 +61,7 @@ class DocumentSettingsForm extends React.Component {
                 </FormControl>
 
                 <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel htmlFor="indentUnit">IndentUnit</InputLabel>
+                    <InputLabel htmlFor="indentUnit">{t('document_settings.indentUnit')}</InputLabel>
                     <Select inputProps={{id: 'indentUnit'}}
                             value={this.props.settings.indentUnit} onChange={this.handleChange('indentUnit')}>
                         {Array.from(Array(4).keys()).map((size) => {
@@ -78,13 +78,13 @@ class DocumentSettingsForm extends React.Component {
                                 onChange={this.handleChange('indentWithTabs')}
                             />
                         }
-                        label="Indent with tabs"
+                        label={t('document_settings.indentWithTabs')}
                     />
                 </FormControl>
 
                 <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel htmlFor="indentUnit">Font size</InputLabel>
-                    <Select inputProps={{id: 'indentUnit'}}
+                    <InputLabel htmlFor="fontSize">{t('document_settings.fontSize')}</InputLabel>
+                    <Select inputProps={{id: 'fontSize'}}
                             value={this.props.settings.fontSize} onChange={this.handleChange('fontSize')}>
                         {this.props.settings.fontSize % 2 !== 0 && (
                             <MenuItem value={this.props.settings.fontSize}>{this.props.settings.fontSize}</MenuItem>
@@ -96,21 +96,21 @@ class DocumentSettingsForm extends React.Component {
                 </FormControl>
 
                 <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel htmlFor="keyMap">Keymap</InputLabel>
+                    <InputLabel htmlFor="keyMap">{t('document_settings.keyMap.label')}</InputLabel>
                     <Select inputProps={{id: 'keyMap'}}
                             value={this.props.settings.keyMap} onChange={this.handleChange('keyMap')}>
                         {['default', 'emacs', 'sublime', 'vim'].map((keyMap) => {
-                            return <MenuItem key={keyMap} value={keyMap}>{keyMap}</MenuItem>
+                            return <MenuItem key={keyMap} value={keyMap}>{t(`document_settings.keyMap.${keyMap}`)}</MenuItem>
                         })}
                     </Select>
                 </FormControl>
 
                 <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel htmlFor="styleActiveLine">Highlight active line</InputLabel>
+                    <InputLabel htmlFor="styleActiveLine">{t('document_settings.styleActiveLine.label')}</InputLabel>
                     <Select inputProps={{id: 'styleActiveLine'}}
                             value={this.props.settings.styleActiveLine} onChange={this.handleChange('styleActiveLine')}>
-                        {['true', 'nonEmpty', 'false'].map((styleActiveLine) => {
-                            return <MenuItem key={styleActiveLine} value={styleActiveLine}>{styleActiveLine}</MenuItem>
+                        {['nonEmpty', 'true', 'false'].map((styleActiveLine) => {
+                            return <MenuItem key={styleActiveLine} value={styleActiveLine}>{t(`document_settings.styleActiveLine.${styleActiveLine}`)}</MenuItem>
                         })}
                     </Select>
                 </FormControl>
@@ -124,7 +124,7 @@ class DocumentSettingsForm extends React.Component {
                                 onChange={this.handleChange('lineWrapping')}
                             />
                         }
-                        label="Enable line wrapping"
+                        label={t('document_settings.lineWrapping')}
                     />
                 </FormControl>
 
@@ -136,7 +136,7 @@ class DocumentSettingsForm extends React.Component {
                                 onChange={this.handleChange('lineNumbers')}
                             />
                         }
-                        label="Show line numbers"
+                        label={t('document_settings.lineNumbers')}
                     />
                 </FormControl>
             </div>
@@ -149,4 +149,4 @@ DocumentSettingsForm.propTypes = {
     onSettingsChange: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(DocumentSettingsForm);
+export default translate()(withStyles(styles)(DocumentSettingsForm));

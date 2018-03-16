@@ -12,6 +12,8 @@
     "codemirror": "^5.34.0",
     "event-emitter-es6": "^1.1.5",
     "i18next": "^10.5.0",
+    "i18next-browser-languagedetector": "^2.1.0",
+    "i18next-xhr-backend": "^1.5.1",
     "material-ui": "^1.0.0-beta.37",
     "material-ui-icons": "^1.0.0-beta.36",
     "node-sass-chokidar": "^0.0.3",
@@ -33,6 +35,10 @@
       "target": "http://127.0.0.1:3001/",
       "secure": false,
       "ws": true
+    },
+    "/locales": {
+      "target": "http://127.0.0.1:3001/",
+      "secure": false
     }
   },
   "scripts": {

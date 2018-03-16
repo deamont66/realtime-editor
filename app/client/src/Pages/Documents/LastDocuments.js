@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import axios from '../../Utils/Axios';
 
 import withStyles from 'material-ui/styles/withStyles';
@@ -52,16 +53,16 @@ class LastDocuments extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         return (
             <div>
                 <div className={classes.root}>
                     <Typography variant="headline" gutterBottom className={classes.headline}>
-                        Last accessed documents
+                        {t('last_documents.headline')}
                     </Typography>
                     <Typography variant="subheading" component="p">
-                        This is list of all documents you ever accessed (including public link documents).
+                        {t('last_documents.subheading')}
                     </Typography>
                 </div>
                 <Paper className={classes.paper} elevation={4}>
@@ -75,4 +76,4 @@ class LastDocuments extends React.Component {
 
 LastDocuments.propTypes = {};
 
-export default withStyles(styles)(LastDocuments);
+export default translate()(withStyles(styles)(LastDocuments));

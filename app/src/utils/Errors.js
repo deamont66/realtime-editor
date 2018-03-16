@@ -1,31 +1,31 @@
 module.exports = {
     notFound: {
         json: true,
-        message: 'Not found',
+        message: 'error.not_found',
         code: 4000,
         status: 404
     },
     userAlreadyLoggedIn: {
         json: true,
-        message: 'User is already logged in',
+        message: 'error.user_already_logged_in',
         code: 4001,
         status: 422
     },
     userNotLoggedIn: {
         json: true,
-        message: 'User not logged in',
+        message: 'error.user_not_logged_in',
         code: 4002,
         status: 200 // should be 422, but React user pooling spams Chrome console with errors
     },
     userInvalidCredential: {
         json: true,
-        message: 'User invalid credentials',
+        message: 'password.validation.invalid_credentials',
         code: 4003,
         status: 422
     },
     usernameAlreadyUsed: {
         json: true,
-        message: 'Username is already associated with another account',
+        message: 'username.validation.already_used',
         code: 4004,
         status: 422
     },
@@ -33,7 +33,7 @@ module.exports = {
     invalidParameters: function (message, field = null) {
         const error = {
             json: true,
-            message: message || 'Invalid parameters',
+            message: message || 'error.invalid_parameters',
             code: 4005,
             status: 422
         };
@@ -45,14 +45,21 @@ module.exports = {
 
     insufficientPermission: {
         json: true,
-        message: 'Insufficient permission',
+        message: 'error.insufficient_permission',
         code: 4006,
         status: 403
     },
 
+    cannotInviteDocumentOwner: {
+        json: true,
+        message: 'error.cannot_invite_owner',
+        code: 4007,
+        status: 422
+    },
+
     serverError: {
         json: true,
-        message: 'Server error',
+        message: 'error.server_error',
         code: 5000,
         status: 500
     },

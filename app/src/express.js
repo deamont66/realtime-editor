@@ -9,7 +9,6 @@ const passport = require('passport');
 
 module.exports = function (session) {
     const app = express();
-    const api = require('./routes/api');
 
     app.use(session);
 
@@ -25,13 +24,13 @@ module.exports = function (session) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use('/api', api);
+    app.use(require('./routes/main'));
 
     app.use('/static', express.static(path.join(__dirname, '../client/build-prod/static')));
     app.use('/resources', express.static(path.join(__dirname, '../client/build-prod/resources')));
     app.use(express.static(path.join(__dirname, 'public')));
 
-    app.use(/^\/(?!api).*$/, function (req, res, next) {
+    app.use(/^\/(?!api|locales).*$/, function (req, res, next) {
         res.sendFile(path.join(__dirname, '../client/build-prod/index.html'));
     });
 

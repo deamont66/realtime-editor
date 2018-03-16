@@ -1,0 +1,154 @@
+{
+  "appBar": {
+    "title": "Realtime Editor",
+    "create_button": "Create new document",
+    "logged_in_as": "Logged in as {{username}}",
+    "settings_button": "Settings",
+    "logout_button": "Logout"
+  },
+  "drawerMenu": {
+    "my_documents_item": {
+      "primary": "My documents",
+      "secondary": "Created by me"
+    },
+    "shared_documents_item": {
+      "primary": "Shared",
+      "secondary": "Shared with me"
+    },
+    "last_documents_item": {
+      "primary": "Last",
+      "secondary": "Last accessed"
+    },
+    "about_item": {
+      "primary": "About"
+    },
+    "dark_mode": {
+      "primary": "Dark mode",
+      "aria_label": "Toggle dark theme"
+    }
+  },
+  "signUp": {
+    "headline": "Create new account",
+    "submit_button": "Sign Up",
+    "sign_in": {
+      "text": "Already have an account?",
+      "link_text": "Sing In"
+    }
+  },
+  "signIn": {
+    "headline": "Sign In to your account",
+    "remember_label": "Remember Me",
+    "forgot_link_text": "Forgot Password?",
+    "submit_button": "Sign In",
+    "sign_up": {
+      "text": "Don't have an account?",
+      "link_text": "Create an account"
+    }
+  },
+  "my_documents": {
+    "headline": "My documents",
+    "subheading": "This is list of all documents created by you.",
+    "create_tooltip": "Create document"
+  },
+  "shared_documents": {
+    "headline": "Shared documents",
+    "subheading": "This is list of all documents somebody shared directly with you."
+  },
+  "last_documents": {
+    "headline": "Last accessed documents",
+    "subheading": "This is list of all documents you ever accessed (including public link documents)."
+  },
+  "documentTable": {
+    "no_documents": "There are no documents",
+    "prev_label": "Previous Page",
+    "next_label": "Next Page",
+    "displayedRows": "{{from}}-{{to}} of {{count}}",
+    "rowsPerPageLabel": "Rows per page:",
+    "neverAccessed": "Never",
+    "notShared": "--",
+    "header": {
+      "title": "Title",
+      "lastAccessed": "Last accessed",
+      "lastChange": "Last changed",
+      "createdDate": "Created",
+      "owner": "Owner",
+      "from": "Shared by"
+    }
+  },
+  "settings": {
+    "headline": "Settings",
+    "account_settings_tab": "Account settings",
+    "document_settings_tab": "Document settings",
+    "saved": "Changes saved",
+    "no_changes": "No changes were made",
+    "button": {
+      "reset": "Reset",
+      "submit": "Save changes"
+    }
+  },
+  "account_settings": {
+    "general_title": "General settings",
+    "password_title": "Password settings"
+  },
+  "default_document_settings": {
+    "title": "Default settings",
+    "paragraph": "This settings is used as default for newly created documents. Already existing documents and their current settings will not be changed."
+  },
+  "document_settings": {
+    "theme": "Theme",
+    "mode": "Mode (language)",
+    "tabSize": "Tabulator size",
+    "indentUnit": "Indent unit",
+    "indentWithTabs": "Indent with tabs",
+    "fontSize": "Font size",
+    "keyMap": {
+      "label": "Keymap",
+      "default": "Default",
+      "emacs": "Emacs like",
+      "sublime": "Sublime Text like",
+      "vim": "Vim like"
+    },
+    "styleActiveLine": {
+      "label": "Highlight active line",
+      "nonEmpty": "Yes, always",
+      "true": "Yes",
+      "false": "No"
+    },
+    "lineWrapping": "Enable line wrapping",
+    "lineNumbers": "Show line numbers"
+  },
+  "email": {
+    "label": "Email",
+    "helper": "No one can see this, we'll only used it in case of you forgetting your password",
+    "validation": {
+      "required": "Field email is required",
+      "valid": "Field email has to be valid email address"
+    }
+  },
+  "username": {
+    "label": "Username",
+    "helper": "Choose how will other users see you",
+    "validation": {
+      "required": "Field username is required",
+      "already_used": "Username is already associated with another account"
+    }
+  },
+  "password": {
+    "label": "Password",
+    "currentLabel": "Current password",
+    "currentHelper": "Enter your current password so we know it is really you.",
+    "validation": {
+      "required": "Field password is required",
+      "invalid_credentials": "User invalid credentials"
+    }
+  },
+  "newPassword": {
+    "label": "New password",
+    "againLabel": "New password again",
+    "helper": "Only enter if you want to change password.",
+    "againHelper": "Please enter same password as before.",
+    "validation": {
+      "match": "Fields with new password must match"
+    }
+  }
+}

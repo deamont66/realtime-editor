@@ -1,6 +1,7 @@
 import React from 'react';
 
 import withStyles from 'material-ui/styles/withStyles';
+import {translate} from 'react-i18next';
 
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
@@ -61,17 +62,17 @@ class SignUp extends React.Component {
         let error = null;
 
         if (!this.state.email) {
-            message = 'Field email is required';
+            message = this.props.t('email.validation.required');
             error = 'email';
             // eslint-disable-next-line no-useless-escape
         } else if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(this.state.email)) {
-            message = 'Field email has to be valid email address';
+            message = this.props.t('email.validation.valid');
             error = 'email';
         } else if (!this.state.username) {
-            message = 'Field username is required';
+            message = this.props.t('username.validation.required');
             error = 'username';
         } else if (!this.state.password) {
-            message = 'Field password is required';
+            message = this.props.t('password.validation.required');
             error = 'password';
         }
 
@@ -93,7 +94,7 @@ class SignUp extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         return (
             <Paper elevation={4} className={classes.root}>
@@ -101,13 +102,13 @@ class SignUp extends React.Component {
                     <Grid container className={classes.root}>
                         <Grid item xs={12}>
                             <Typography variant="headline" align="center">
-                                Create new account
+                                {t('signUp.headline')}
                             </Typography>
                         </Grid>
 
                         <Grid item xs={12}>
                             <FormControl fullWidth className={classes.formControl} error={this.state.error === 'email'}>
-                                <InputLabel htmlFor="email_input">Email</InputLabel>
+                                <InputLabel htmlFor="email_input">{t('email.label')}</InputLabel>
                                 <Input id="email_input" value={this.state.email}
                                        onChange={this.handleChange('email')}/>
                                 {this.state.error === 'email' && <FormHelperText>
@@ -116,7 +117,7 @@ class SignUp extends React.Component {
                             </FormControl>
                             <FormControl fullWidth className={classes.formControl}
                                          error={this.state.error === 'username'}>
-                                <InputLabel htmlFor="username_input">Username</InputLabel>
+                                <InputLabel htmlFor="username_input">{t('username.label')}</InputLabel>
                                 <Input id="username_input" value={this.state.username}
                                        onChange={this.handleChange('username')}/>
                                 {this.state.error === 'username' && <FormHelperText>
@@ -125,7 +126,7 @@ class SignUp extends React.Component {
                             </FormControl>
                             <FormControl fullWidth className={classes.formControl}
                                          error={this.state.message !== null && !['username', 'email'].includes(this.state.error)}>
-                                <InputLabel htmlFor="password_input">Password</InputLabel>
+                                <InputLabel htmlFor="password_input">{t('password.label')}</InputLabel>
                                 <Input id="password_input" value={this.state.password}
                                        onChange={this.handleChange('password')} type="password"/>
                                 {this.state.message !== null && !['username', 'email'].includes(this.state.error) &&
@@ -138,13 +139,13 @@ class SignUp extends React.Component {
                         <Grid item xs={12}>
                             <Button type="submit" fullWidth size="large" variant="raised" color="secondary"
                                     className={classes.button}>
-                                Sign Up
+                                {t('signUp.submit_button')}
                             </Button>
                         </Grid>
 
                         <Grid item xs={12}>
                             <Typography component="p" align={'center'} className={classes.signUp}>
-                                Already have an account? <MaterialLink to="/sign-in">Sing in</MaterialLink>
+                                {t('signUp.sign_in.text')} <MaterialLink to="/sign-in">{t('signUp.sign_in.link_text')}</MaterialLink>
                             </Typography>
                         </Grid>
                     </Grid>
@@ -156,4 +157,4 @@ class SignUp extends React.Component {
 
 SignUp.propTypes = {};
 
-export default withStyles(styles)(SignUp);
+export default translate()(withStyles(styles)(SignUp));

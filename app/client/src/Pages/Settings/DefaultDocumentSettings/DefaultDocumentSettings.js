@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import withStyles from 'material-ui/styles/withStyles';
@@ -74,7 +75,7 @@ class DefaultDocumentSettings extends React.Component {
         axios.put('/user/document-settings', {
             settings: this.state.settings
         }).then((res) => {
-            this.showMessage('Changes saved');
+            this.showMessage(this.props.t('settings.saved'));
             this.setState({
                 settings: res.data.settings
             });
@@ -84,6 +85,7 @@ class DefaultDocumentSettings extends React.Component {
     }
 
     render() {
+        const {t} = this.props;
         return (
             <div className="Comp-DefaultDocumentSettings">
                 {this.state.settings === null && <LinearProgress/>}
@@ -91,11 +93,11 @@ class DefaultDocumentSettings extends React.Component {
                 {this.state.settings !== null && <form onSubmit={this.handleSubmit.bind(this)} className="settings-form">
 
                     <Typography variant="title" gutterBottom>
-                        Default settings
+                        {t('default_document_settings.title')}
                     </Typography>
 
                     <Typography paragraph>
-                        This settings is used as default for newly created documents. Already existing documents and their current settings will not be changed.
+                        {t('default_document_settings.paragraph')}
                     </Typography>
 
                     <DocumentSettingsForm settings={this.state.settings} onSettingsChange={this.handleSettingsChange.bind(this)}/>
@@ -135,4 +137,4 @@ DefaultDocumentSettings.propTypes = {
     user: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DefaultDocumentSettings);
+export default translate()(withStyles(styles)(DefaultDocumentSettings));

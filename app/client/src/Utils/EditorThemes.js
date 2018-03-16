@@ -1,5 +1,5 @@
 const Themes = {
-    'default': 'default',
+    'default': 'Default',
     '3024-day': '3024 Day',
     '3024-night': '3024 Night',
     'abcdef': 'Abcdef',

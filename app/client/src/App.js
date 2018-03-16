@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import {I18nextProvider} from 'react-i18next';
+import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import CssBaseline from 'material-ui/CssBaseline';
+
+import i18nInstance from './i18nInstance';
 
 import primaryColor from 'material-ui/colors/indigo';
 import secondaryColor from 'material-ui/colors/pink';
@@ -24,10 +27,11 @@ class App extends Component {
         this.state = {
             user: null,
             loading: true,
-            theme: localStorage.getItem('theme') || 'light'
+            translationLoading: true,
+            theme: localStorage.getItem('theme') || 'light',
         };
 
-        this.handleUserChange = this.handleUserChange.bind(this);
+        i18nInstance.on('loaded', this.handleTranslationLoaded);
     }
 
     componentDidMount() {
@@ -45,11 +49,17 @@ class App extends Component {
         clearInterval(this.userCheckInterval);
     }
 
-    handleUserChange(user) {
+    handleUserChange = user => {
         this.setState({
             user: user
         });
-    }
+    };
+
+    handleTranslationLoaded = () => {
+        this.setState({
+            translationLoading: false
+        })
+    };
 
     handleDarkThemeToggle = () => {
         const theme = this.state.theme === 'light' ? 'dark' : 'light';
@@ -68,12 +78,18 @@ class App extends Component {
             },
         });
 
+        const isLoading = this.state.loading || this.state.translationLoading;
         return (
-            <MuiThemeProvider theme={theme}>
-                <CssBaseline/>
-                {this.state.loading && <Loading/>}
-                {!this.state.loading && <Router user={this.state.user} onDarkThemeToggle={this.handleDarkThemeToggle}/>}
-            </MuiThemeProvider>
+            <I18nextProvider i18n={i18nInstance}>
+                <MuiThemeProvider theme={theme}>
+                    <CssBaseline/>
+                    {isLoading ? (
+                        <Loading/>
+                    ) : (
+                        <Router user={this.state.user} onDarkThemeToggle={this.handleDarkThemeToggle}/>
+                    )}
+                </MuiThemeProvider>
+            </I18nextProvider>
         );
     }
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {withRouter, matchPath} from 'react-router-dom';
+import { translate } from 'react-i18next';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -63,7 +64,7 @@ class DrawerMenu extends React.Component {
     };
 
     render() {
-        const {classes, theme} = this.props;
+        const {classes, theme, t} = this.props;
 
         return (
             <div>
@@ -76,22 +77,22 @@ class DrawerMenu extends React.Component {
                 <Divider/>
                 <List>
                     <NavLinkListItem to={'/document'}
-                                     primary="My documents"
-                                     secondary={'Created by me'}
+                                     primary={t('drawerMenu.my_documents_item.primary')}
+                                     secondary={t('drawerMenu.my_documents_item.secondary')}
                                      onClick={this.handleNavLinkClick}
                                      classes={classes}>
                         <FolderOpen/>
                     </NavLinkListItem>
                     <NavLinkListItem to={'/document/shared'}
-                                     primary="Shared"
-                                     secondary={'Shared with me'}
+                                     primary={t('drawerMenu.shared_documents_item.primary')}
+                                     secondary={t('drawerMenu.shared_documents_item.secondary')}
                                      onClick={this.handleNavLinkClick}
                                      classes={classes}>
                         <FolderShared/>
                     </NavLinkListItem>
                     <NavLinkListItem to={'/document/history'}
-                                     primary="Last"
-                                     secondary={'Last accessed'}
+                                     primary={t('drawerMenu.last_documents_item.primary')}
+                                     secondary={t('drawerMenu.last_documents_item.secondary')}
                                      onClick={this.handleNavLinkClick}
                                      classes={classes}>
                         <AccessTime/>
@@ -100,7 +101,7 @@ class DrawerMenu extends React.Component {
                 <Divider/>
                 <List>
                     <NavLinkListItem to={'/about'}
-                                     primary="About"
+                                     primary={t('drawerMenu.about_item.primary')}
                                      onClick={this.handleNavLinkClick}
                                      classes={classes}>
                         <Info/>
@@ -113,10 +114,10 @@ class DrawerMenu extends React.Component {
                         <ListItemIcon>
                             <LightbulbOutline/>
                         </ListItemIcon>
-                        <ListItemText primary="Dark theme"/>
+                        <ListItemText primary={t('drawerMenu.dark_mode.primary')}/>
                         <ListItemSecondaryAction>
                             <Switch
-                                aria-label="Toggle dark theme"
+                                aria-label={t('drawerMenu.dark_mode.aria_label')}
                                 onChange={this.props.onDarkThemeToggle}
                                 checked={theme.palette.type === 'dark'}
                             />
@@ -133,4 +134,4 @@ DrawerMenu.propTypes = {
     onDarkThemeToggle: PropTypes.func.isRequired
 };
 
-export default withRouter(withStyles(styles, {withTheme: true})(DrawerMenu));
+export default translate()(withRouter(withStyles(styles, {withTheme: true})(DrawerMenu)));

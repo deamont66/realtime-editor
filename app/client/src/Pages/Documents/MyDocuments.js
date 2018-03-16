@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import axios from '../../Utils/Axios';
 
 import withStyles from 'material-ui/styles/withStyles';
@@ -7,7 +8,6 @@ import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import Tooltip from 'material-ui/Tooltip';
-import Hidden from 'material-ui/Hidden';
 
 import Add from 'material-ui-icons/Add';
 
@@ -71,16 +71,16 @@ class MyDocuments extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         return (
             <div>
                 <div className={classes.root}>
                     <Typography variant="headline" gutterBottom className={classes.headline}>
-                        My documents
+                        {t('my_documents.headline')}
                     </Typography>
                     <Typography variant="subheading" component="p">
-                        This is list of all documents created by you.
+                        {t('my_documents.subheading')}
                     </Typography>
                 </div>
                 <Paper className={classes.paper} elevation={4}>
@@ -88,10 +88,10 @@ class MyDocuments extends React.Component {
                     {this.state.documents !== null && <DocumentTable documents={this.state.documents}/>}
                 </Paper>
                 <Tooltip
-                    title="Create document"
+                    title={t('my_documents.create_tooltip')}
                     placement={'left'}
                     enterDelay={300}>
-                    <Button variant="fab" className={classes.buttonFixed} aria-label="create document"
+                    <Button variant="fab" className={classes.buttonFixed} aria-label={t('my_documents.create_tooltip')}
                             color="secondary"
                             onClick={this.createNewDocument}>
                         <Add/>
@@ -105,4 +105,4 @@ class MyDocuments extends React.Component {
 
 MyDocuments.propTypes = {};
 
-export default withStyles(styles)(MyDocuments);
+export default translate()(withStyles(styles)(MyDocuments));

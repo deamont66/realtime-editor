@@ -2,6 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { translate } from 'react-i18next';
 
 import {withStyles} from 'material-ui/styles/index';
 import Toolbar from 'material-ui/Toolbar';
@@ -61,7 +62,7 @@ class AppBarMenu extends React.Component {
     };
 
     render() {
-        const {classes, isOpen} = this.props;
+        const {classes, isOpen, t} = this.props;
 
         return (
             <Toolbar>
@@ -76,23 +77,23 @@ class AppBarMenu extends React.Component {
                 <Typography className={classes.title} component="p"
                             variant="title" color="inherit" noWrap onClick={() => {
                     this.props.history.push('/')
-                }}>Realtime editor</Typography>
+                }}>{t('appBar.title')}</Typography>
 
                 {this.props.user &&
                 <Button variant="raised" color="secondary" size="small" className={classes.createButton}
                         onClick={this.createNewDocument}>
-                    Create new document
+                    {t('appBar.create_button')}
                 </Button>}
 
                 {!this.props.user && <Button color="inherit" onClick={() => {
                     this.props.history.push('/sign-in')
                 }}>Sign in</Button>}
                 {this.props.user && <div>
-                    <Tooltip id="tooltip-icon" title={`Logged in as ${this.props.user.username}`}>
+                    <Tooltip id="tooltip-icon" title={t('appBar.logged_in_as', {username: this.props.user.username})}>
                         <IconButton
                             aria-owns={Boolean(this.state.anchorEl) ? 'menu-appbar' : null}
                             aria-haspopup="true"
-                            aria-label={`Logged in as ${this.props.user.username}`}
+                            aria-label={t('appBar.logged_in_as', {username: this.props.user.username})}
                             aria-describedby="tooltip-icon"
                             onClick={this.handleMenu}
                             color="inherit"
@@ -114,8 +115,8 @@ class AppBarMenu extends React.Component {
                         open={Boolean(this.state.anchorEl)}
                         onClose={this.handleClose}
                     >
-                        <NavLinkMenuItem onClick={this.handleClose} to={'/settings'} exact>Settings</NavLinkMenuItem>
-                        <MenuItem onClick={() => UserStore.logOut()}>Logout</MenuItem>
+                        <NavLinkMenuItem onClick={this.handleClose} to={'/settings'} exact>{t('appBar.settings_button')}</NavLinkMenuItem>
+                        <MenuItem onClick={() => UserStore.logOut()}>{t('appBar.logout_button')}</MenuItem>
                     </Menu>
                 </div>}
             </Toolbar>
@@ -129,5 +130,5 @@ AppBarMenu.propTypes = {
     user: PropTypes.object,
 };
 
-export default withRouter(withStyles(styles)(AppBarMenu));
+export default translate()(withRouter(withStyles(styles)(AppBarMenu)));
 

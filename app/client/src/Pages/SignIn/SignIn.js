@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {translate} from 'react-i18next';
 import withStyles from 'material-ui/styles/withStyles';
 
 import Paper from 'material-ui/Paper';
@@ -63,13 +63,13 @@ class SignIn extends React.Component {
             this.props.history.push('/document');
         }).catch((error) => {
             this.setState({
-                message: error.response.data.message
+                message: this.props.t(error.response.data.message)
             });
         });
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         return (
             <Paper elevation={4} className={classes.root}>
@@ -77,18 +77,18 @@ class SignIn extends React.Component {
                     <Grid container className={classes.root}>
                         <Grid item xs={12}>
                             <Typography variant="headline" align="center">
-                                Sign In to your account
+                                {t('signIn.headline')}
                             </Typography>
                         </Grid>
 
                         <Grid item xs={12}>
                             <FormControl fullWidth className={classes.formControl} error={this.state.message !== null}>
-                                <InputLabel htmlFor="username_input">Username</InputLabel>
+                                <InputLabel htmlFor="username_input">{t('username.label')}</InputLabel>
                                 <Input id="username_input" value={this.state.username}
                                        onChange={this.handleChange('username')}/>
                             </FormControl>
                             <FormControl fullWidth className={classes.formControl} error={this.state.message !== null}>
-                                <InputLabel htmlFor="password_input">Password</InputLabel>
+                                <InputLabel htmlFor="password_input">{t('password.label')}</InputLabel>
                                 <Input id="password_input" value={this.state.password}
                                        onChange={this.handleChange('password')} type="password"/>
                                 {this.state.message !== null && <FormHelperText>
@@ -103,25 +103,25 @@ class SignIn extends React.Component {
                                     control={
                                         <Checkbox/>
                                     }
-                                    label="Remember Me"
+                                    label={t('signIn.remember_label')}
                                 />
                             </FormControl>
                         </Grid>
                         <Grid item sm={6} xs={12}>
                             <Typography component="p" align="left" className={classes.link}>
-                                <MaterialLink to="/forgot-password">Forgot Password?</MaterialLink>
+                                <MaterialLink to="/forgot-password">{t('signIn.forgot_link_text')}</MaterialLink>
                             </Typography>
                         </Grid>
 
                         <Grid item xs={12}>
                             <Button type="submit" fullWidth size="large" variant="raised" color="secondary" className={classes.button}>
-                                Sign In
+                                {t('signIn.submit_button')}
                             </Button>
                         </Grid>
 
                         <Grid item xs={12}>
                             <Typography component="p" align={'center'} className={classes.signUp}>
-                                Don't have an account? <MaterialLink to="/sign-up">Create an account</MaterialLink>
+                                {t('signIn.sign_up.text')} <MaterialLink to="/sign-up">{t('signIn.sign_up.link_text')}</MaterialLink>
                             </Typography>
                         </Grid>
                     </Grid>
@@ -133,4 +133,4 @@ class SignIn extends React.Component {
 
 SignIn.propTypes = {};
 
-export default withStyles(styles)(SignIn);
+export default translate()(withStyles(styles)(SignIn));

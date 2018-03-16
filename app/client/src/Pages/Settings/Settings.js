@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -34,17 +35,18 @@ class Settings extends React.Component {
     };
 
     render() {
+        const {t} = this.props;
         return (
             <div className="Comp-Settings">
                 <Typography variant="headline" gutterBottom className={this.props.classes.headline}>
-                    Settings
+                    {t('settings.headline')}
                 </Typography>
 
                 <Card>
                     <AppBar position="static" color="default">
                         <Tabs value={this.props.location.pathname} onChange={this.handleTabChange}>
-                            <Tab value={'/settings'} label="Account settings" href={'/settings'}/>
-                            <Tab value={'/settings/document'} label="Document settings" href={'/settings/document'}/>
+                            <Tab value={'/settings'} label={t('settings.account_settings_tab')} href={'/settings'}/>
+                            <Tab value={'/settings/document'} label={t('settings.document_settings_tab')} href={'/settings/document'}/>
                         </Tabs>
                     </AppBar>
                     <CardContent>
@@ -69,4 +71,4 @@ Settings.propTypes = {
     user: PropTypes.object.isRequired,
 };
 
-export default withRouter(withStyles(styles)(Settings));
+export default translate()(withRouter(withStyles(styles)(Settings)));

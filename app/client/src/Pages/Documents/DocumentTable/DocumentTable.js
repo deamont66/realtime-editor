@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import moment from "moment";
 
@@ -6,6 +7,7 @@ import withStyles from 'material-ui/styles/withStyles';
 import Table, {TableRow, TableBody, TableCell, TableFooter, TablePagination} from 'material-ui/Table';
 import Typography from "material-ui/Typography";
 import Hidden from "material-ui/Hidden";
+import Tooltip from "material-ui/Tooltip";
 
 import MaterialLink from "../../../Components/MaterialLink";
 import DocumentTableHeader from "./DocumentTableHeader";
@@ -20,7 +22,7 @@ const styles = theme => ({
     }
 });
 
-class DocumentList extends React.Component {
+class DocumentTable extends React.Component {
 
     constructor() {
         super();
@@ -53,7 +55,7 @@ class DocumentList extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         const sortedDocuments =
             this.state.order === 'desc'
@@ -73,15 +75,32 @@ class DocumentList extends React.Component {
                                 <TableRow key={document._id}>
                                     <TableCell><MaterialLink
                                         to={'/document/' + document._id}>{document.title}</MaterialLink></TableCell>
-                                    <TableCell>{moment(document.lastAccessed).fromNow()}</TableCell>
+                                    <TableCell>
+                                        <Tooltip id="tooltip-icon"
+                                                 title={(document.lastAccessed) ? moment(document.lastAccessed).format('llll') : t('documentTable.neverAccessed')}>
+                                            <div>
+                                                {(document.lastAccessed) ? moment(document.lastAccessed).fromNow() : t('documentTable.neverAccessed')}
+                                            </div>
+                                        </Tooltip>
+                                    </TableCell>
                                     <Hidden xsDown>
                                         <Hidden smDown>
-                                            <TableCell>{moment(document.lastChange).fromNow()}</TableCell>
+                                            <TableCell>
+                                                <Tooltip id="tooltip-icon"
+                                                         title={moment(document.lastChange).format('llll')}>
+                                                    <div>{moment(document.lastChange).fromNow()}</div>
+                                                </Tooltip>
+                                            </TableCell>
                                         </Hidden>
-                                        <TableCell>{moment(document.createdDate).format('L')}</TableCell>
-                                        <TableCell>{document.owner && document.owner.username}</TableCell>
+                                        <TableCell>
+                                            <Tooltip id="tooltip-icon"
+                                                     title={moment(document.createdDate).format('llll')}>
+                                                <div>{moment(document.createdDate).format('L')}</div>
+                                            </Tooltip>
+                                        </TableCell>
+                                        <TableCell>{document.owner}</TableCell>
                                         <Hidden smDown>
-                                            <TableCell>{document.from && document.from.username}</TableCell>
+                                            <TableCell>{(document.from) ? document.from : t('documentTable.notShared')}</TableCell>
                                         </Hidden>
                                     </Hidden>
                                 </TableRow>
@@ -89,8 +108,7 @@ class DocumentList extends React.Component {
                         })}
                         {sortedDocuments.length === 0 && <TableRow>
                             <TableCell colSpan={numOfColumns}>
-                                <Typography align="center">There are no documents</Typography>
-
+                                <Typography align="center">{t('documentTable.no_documents')}</Typography>
                             </TableCell>
                         </TableRow>}
                         {emptyRows > 0 && (
@@ -106,11 +124,13 @@ class DocumentList extends React.Component {
                                 count={this.props.documents.length}
                                 rowsPerPage={this.state.rowsPerPage}
                                 page={this.state.page}
+                                labelDisplayedRows={(data) => t('documentTable.displayedRows', data)}
+                                labelRowsPerPage={t('documentTable.rowsPerPageLabel')}
                                 backIconButtonProps={{
-                                    'aria-label': 'Previous Page',
+                                    'aria-label': t('documentTable.prev_label'),
                                 }}
                                 nextIconButtonProps={{
-                                    'aria-label': 'Next Page',
+                                    'aria-label': t('documentTable.next_label'),
                                 }}
                                 onChangePage={this.handleChangePage}
                                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -123,12 +143,12 @@ class DocumentList extends React.Component {
     }
 }
 
-DocumentList.propTypes = {
+DocumentTable.propTypes = {
     documents: PropTypes.array.isRequired,
 };
 
-DocumentList.defaultProps = {
+DocumentTable.defaultProps = {
     documents: []
 };
 
-export default withStyles(styles)(DocumentList);
+export default translate()(withStyles(styles)(DocumentTable));

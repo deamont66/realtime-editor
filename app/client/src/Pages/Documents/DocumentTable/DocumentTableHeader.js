@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import {TableHead, TableRow, TableCell, TableSortLabel} from 'material-ui/Table';
@@ -6,12 +7,12 @@ import Tooltip from 'material-ui/Tooltip';
 import Hidden from "material-ui/Hidden";
 
 const columnData = [
-    {id: 'title', numeric: false, disablePadding: false, label: 'Title'},
-    {id: 'lastAccessed', numeric: false, disablePadding: false, label: 'Last accessed'},
-    {id: 'lastChange', numeric: false, disablePadding: false, label: 'Last changed'},
-    {id: 'createdDate', numeric: false, disablePadding: false, label: 'Created'},
-    {id: 'owner', numeric: false, disablePadding: false, label: 'Owner'},
-    {id: 'from', numeric: false, disablePadding: false, label: 'Shared by'},
+    {id: 'title', numeric: false, disablePadding: false, label: 'documentTable.header.title'},
+    {id: 'lastAccessed', numeric: false, disablePadding: false, label: 'documentTable.header.lastAccessed'},
+    {id: 'lastChange', numeric: false, disablePadding: false, label: 'documentTable.header.lastChange'},
+    {id: 'createdDate', numeric: false, disablePadding: false, label: 'documentTable.header.createdDate'},
+    {id: 'owner', numeric: false, disablePadding: false, label: 'documentTable.header.owner'},
+    {id: 'from', numeric: false, disablePadding: false, label: 'documentTable.header.from'},
 ];
 
 class DocumentTableHeader extends React.Component {
@@ -21,7 +22,7 @@ class DocumentTableHeader extends React.Component {
     };
 
     render() {
-        const {order, orderBy} = this.props;
+        const {order, orderBy, t} = this.props;
 
         return (
             <TableHead>
@@ -45,7 +46,7 @@ class DocumentTableHeader extends React.Component {
                                             direction={order}
                                             onClick={this.createSortHandler(column.id)}
                                         >
-                                            {column.label}
+                                            {t(column.label)}
                                         </TableSortLabel>
                                     </Tooltip>
                                 </TableCell>
@@ -64,4 +65,4 @@ DocumentTableHeader.propTypes = {
     orderBy: PropTypes.string.isRequired,
 };
 
-export default DocumentTableHeader;
+export default translate()(DocumentTableHeader);

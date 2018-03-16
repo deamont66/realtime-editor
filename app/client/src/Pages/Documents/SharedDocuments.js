@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import axios from '../../Utils/Axios';
 
 import withStyles from 'material-ui/styles/withStyles';
@@ -52,16 +53,16 @@ class SharedDocuments extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
 
         return (
             <div>
                 <div className={classes.root}>
                     <Typography variant="headline" gutterBottom className={classes.headline}>
-                        Shared documents
+                        {t('shared_documents.headline')}
                     </Typography>
                     <Typography variant="subheading" component="p">
-                        This is list of all documents somebody shared directly with you.
+                        {t('shared_documents.subheading')}
                     </Typography>
                 </div>
                 <Paper className={classes.paper} elevation={4}>
@@ -75,4 +76,4 @@ class SharedDocuments extends React.Component {
 
 SharedDocuments.propTypes = {};
 
-export default withStyles(styles)(SharedDocuments);
+export default translate()(withStyles(styles)(SharedDocuments));

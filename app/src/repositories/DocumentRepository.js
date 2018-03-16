@@ -4,6 +4,30 @@ const DocumentInvite = require('../model/DocumentInvite');
 const UserAccess = require('../model/UserAccess');
 const Operation = require('../model/Operation');
 const Message = require('../model/Message');
+const User = require('../model/User');
+
+const Errors = require('../utils/Errors');
+
+
+const getDocumentsDetails = (user, documents) => {
+    return Promise.all(documents.map(document => {
+        return getDocumentDetails(user, document);
+    }));
+};
+
+const getDocumentDetails = (user, document) => {
+    return Promise.all([
+        User.findById(document.owner).select('username').exec(),
+        UserAccess.findOne({user, document}).select('accessTime').exec(),
+        DocumentInvite.findOne({to: user, document}).select('from').populate('from').exec()
+    ]).then(([owner, accessed, invite]) => {
+        const data = document.toJSON();
+        data.owner = owner.username;
+        if (invite) data.from = invite.from.username;
+        if (accessed) data.lastAccessed = accessed.accessTime;
+        return data;
+    });
+};
 
 /**
  * Gets documents by User owner.
@@ -12,10 +36,9 @@ const Message = require('../model/Message');
  */
 const getDocumentsByOwner = (user) => {
     return Document.find({owner: user})
-        .sort('-lastChange')
-        .select('-lastAckContent -settings -shareLinkRights')
-        .populate('owner')
-        .exec();
+        .exec().then((documents) => {
+            return getDocumentsDetails(user, documents);
+        });
 };
 
 /**
@@ -24,18 +47,16 @@ const getDocumentsByOwner = (user) => {
  * @param {User} user
  */
 const getSharedDocumentsByUser = (user) => {
-    return DocumentInvite.find({to:user})
-        .sort('-date')
-        .select('document date from')
-        .populate('document from')
+    return DocumentInvite.find({to: user})
+        .select('document')
+        .populate('document')
         .exec()
         .then((documentInvites) => {
             return documentInvites.map((documentInvite) => {
-                const document = documentInvite.document.toJSON();
-                document.from = documentInvite.from;
-                document.lastAccessed = documentInvite.date;
-                return document;
+                return documentInvite.document;
             })
+        }).then((documents) => {
+            return getDocumentsDetails(user, documents);
         });
 };
 
@@ -46,17 +67,16 @@ const getSharedDocumentsByUser = (user) => {
  * @returns {Promise}
  */
 const getLastDocumentsByUser = (user) => {
-    return UserAccess.find({user:user})
-        .sort('-accessTime')
-        .select('document accessTime')
+    return UserAccess.find({user: user})
+        .select('document')
         .populate('document')
         .exec()
         .then((userAccessArray) => {
             return userAccessArray.map((userAccess) => {
-                const document = userAccess.document.toJSON();
-                document.lastAccessed = userAccess.accessTime;
-                return document;
+                return userAccess.document;
             })
+        }).then((documents) => {
+            return getDocumentsDetails(user, documents);
         });
 };
 
@@ -167,16 +187,19 @@ const updateDocumentShareLinkRights = (document, shareLinkRights) => {
 };
 
 const updateDocumentInvite = (document, from, to, rights) => {
-    return DocumentInvite.findOneAndUpdate({
-        document: document,
-        to: to
-    }, {
-        from: from,
-        rights: rights,
-        date: new Date()
-    }, {
-        upsert: true
-    }).exec();
+    console.log(document.owner, to._id);
+    return (document.owner.equals(to._id))
+        ? Promise.reject(Errors.cannotInviteDocumentOwner)
+        : DocumentInvite.findOneAndUpdate({
+            document: document,
+            to: to
+        }, {
+            from: from,
+            rights: rights,
+            date: new Date()
+        }, {
+            upsert: true
+        }).exec();
 };
 
 const removeDocumentInvite = (document, to) => {
