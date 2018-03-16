@@ -1,52 +1,52 @@
 {
   "appBar": {
     "title": "Realtime Editor",
-    "create_button": "Create new document",
-    "logged_in_as": "Logged in as {{username}}",
-    "settings_button": "Settings",
-    "logout_button": "Logout"
+    "create_button": "Vytvořit nový dokument",
+    "logged_in_as": "Přihlášen jako {{username}}",
+    "settings_button": "Nastavení",
+    "logout_button": "Odhlásit"
   },
   "drawerMenu": {
     "my_documents_item": {
-      "primary": "My documents",
-      "secondary": "Created by me"
+      "primary": "Moje dokumenty",
+      "secondary": "Vytvořenou mnou"
     },
     "shared_documents_item": {
-      "primary": "Shared",
-      "secondary": "Shared with me"
+      "primary": "Sdíleno",
+      "secondary": "Sdíleno se mnou"
     },
     "last_documents_item": {
-      "primary": "Last",
-      "secondary": "Last accessed"
+      "primary": "Poslední",
+      "secondary": "Poslední otevřené"
     },
     "about_item": {
-      "primary": "About"
+      "primary": "O aplikaci"
     },
     "dark_mode": {
-      "primary": "Dark mode",
-      "aria_label": "Toggle dark theme"
+      "primary": "Noční režim",
+      "aria_label": "Přepnout noční režim"
     },
     "language": {
-      "primary": "Language",
-      "aria_label": "Select interface language"
+      "primary": "Jazyk",
+      "aria_label": "Vybrat jazyk aplikace"
     }
   },
   "signUp": {
-    "headline": "Create new account",
-    "submit_button": "Sign Up",
+    "headline": "Vytvořit nový účet",
+    "submit_button": "Vytvořit",
     "sign_in": {
-      "text": "Already have an account?",
-      "link_text": "Sing In"
+      "text": "Již máte vytvořený účet?",
+      "link_text": "Přihlásit se"
     }
   },
   "signIn": {
-    "headline": "Sign In to your account",
-    "remember_label": "Remember Me",
-    "forgot_link_text": "Forgot Password?",
-    "submit_button": "Sign In",
+    "headline": "Přihlásit se do svého účtu",
+    "remember_label": "Zapamatovat",
+    "forgot_link_text": "Zapomněl jste heslo?",
+    "submit_button": "Přihlásit se",
     "sign_up": {
-      "text": "Don't have an account?",
-      "link_text": "Create an account"
+      "text": "Ještě nemáte vytvořený účet?",
+      "link_text": "Vytvořit"
     }
   },
   "my_documents": {

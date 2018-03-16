@@ -1,6 +1,6 @@
 import React from 'react';
 import {withRouter, matchPath} from 'react-router-dom';
-import { translate } from 'react-i18next';
+import {translate} from 'react-i18next';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -8,6 +8,8 @@ import {withStyles} from 'material-ui/styles';
 import List, {ListItem, ListItemIcon, ListItemText, ListItemSecondaryAction} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Switch from 'material-ui/Switch';
+import Select from 'material-ui/Select';
+import {MenuItem} from 'material-ui/Menu';
 import IconButton from 'material-ui/IconButton';
 
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
@@ -17,6 +19,7 @@ import FolderShared from 'material-ui-icons/FolderShared';
 import AccessTime from 'material-ui-icons/AccessTime';
 import Info from 'material-ui-icons/Info';
 import LightbulbOutline from 'material-ui-icons/LightbulbOutline';
+import Language from 'material-ui-icons/Language';
 
 const styles = theme => ({
     drawerHeader: {
@@ -61,6 +64,11 @@ class DrawerMenu extends React.Component {
 
     handleNavLinkClick = (to) => {
         this.props.history.push(to);
+    };
+
+    handleLanguageChange = (evt) => {
+        const lng = evt.target.value;
+        this.props.i18n.changeLanguage(lng);
     };
 
     render() {
@@ -121,6 +129,21 @@ class DrawerMenu extends React.Component {
                                 onChange={this.props.onDarkThemeToggle}
                                 checked={theme.palette.type === 'dark'}
                             />
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemIcon>
+                            <Language/>
+                        </ListItemIcon>
+                        <ListItemText primary={t('drawerMenu.language.primary')}/>
+                        <ListItemSecondaryAction>
+                            <Select aria-label={t('drawerMenu.language.aria_label')}
+                                    onChange={this.handleLanguageChange}
+                                    value={this.props.i18n.languages[0]}
+                            >
+                                <MenuItem value={'en'}>EN</MenuItem>
+                                <MenuItem value={'cs'}>CS</MenuItem>
+                            </Select>
                         </ListItemSecondaryAction>
                     </ListItem>
                 </List>

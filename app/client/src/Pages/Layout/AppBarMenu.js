@@ -87,7 +87,7 @@ class AppBarMenu extends React.Component {
 
                 {!this.props.user && <Button color="inherit" onClick={() => {
                     this.props.history.push('/sign-in')
-                }}>Sign in</Button>}
+                }}>{t('signIn.submit_button')}</Button>}
                 {this.props.user && <div>
                     <Tooltip id="tooltip-icon" title={t('appBar.logged_in_as', {username: this.props.user.username})}>
                         <IconButton
