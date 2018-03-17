@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 
 import ShareMenu from "./ShareMenu";
@@ -11,46 +12,30 @@ class RightMenus extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            activeMenu: -1,
+        this.menus = {
+            share: ShareMenu,
+            chat: ChatMenu,
+            settings: SettingsMenu
         };
-
-        this.menus = [
-            ShareMenu, ChatMenu, SettingsMenu
-        ];
     }
 
     handleMenuClose() {
-        this.setState({
-           activeMenu: -1
-        });
+        this.props.toggleMenu(null);
     }
 
-    handleMenuChange(menuIndex) {
-        this.setState((oldState) => {
-            return {
-                activeMenu: (oldState.activeMenu === menuIndex) ? -1 : menuIndex
-            }
-        });
+    handleMenuChange(menu) {
+        this.props.toggleMenu(menu);
     }
 
     render() {
+        const {menu} = this.props;
 
         return (
             <div className="Comp-RightMenus">
-                <div className="menu-icons">
-                    {this.menus.map((components, index) => {
-                        return React.createElement(components.icon, {
-                            onClick: this.handleMenuChange.bind(this, index),
-                            active: this.state.activeMenu === index,
-                            key: index
-                        });
-                    })}
-                </div>
                 <div className={ClassNames('menu-content', {
-                    'active': this.state.activeMenu !== -1
+                    'active': menu !== null
                 })}>
-                    {this.state.activeMenu !== -1 && React.createElement(this.menus[this.state.activeMenu].menu, {
+                    {menu !== null && React.createElement(this.menus[menu].menu, {
                         ...this.props,
                         onClose: this.handleMenuClose.bind(this),
                     })}
@@ -61,6 +46,8 @@ class RightMenus extends React.Component {
 }
 
 RightMenus.propTypes = {
+    menu: PropTypes.string,
+    toggleMenu: PropTypes.func.isRequired
 };
 
 export default RightMenus;

@@ -6,4 +6,4 @@
     min-width: 100%;
     min-height: 100%; }
     .Comp-Editor .codemirror-editor .CodeMirror {
-      height: 90vh; }
+      min-height: calc(100vh - 64px - 72px); }

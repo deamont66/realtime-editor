@@ -98,6 +98,23 @@
     "title": "Default settings",
     "paragraph": "This settings is used as default for newly created documents. Already existing documents and their current settings will not be changed."
   },
+  "document_title": {
+    "placeholder": "Title",
+    "save_button": "Save title"
+  },
+  "document_status": {
+    "synchronized": "All changes saved",
+    "synchronization": "Pending synchronization",
+    "disconnected": "Connection lost"
+  },
+  "document_clients": {
+    "settings_title": "Open document settings",
+    "chat_title": "Open document chat",
+    "share_title": "Open share menu",
+    "share_text": "Share",
+    "next_clients": "And one more client",
+    "next_clients_plural": "And {{count}} more clients"
+  },
   "document_settings": {
     "theme": "Theme",
     "mode": "Mode (language)",

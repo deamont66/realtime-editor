@@ -8,11 +8,7 @@
         min-height: 100%;
 
         .CodeMirror {
-            height: 90vh;
+            min-height: calc(100vh - 64px - 72px);
         }
     }
-
-    #brace-editor {
-    }
 }
-

@@ -54,6 +54,7 @@ const styles = theme => ({
     },
     content: {
         flexGrow: 1,
+        maxWidth: '100%',
         paddingTop: theme.spacing.unit,
         backgroundColor: theme.palette.background.default,
         [theme.breakpoints.up('md')]: {

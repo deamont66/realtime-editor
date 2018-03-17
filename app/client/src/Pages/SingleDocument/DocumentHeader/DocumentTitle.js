@@ -1,8 +1,52 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
 
-import './DocumentTitle.css';
+import withStyles from 'material-ui/styles/withStyles';
+import Input from 'material-ui/Input';
+import Grid from 'material-ui/Grid';
+import Tooltip from 'material-ui/Tooltip';
+import IconButton from 'material-ui/IconButton';
+import {CircularProgress} from 'material-ui/Progress';
+
+import Save from 'material-ui-icons/Save';
+
+const styles = theme => ({
+    input: {
+        ...theme.typography.headline,
+        '&:not(:hover):before': {
+            backgroundColor: 'transparent',
+        },
+        marginTop: -6,
+    },
+    button: {
+        verticalAlign: 'baseline',
+        position: 'relative',
+        top: 4,
+        height: 39,
+        width: 39
+    },
+    buttonProgress: {
+        marginLeft: -39,
+        position: 'relative',
+        top: 12,
+        verticalAlign: 'baseline',
+    },
+    tooltip: {
+        display: 'inline-block',
+        position: 'relative',
+        width: 39,
+        opacity: 1,
+
+        transition: `all ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`
+    },
+    hidden: {
+        opacity: 0,
+        width: 10,
+        zIndex: -1
+    },
+});
 
 class DocumentTitle extends React.Component {
 
@@ -10,52 +54,80 @@ class DocumentTitle extends React.Component {
         super(props);
 
         this.state = {
-            editingTitle: false,
+            sending: false,
             newTitle: props.title
         };
-
-        this.handleTitleButtonClick = this.handleTitleButtonClick.bind(this);
-        this.handleTitleChange = this.handleTitleChange.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps = (nextProps) => {
+        if (nextProps.title === this.props.title) return;
         this.setState({
-            newTitle: nextProps.title
+            newTitle: nextProps.title,
+            sending: false
         });
-    }
+    };
 
-    handleTitleChange(evt) {
+    handleTitleChange = (evt) => {
         if (this.props.readOnly) return;
         this.setState({
             newTitle: evt.target.value
         });
-    }
+    };
 
-    handleTitleButtonClick() {
+    handleTitleButtonClick = () => {
         if (this.props.readOnly) return;
         this.setState((oldState) => {
-            if (oldState.editingTitle) {
-                this.props.onSettingsChange({title: oldState.newTitle});
+            const newTitle = oldState.newTitle.trim();
+            if (newTitle !== this.props.title && newTitle.length > 0) {
+                this.props.onSettingsChange({title: newTitle});
+                return {
+                    sending: true,
+                };
             }
-            return {
-                editingTitle: !oldState.editingTitle,
-            };
+            return {};
         });
-    }
+    };
+
+    /**
+     * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
+     *
+     * @param {String} text The text to be rendered.
+     * @param {Number} fontSize
+     *
+     * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+     */
+    getTextWidth = (text, fontSize) => {
+        // re-use canvas object for better performance
+        if (!this.canvas) this.canvas = document.createElement("canvas");
+        const context = this.canvas.getContext("2d");
+        context.font = fontSize + " " + this.props.theme.typography.fontFamily;
+        const metrics = context.measureText(text);
+        return metrics.width;
+    };
 
     render() {
+        const {classes, t} = this.props;
+
+        const width = Math.max(100, this.getTextWidth(this.state.newTitle, this.props.theme.typography.headline.fontSize) + 5);
+
         return (
-            <div className="Comp-DocumentTitle">
-                {!this.state.editingTitle
-                && <h1 onClick={this.handleTitleButtonClick}>{this.props.title}</h1>}
-
-                {this.state.editingTitle
-                && <input type="text" value={this.state.newTitle} onChange={this.handleTitleChange}/>}
-
-                <button onClick={this.handleTitleButtonClick} title={this.state.editingTitle ? 'Save title' : 'Edit title'}>
-                    <FontAwesomeIcon icon="edit"/>
-                    <span className="sr-only">{this.state.editingTitle ? 'Save title' : 'Edit title'}</span>
-                </button>
+            <div style={{display: 'inline-block'}}>
+                <Input value={this.state.newTitle}
+                       style={{width: width}}
+                       className={classes.input} margin={'none'}
+                       placeholder={t('document_title.placeholder')}
+                       onChange={this.handleTitleChange}
+                />
+                <Tooltip title={t('document_title.save_button')} placement="bottom"
+                         className={classNames(classes.tooltip, {[classes.hidden]: this.state.newTitle === this.props.title})}>
+                    <div style={{display: 'inline-block'}}>
+                        <IconButton onClick={this.handleTitleButtonClick} color={"secondary"}
+                                    className={classes.button}>
+                            <Save/>
+                        </IconButton>
+                        {this.state.sending && <CircularProgress size={40} className={classes.buttonProgress}/>}
+                    </div>
+                </Tooltip>
             </div>
         );
     }
@@ -67,7 +139,6 @@ DocumentTitle.propTypes = {
     readOnly: PropTypes.bool.isRequired,
 };
 
-DocumentTitle.defaultProps = {
-};
+DocumentTitle.defaultProps = {};
 
-export default DocumentTitle;
+export default translate()(withStyles(styles, {withTheme: true})(DocumentTitle));

@@ -8,7 +8,7 @@ i18n.use(XHR)
     .init({
         fallbackLng: 'en',
         load: 'languageOnly',
-        debug: false,
+        debug: true,
 
         interpolation: {
             escapeValue: false, // not needed for react!!

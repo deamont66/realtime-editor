@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import {UnControlled as CodeMirror} from 'react-codemirror2';
 
+import Grid from 'material-ui/Grid';
+
 import EditorModes from '../../../Utils/EditorModes';
 import EditorThemes from '../../../Utils/EditorThemes';
 
@@ -27,7 +29,7 @@ class Editor extends React.Component {
 
     render() {
         return (
-            <div className={'Comp-Editor'} style={{
+            <Grid item xs={12} sm className={'Comp-Editor'} style={{
                 fontSize: this.props.settings.fontSize,
                 display: (this.props.visible) ? 'block' : 'none'
             }}>
@@ -57,7 +59,7 @@ class Editor extends React.Component {
                         // this handler is required by react-codemirror2 plugin
                     }}
                 />
-            </div>
+            </Grid>
         );
     }
 }
