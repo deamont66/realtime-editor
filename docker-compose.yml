@@ -30,7 +30,7 @@ services:
       - ./app/client/src:/app/client/src
       - ./app/.env:/app/.env
     environment:
-          - SERVER_PORT=3001
+      - SERVER_PORT=3001
     ports:
       - "3000:3000"
       - "3001:3001"
