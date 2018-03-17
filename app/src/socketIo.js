@@ -1,12 +1,7 @@
 const sharedSession = require("express-socket.io-session");
 const passportSocketIo = require('passport.socketio');
 
-const DocumentSocketIOServer = require('./editor/DocumentSocketIOServer');
 const RoomList = require('./editor/RoomList');
-
-const roomList = [];
-
-const defaultText = 'Hello world!';
 
 const initSessionOnNamespace = (io, session) => {
     io.use(sharedSession(session.session, {
@@ -16,7 +11,11 @@ const initSessionOnNamespace = (io, session) => {
     io.use(passportSocketIo.authorize({
         key: 'connect.sid',
         secret: process.env.SESSION_SECRET,
-        store: session.sessionStore
+        store: session.sessionStore,
+        fail: (data, message, error, accept) => {
+            // allow connection even when not authorized
+            accept(null, false);
+        }
     }));
 };
 

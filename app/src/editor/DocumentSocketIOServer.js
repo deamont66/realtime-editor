@@ -70,9 +70,11 @@ class DocumentSocketIOServer extends DocumentServer {
 
         socket.to(this.document._id).emit('set_name', socket.id, this.getClient(socket).name);
 
-        DocumentRepository.updateUserAccess(this.document, socket.request.user).catch((err) => {
-            debug(err);
-        });
+        if(socket.request.user.logged_in) {
+            DocumentRepository.updateUserAccess(this.document, socket.request.user).catch((err) => {
+                debug(err);
+            });
+        }
 
         Promise.all([
             DocumentVoter.getAllowedOperations(socket.request.user, this.document),
@@ -90,7 +92,7 @@ class DocumentSocketIOServer extends DocumentServer {
                 clients: this.users,
                 settings: Object.assign({title: this.document.title}, this.document.settings.toJSON()),
                 operations: operations,
-                messages: messages,
+                messages: operations.includes('chat') ? messages : [],
             });
         });
     }

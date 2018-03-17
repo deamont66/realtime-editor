@@ -17,13 +17,6 @@ class RoomList {
             const documentId = socket.handshake.query.documentId;
             debug('Incoming socket:', socket.handshake.address, documentId, socket.request.user._id);
 
-            if(!socket.request.user.logged_in) {
-                debug('Disconnected: Not logged in');
-                socket.emit('disconnect_error', 401);
-                socket.disconnect(true);
-                return;
-            }
-
             this.getDocumentServer(documentId).then((server) => {
                 socket.on('join', (cb) => {
                     debug('Joining:', documentId, socket.request.user._id);

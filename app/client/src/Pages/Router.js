@@ -52,10 +52,8 @@ class Router extends React.Component {
                         )}/>
 
                         <Route path={'/document/:documentId'} render={(props) => (
-                            this.props.user !== null ? <SingleDocument {...props} user={this.props.user}/> :
-                                <Redirect to={'/sign-in'}/>
+                            <SingleDocument {...props} user={this.props.user}/>
                         )}/>
-
 
                         <Route path={'/settings'} render={(props) => (
                             this.props.user !== null ? <Settings {...props} user={this.props.user}/> :

@@ -1,21 +1,14 @@
 import React from 'react';
-import io from "socket.io-client";
+import {Redirect} from 'react-router-dom';
 
 import withStyles from 'material-ui/styles/withStyles';
 
 import {LinearProgress} from 'material-ui/Progress';
 
 import Editor from "./Editor/Editor";
-import DocumentError from "./DocumentError";
 import RightMenus from "./RightMenus/RightMenus";
 import DocumentHeader from "./DocumentHeader/DocumentHeader";
 import Error404 from "../Errors/Error404";
-
-import EditorClient from "../../OperationalTransformation/EditorClient";
-import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
-import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
-
-import createColor from '../../Utils/ColorGenerator';
 
 import './SingleDocument.css';
 import ClientSocket from "./ClientSocket";
@@ -85,7 +78,7 @@ class SingleDocument extends React.Component {
             if (this.state.error === 404) {
                 return <Error404/>
             }
-            return <DocumentError error={this.state.error}/>;
+            return <Redirect to={'/sign-in'}/>;
         }
 
         return (

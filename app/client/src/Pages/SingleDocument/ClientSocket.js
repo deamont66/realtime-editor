@@ -5,6 +5,7 @@ import EditorClient from "../../OperationalTransformation/EditorClient";
 import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
 
 class ClientSocket {
+    editorClient = null;
 
     constructor(documentId, onStateChange) {
         this.documentId = documentId;
@@ -55,7 +56,6 @@ class ClientSocket {
         });
 
         this.socket.on('chat_message', (messageObj) => {
-
             this.addChatMessage(messageObj);
         });
     }
