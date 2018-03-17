@@ -5,7 +5,6 @@ import classNames from 'classnames';
 
 import withStyles from 'material-ui/styles/withStyles';
 import Input from 'material-ui/Input';
-import Grid from 'material-ui/Grid';
 import Tooltip from 'material-ui/Tooltip';
 import IconButton from 'material-ui/IconButton';
 import {CircularProgress} from 'material-ui/Progress';

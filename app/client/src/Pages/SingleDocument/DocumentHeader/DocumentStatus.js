@@ -1,12 +1,9 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 import withStyles from 'material-ui/styles/withStyles';
 
-import Grid from 'material-ui/Grid';
 import Tooltip from 'material-ui/Tooltip';
 import Typography from 'material-ui/Typography';
 

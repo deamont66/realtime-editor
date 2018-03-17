@@ -7,17 +7,13 @@ import './RightMenus.css';
 import ChatMenu from "./ChatMenu";
 import SettingsMenu from "./SettingsMenu";
 
+const MENUS = {
+    share: ShareMenu,
+    chat: ChatMenu,
+    settings: SettingsMenu
+};
+
 class RightMenus extends React.Component {
-
-    constructor() {
-        super();
-
-        this.menus = {
-            share: ShareMenu,
-            chat: ChatMenu,
-            settings: SettingsMenu
-        };
-    }
 
     handleMenuClose() {
         this.props.toggleMenu(null);
@@ -32,10 +28,10 @@ class RightMenus extends React.Component {
 
         return (
             <div className="Comp-RightMenus">
-                <div className={ClassNames('menu-content', {
+                <div className={ClassNames('menu-content',{
                     'active': menu !== null
                 })}>
-                    {menu !== null && React.createElement(this.menus[menu].menu, {
+                    {menu !== null && React.createElement(MENUS[menu], {
                         ...this.props,
                         onClose: this.handleMenuClose.bind(this),
                     })}

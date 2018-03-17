@@ -13,12 +13,6 @@ import UserStore from './Stores/UserStore';
 
 import Loading from "./Components/Loading";
 
-import fontAwesome from '@fortawesome/fontawesome';
-import brands from '@fortawesome/fontawesome-free-brands';
-import solids from '@fortawesome/fontawesome-free-solid';
-
-fontAwesome.library.add(brands, solids);
-
 class App extends Component {
 
     constructor() {
