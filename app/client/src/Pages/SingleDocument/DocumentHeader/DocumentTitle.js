@@ -25,12 +25,14 @@ class DocumentTitle extends React.Component {
     }
 
     handleTitleChange(evt) {
+        if (this.props.readOnly) return;
         this.setState({
             newTitle: evt.target.value
         });
     }
 
     handleTitleButtonClick() {
+        if (this.props.readOnly) return;
         this.setState((oldState) => {
             if (oldState.editingTitle) {
                 this.props.onSettingsChange({title: oldState.newTitle});
@@ -61,7 +63,8 @@ class DocumentTitle extends React.Component {
 
 DocumentTitle.propTypes = {
     onSettingsChange: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    readOnly: PropTypes.bool.isRequired,
 };
 
 DocumentTitle.defaultProps = {

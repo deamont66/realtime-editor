@@ -37,7 +37,11 @@ module.exports = {
         });
     },
     deleteDocument: (req, res, next) => {
-        DocumentRepository.removeDocumentById(req.params.documentId).then(() => {
+        DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
+            return DocumentVoter.can('remove', req.user, document).then(() => {
+                return DocumentRepository.removeDocument(document);
+            });
+        }).then(() => {
             res.sendStatus(204);
         }).catch((err) => {
             next(err);
@@ -46,8 +50,10 @@ module.exports = {
 
     getMessages: (req, res, next) => {
         DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
-            return MessageRepository.getLastMessages(document, req.query.lastDate, req.query.number).then((messages) => {
-                return messages;
+            return DocumentVoter.can('chat', req.user, document).then(() => {
+                return MessageRepository.getLastMessages(document, req.query.lastDate, req.query.number).then((messages) => {
+                    return messages;
+                });
             });
         }).then((messages) => {
             res.json({
@@ -60,7 +66,9 @@ module.exports = {
     },
     postCreateMessage: (req, res, next) => {
         DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
-            return MessageRepository.createMessage(document, req.user, req.body.message);
+            return DocumentVoter.can('chat', req.user, document).then(() => {
+                return MessageRepository.createMessage(document, req.user, req.body.message);
+            });
         }).then(() => {
             res.json({
                 status: 'success'

@@ -10,7 +10,6 @@ import RightMenus from "./RightMenus/RightMenus";
 import DocumentHeader from "./DocumentHeader/DocumentHeader";
 import Error404 from "../Errors/Error404";
 
-import './SingleDocument.css';
 import ClientSocket from "./ClientSocket";
 
 const styles = theme => ({
@@ -75,23 +74,25 @@ class SingleDocument extends React.Component {
         }
 
         if (this.state.error !== null) {
-            if (this.state.error === 404) {
-                return <Error404/>
+            if (this.state.error === 401) {
+                return <Redirect to={'/sign-in'}/>;
             }
-            return <Redirect to={'/sign-in'}/>;
+            return <Error404/>;
         }
 
         return (
             <div className={classes.root}>
                 <DocumentHeader disconnected={this.state.disconnected} clientState={this.state.clientState}
-                                title={this.state.settings.title}
+                                title={this.state.settings.title} allowedOperations={this.state.allowedOperations}
                                 onSettingsChange={this.clientSocket.handleSettingsChange}
                                 clients={this.state.clients}
                 />
                 <div className="editor-body">
                     <Editor settings={this.state.settings}
                             visible={this.state.connected !== false}
-                            onEditorDidMount={this.clientSocket.setEditor}/>
+                            onEditorDidMount={this.clientSocket.setEditor}
+                            readOnly={!this.state.allowedOperations.includes('write')}
+                    />
 
                     {this.state.connected &&
                     <RightMenus documentId={this.documentId}

@@ -35,15 +35,16 @@ class DocumentVoter {
     static getAllowedOperations(user, document) {
         return new Promise((resolve) => {
             let level = 0;
+            const logged_in = (user && user.logged_in !== false);
 
             // owner can do everything or use default public link rights
-            if(user.logged_id && document.owner.equals(user._id)) {
+            if(logged_in && document.owner.equals(user._id)) {
                 level = 5;
             } else {
                 level = document.shareLinkRights;
             }
             // if we already have level 4 and more, we cannot get any higher and stop
-            if(!user.logged_id || level >= 4) {
+            if(!logged_in || level >= 4) {
                 resolve(level);
                 return;
             }

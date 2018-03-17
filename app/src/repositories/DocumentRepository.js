@@ -107,17 +107,15 @@ const createDocument = (owner) => {
     });
 };
 
-const removeDocumentById = (documentId) => {
-    return getDocumentById(documentId).then((document) => {
-        return Promise.all([
-            UserAccess.find({document: document}).remove().exec(),
-            DocumentInvite.find({document: document}).remove().exec(),
-            Message.find({document: document}).remove().exec(),
-            Operation.find({document: document}).remove().exec(),
-            DocumentSettings.findOne({_id: document.settings}).remove().exec(),
-            document.remove(),
-        ]);
-    });
+const removeDocument = (document) => {
+    return Promise.all([
+        UserAccess.find({document: document}).remove().exec(),
+        DocumentInvite.find({document: document}).remove().exec(),
+        Message.find({document: document}).remove().exec(),
+        Operation.find({document: document}).remove().exec(),
+        DocumentSettings.findOne({_id: document.settings}).remove().exec(),
+        document.remove(),
+    ]);
 };
 
 /**
@@ -215,7 +213,7 @@ module.exports = {
     getLastDocumentsByUser: getLastDocumentsByUser,
     getDocumentById: getDocumentById,
     createDocument: createDocument,
-    removeDocumentById: removeDocumentById,
+    removeDocument: removeDocument,
     updateLastContent: updateLastContent,
     updateSettings: updateSettings,
     updateUserAccess: updateUserAccess,

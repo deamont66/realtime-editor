@@ -61,7 +61,7 @@ class DocumentSocketIOServer extends DocumentServer {
         });
 
         socket.on('chat_message', (message, callback) => {
-           this.onMessage(socket, message, callback);
+            this.onMessage(socket, message, callback);
         });
 
         socket.on('disconnect', () => {
@@ -70,7 +70,7 @@ class DocumentSocketIOServer extends DocumentServer {
 
         socket.to(this.document._id).emit('set_name', socket.id, this.getClient(socket).name);
 
-        if(socket.request.user.logged_in) {
+        if (socket.request.user.logged_in) {
             DocumentRepository.updateUserAccess(this.document, socket.request.user).catch((err) => {
                 debug(err);
             });
@@ -80,7 +80,7 @@ class DocumentSocketIOServer extends DocumentServer {
             DocumentVoter.getAllowedOperations(socket.request.user, this.document),
             MessageRepository.getLastMessages(this.document)
         ]).then(([operations, messages]) => {
-            if(!operations.includes('view')) {
+            if (!operations.includes('view')) {
                 debug('Disconnected: Insufficient permission');
                 socket.emit('disconnect_error', 404);
                 socket.disconnect(true);
@@ -129,7 +129,7 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {Selection} selectionJSON - new serialized Selection range from client
      */
     onSelection(socket, selectionJSON) {
-        const selection =  selectionJSON && Selection.fromJSON(selectionJSON);
+        const selection = selectionJSON && Selection.fromJSON(selectionJSON);
         this.getClient(socket).selection = selection;
         socket.to(this.document._id).emit('selection', socket.id, selection);
     }
@@ -141,16 +141,24 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {Object} settings - DocumentSettings object with title field
      */
     onSettings(socket, settings) {
-        socket.nsp.to(this.document._id).emit('settings', settings);
-        DocumentRepository.updateSettings(this.document, settings).then((document) => {
-            this.document = document;
+        DocumentVoter.can('write', socket.request.user, this.document).then(() => {
+            socket.nsp.to(this.document._id).emit('settings', settings);
+            DocumentRepository.updateSettings(this.document, settings).then((document) => {
+                this.document = document;
+            });
+        }).catch(() => {
+            socket.emit('disconnect_error', 403);
         });
     }
 
     onMessage(socket, message, callback) {
-        MessageRepository.createMessage(this.document, socket.request.user, message).then((messageObj) => {
-            socket.to(this.document._id).emit('chat_message', messageObj);
-            callback(messageObj);
+        DocumentVoter.can('chat', socket.request.user, this.document).then(() => {
+            MessageRepository.createMessage(this.document, socket.request.user, message).then((messageObj) => {
+                socket.to(this.document._id).emit('chat_message', messageObj);
+                callback(messageObj);
+            });
+        }).catch(() => {
+            socket.emit('disconnect_error', 403);
         });
     }
 
@@ -161,11 +169,15 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {TextOperation} operation - new operation to store
      */
     onDocumentChange(socket, operation) {
-        const revision = this.getRevision();
-        DocumentRepository.updateLastContent(this.document, this.value).then((document) => {
-            this.document = document;
+        DocumentVoter.can('write', socket.request.user, this.document).then(() => {
+            const revision = this.getRevision();
+            DocumentRepository.updateLastContent(this.document, this.value).then((document) => {
+                this.document = document;
+            });
+            OperationRepository.saveOperation(this.document, socket.request.user, revision, operation);
+        }).catch(() => {
+            socket.emit('disconnect_error', 403);
         });
-        OperationRepository.saveOperation(this.document, socket.request.user, revision, operation);
     }
 
     /**

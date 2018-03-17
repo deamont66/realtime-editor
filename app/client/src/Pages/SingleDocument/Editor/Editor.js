@@ -46,7 +46,7 @@ class Editor extends React.Component {
                         lineWrapping: this.props.settings.lineWrapping,
                         lineNumbers: this.props.settings.lineNumbers,
 
-                        readOnly: this.props.settings.readOnly,
+                        readOnly: this.props.readOnly,
                     }}
                     editorDidMount={(editor) => {
                         this.props.onEditorDidMount(editor);
@@ -66,6 +66,7 @@ Editor.propTypes = {
     onEditorDidMount: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     visible: PropTypes.bool.isRequired,
+    readOnly: PropTypes.bool.isRequired,
 };
 
 Editor.defaultProps = {

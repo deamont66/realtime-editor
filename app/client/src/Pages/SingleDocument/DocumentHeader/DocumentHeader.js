@@ -8,9 +8,11 @@ class DocumentHeader extends React.Component {
 
     render() {
         return (
-            <div className="Comp-DocumentHeader">
+            <div>
                 <DocumentTitle title={this.props.title}
-                                   onSettingsChange={this.props.onSettingsChange}/>
+                               onSettingsChange={this.props.onSettingsChange}
+                               readOnly={!this.props.allowedOperations.includes('write')}
+                />
 
                 <DocumentStatus disconnected={this.props.disconnected} state={this.props.clientState}/>
 
@@ -26,6 +28,7 @@ DocumentHeader.propTypes = {
 
     title: PropTypes.string.isRequired,
     onSettingsChange: PropTypes.func.isRequired,
+    allowedOperations: PropTypes.array.isRequired,
 
     clients: PropTypes.array.isRequired
 };

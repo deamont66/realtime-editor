@@ -10,16 +10,16 @@ router.get('/shared', userValidator.validateLoggedIn, controller.getSharedDocume
 
 router.post('/', userValidator.validateLoggedIn, controller.postCreateDocument);
 
-router.get('/:documentId/messages', userValidator.validateLoggedIn, controller.getMessages);
-router.post('/:documentId/messages', userValidator.validateLoggedIn, controller.postCreateMessage);
+router.get('/:documentId/messages', controller.getMessages);
+router.post('/:documentId/messages', controller.postCreateMessage);
 
-router.get('/:documentId/rights', userValidator.validateLoggedIn, controller.getRights);
-router.put('/:documentId/rights', userValidator.validateLoggedIn, controller.putLinkRights);
+router.get('/:documentId/rights', controller.getRights);
+router.put('/:documentId/rights', controller.putLinkRights);
 
-router.put('/:documentId/rights/invite', userValidator.validateLoggedIn, controller.putUserRights);
-router.delete('/:documentId/rights/:toUserID', userValidator.validateLoggedIn, controller.deleteUserRights);
+router.put('/:documentId/rights/invite', controller.putUserRights);
+router.delete('/:documentId/rights/:toUserID', controller.deleteUserRights);
 
-router.delete('/:documentId', userValidator.validateLoggedIn, controller.deleteDocument);
+router.delete('/:documentId', controller.deleteDocument);
 
 module.exports = router;
 
