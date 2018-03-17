@@ -1,12 +1,16 @@
 import React from 'react';
 import io from "socket.io-client";
 
+import withStyles from 'material-ui/styles/withStyles';
+
+import {LinearProgress} from 'material-ui/Progress';
+
 import Editor from "./Editor/Editor";
 import DocumentError from "./DocumentError";
 import RightMenus from "./RightMenus/RightMenus";
 import DocumentHeader from "./DocumentHeader/DocumentHeader";
+import Error404 from "../Errors/Error404";
 
-import Loading from "../../Components/Loading";
 import EditorClient from "../../OperationalTransformation/EditorClient";
 import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
 import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
@@ -14,6 +18,15 @@ import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
 import createColor from '../../Utils/ColorGenerator';
 
 import './SingleDocument.css';
+import ClientSocket from "./ClientSocket";
+
+const styles = theme => ({
+    root: {
+        [theme.breakpoints.up('md')]: {
+            margin: -theme.spacing.unit * 3,
+        }
+    }
+});
 
 class SingleDocument extends React.Component {
 
@@ -40,6 +53,7 @@ class SingleDocument extends React.Component {
                 lineWrapping: true,
                 lineNumbers: true,
             },
+            allowedOperations: [],
             messages: [],
         };
 
@@ -47,129 +61,51 @@ class SingleDocument extends React.Component {
     }
 
     componentDidMount() {
-        this.socket = io('/documents', {
-            path: '/api/socket.io',
-            query: 'documentId=' + this.documentId
-        });
-
-        this.socket.on('connect', () => {
-            this.setState({
-                connected: true,
-                disconnected: false
-            });
-
-            this.socket.emit('join', (obj) => {
-                console.log(obj);
-                this.init(obj.value, obj.revision, obj.clients, this.editorClient ? this.editorClient.serverAdapter : new SocketIOAdapter(this.socket));
-                this.onSettings(obj.settings);
-
-                this.setState({
-                    messages: []
-                }, () => {
-                    obj.messages.forEach((message) => this.addChatMessage(message));
-                });
-            });
-        });
-
-        this.socket.on('disconnect', () => {
-            this.setState({
-                disconnected: true
-            })
-        });
-
-        this.socket.on('settings', (settings) => {
-            this.onSettings(settings);
-        });
-
-        this.socket.on('chat_message', (messageObj) => {
-
-            this.addChatMessage(messageObj);
-        });
+        this.clientSocket = new ClientSocket(this.documentId, this.handleStateChange);
+        this.clientSocket.connect();
     }
 
     componentWillUnmount() {
-        this.socket.close();
+        this.clientSocket.close();
     }
 
-    handleEditorMount(editor) {
-        this.editor = editor;
-    }
+    handleStateChange = (newState, callback) => {
+        this.setState(newState, callback);
+    };
 
-    init(str, revision, clients, serverAdapter) {
-        if (this.editorClient) {
-            this.editorClient.editorAdapter.detach();
-        }
-        this.editor.setValue(str);
-        this.editorClient = new EditorClient(
-            revision, clients, serverAdapter, new CodeMirrorAdapter(this.editor)
-        );
-        this.editorClient.emitter.on('stateChange', (state) => {
-            this.setState({
-                clientState: state
-            });
-        });
-        this.editorClient.emitter.on('clientsChanged', (clients) => {
-            this.setState({
-                clients: Object.keys(clients).map((clientId) => {
-                    return Object.assign({
-                        id: clientId
-                    }, clients[clientId]);
-                })
-            });
-        });
-    }
-
-    onSettings(settings) {
-        this.setState({
-            settings: settings
-        })
-    }
-
-    handleSettingsChange(settings) {
-        this.socket.emit('settings', Object.assign({}, this.state.settings, settings));
-    }
-
-    addChatMessage(messageObj) {
-        messageObj.user.color = createColor(messageObj.user.username);
-        this.setState((oldState) => {
-            return {
-                messages: [...oldState.messages, messageObj]
-            };
-        });
-    }
-
-    handleMessageSubmit(message, callback) {
-        this.socket.emit('chat_message', message, (messageObj) => {
-            this.addChatMessage(messageObj);
-            callback();
-        });
-    }
 
     render() {
-        if (!this.state.connected)
-            return <Loading fullScreen={false}/>;
+        const {classes} = this.props;
 
-        if (this.state.error !== null)
+        if (!this.state.connected) {
+            return <LinearProgress/>;
+        }
+
+        if (this.state.error !== null) {
+            if (this.state.error === 404) {
+                return <Error404/>
+            }
             return <DocumentError error={this.state.error}/>;
+        }
 
         return (
-            <div className="Comp-SingleDocument">
+            <div className={classes.root}>
                 <DocumentHeader disconnected={this.state.disconnected} clientState={this.state.clientState}
                                 title={this.state.settings.title}
-                                onSettingsChange={this.handleSettingsChange.bind(this)}
+                                onSettingsChange={this.clientSocket.handleSettingsChange}
                                 clients={this.state.clients}
                 />
                 <div className="editor-body">
                     <Editor settings={this.state.settings}
                             visible={this.state.connected !== false}
-                            onEditorDidMount={this.handleEditorMount.bind(this)}/>
+                            onEditorDidMount={this.clientSocket.setEditor}/>
 
                     {this.state.connected &&
                     <RightMenus documentId={this.documentId}
                                 settings={this.state.settings}
                                 messages={this.state.messages}
-                                onSettingsChange={this.handleSettingsChange.bind(this)}
-                                onMessageSubmit={this.handleMessageSubmit.bind(this)}
+                                onSettingsChange={this.clientSocket.handleSettingsChange}
+                                onMessageSubmit={this.clientSocket.handleMessageSubmit}
                     />}
                 </div>
             </div>
@@ -179,4 +115,4 @@ class SingleDocument extends React.Component {
 
 SingleDocument.propTypes = {};
 
-export default SingleDocument;
+export default withStyles(styles)(SingleDocument);
