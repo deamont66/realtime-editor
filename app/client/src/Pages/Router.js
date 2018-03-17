@@ -12,6 +12,7 @@ import SharedDocuments from "./Documents/SharedDocuments";
 import LastDocuments from "./Documents/LastDocuments";
 import Settings from "./Settings/Settings";
 import Layout from "./Layout/Layout";
+import Error404 from "./Errors/Error404";
 
 class Router extends React.Component {
 
@@ -62,7 +63,7 @@ class Router extends React.Component {
                         )}/>
 
                         <Route render={(props) => (
-                            <Typography>404 Not found</Typography>//<NotFoundPage {...props}/>
+                            <Error404/>
                         )}/>
                     </Switch>
                 </Layout>

@@ -18,8 +18,10 @@ class RoomList {
             debug('Incoming socket:', socket.handshake.address, documentId, socket.request.user._id);
 
             if(!socket.request.user.logged_in) {
-                debug('Disconnected: not logged in');
-                socket.disconnect(true, 'Not logged in');
+                debug('Disconnected: Not logged in');
+                socket.emit('disconnect_error', 401);
+                socket.disconnect(true);
+                return;
             }
 
             this.getDocumentServer(documentId).then((server) => {
@@ -27,9 +29,10 @@ class RoomList {
                     debug('Joining:', documentId, socket.request.user._id);
                     server.addClient(socket, cb);
                 });
-            }).catch((error) => {
-                debug('Disconnected:', error);
-                socket.disconnect(true, error);
+            }).catch(() => {
+                debug('Disconnected: Document not found');
+                socket.disconnect(true);
+                socket.emit('disconnect_error', 404);
             });
         });
     }
@@ -43,13 +46,13 @@ class RoomList {
     getDocumentServer(documentId) {
         return DocumentRepository.getDocumentById(documentId).then((document) => {
             if(!document) {
-                return Promise.reject('document not found')
+                return Promise.reject();
             }
             return Promise.resolve(this.rooms[documentId]).then((server) => {
                 if(!server) {
                     return OperationRepository.getLastOperationsByDocument(documentId).then((operations) => {
                         this.rooms[documentId] = new DocumentSocketIOServer(document, operations);
-                        return this.rooms[documentId]
+                        return this.rooms[documentId];
                     });
                 }
                 return server;
