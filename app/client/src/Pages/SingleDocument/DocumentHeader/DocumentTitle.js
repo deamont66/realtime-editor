@@ -82,8 +82,11 @@ class DocumentTitle extends React.Component {
                 return {
                     sending: true,
                 };
+            } else {
+                return {
+                    newTitle: this.props.title
+                };
             }
-            return {};
         });
     };
 
@@ -100,6 +103,7 @@ class DocumentTitle extends React.Component {
         if (!this.canvas) this.canvas = document.createElement("canvas");
         const context = this.canvas.getContext("2d");
         context.font = fontSize + " " + this.props.theme.typography.fontFamily;
+        console.log(context.font);
         const metrics = context.measureText(text);
         return metrics.width;
     };
@@ -107,12 +111,12 @@ class DocumentTitle extends React.Component {
     render() {
         const {classes, t} = this.props;
 
-        const width = Math.max(100, this.getTextWidth(this.state.newTitle, this.props.theme.typography.headline.fontSize) + 5);
+        const inputWidth = Math.min(Math.max(50, this.getTextWidth(this.state.newTitle || t('document_title.placeholder'), '24px') + 5), window.innerWidth - 120);
 
         return (
             <div style={{display: 'inline-block'}}>
                 <Input value={this.state.newTitle}
-                       style={{width: width}}
+                       style={{width: inputWidth}}
                        className={classes.input} margin={'none'}
                        placeholder={t('document_title.placeholder')}
                        onChange={this.handleTitleChange}

@@ -99,7 +99,7 @@
     "paragraph": "This settings is used as default for newly created documents. Already existing documents and their current settings will not be changed."
   },
   "document_title": {
-    "placeholder": "Title",
+    "placeholder": "Document title",
     "save_button": "Save title"
   },
   "document_status": {
