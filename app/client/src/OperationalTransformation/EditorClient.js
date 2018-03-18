@@ -192,7 +192,16 @@ class EditorClient extends Client {
 
     setState(state) {
         super.setState(state);
-        this.emitter.emit('stateChange', state.constructor.name);
+
+        // This needs to be done because classes are renamed by webpack during build process.
+        let stateName = 'AwaitingWithBuffer';
+        if (state instanceof Client.Synchronized) {
+            stateName = 'Synchronized';
+        } else if (state instanceof Client.AwaitingConfirm) {
+            stateName = 'AwaitingConfirm';
+        }
+
+        this.emitter.emit('stateChange', stateName);
     }
 
     addClient(clientId, clientObj) {
