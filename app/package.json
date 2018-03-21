@@ -6,7 +6,7 @@
   "author": "Jiří Šimeček <simecekjiri95@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"cd client && npm start\"",
+    "start": "concurrently \"nodemon ./bin/www\" \"cd client && npm start\"",
     "build": "cd client && npm run build && rm -rf build-prod && mv build build-prod",
     "server": "node ./bin/www",
     "test": "nyc --reporter=html --all --include=src/**/*.js mocha --recursive"
