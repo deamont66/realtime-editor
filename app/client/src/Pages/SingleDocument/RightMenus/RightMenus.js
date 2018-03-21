@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
+import withStyles from 'material-ui/styles/withStyles';
+
+import Grid from 'material-ui/Grid';
+import IconButton from 'material-ui/IconButton';
+
+import Close from 'material-ui-icons/Close';
 
 import ShareMenu from "./ShareMenu";
-import './RightMenus.css';
 import ChatMenu from "./ChatMenu";
 import SettingsMenu from "./SettingsMenu";
 
@@ -13,30 +18,60 @@ const MENUS = {
     settings: SettingsMenu
 };
 
+const styles = theme => ({
+    root: {
+        flexGrow: 0,
+        borderLeft: `1px solid ${theme.palette.grey[300]}`,
+        padding: theme.spacing.unit,
+        paddingTop: theme.spacing.unit * 2,
+        position: 'relative'
+    },
+    rootNonActive: {
+        padding: 0,
+        borderLeft: 0
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 0,
+        right: theme.spacing.unit,
+        width: 25,
+        Height: 25,
+        zIndex: 20,
+    },
+    contentActive: {
+        width: 300
+    }
+});
+
 class RightMenus extends React.Component {
 
-    handleMenuClose() {
+    handleMenuClose = () => {
         this.props.toggleMenu(null);
-    }
+    };
 
-    handleMenuChange(menu) {
+    handleMenuChange = (menu) => {
         this.props.toggleMenu(menu);
-    }
+    };
 
     render() {
-        const {menu} = this.props;
+        const {classes, menu, ...childProps} = this.props;
 
         return (
-            <div className="Comp-RightMenus">
-                <div className={ClassNames('menu-content',{
-                    'active': menu !== null
+            <Grid className={ClassNames(classes.root, {
+                [classes.rootNonActive]: menu === null
+            })} xs={12} sm item>
+                {menu !== null && <IconButton className={classes.closeButton} onClick={this.handleMenuClose}>
+                    <Close/>
+                </IconButton>}
+                <div className={ClassNames({
+                    [classes.contentActive]: menu !== null
                 })}>
                     {menu !== null && React.createElement(MENUS[menu], {
-                        ...this.props,
+                        ...childProps,
                         onClose: this.handleMenuClose.bind(this),
                     })}
                 </div>
-            </div>
+            </Grid>
         );
     }
 }
@@ -46,4 +81,4 @@ RightMenus.propTypes = {
     toggleMenu: PropTypes.func.isRequired
 };
 
-export default RightMenus;
+export default withStyles(styles)(RightMenus);

@@ -12,7 +12,23 @@ class DocumentVoter {
     }
 
     /**
+     * @param {string} operationType
+     * @param {User} user
+     * @param {Document[]} documents
      *
+     * @returns {Promise<Document[]>} filtered documents
+     */
+    static filter(operationType, user, documents) {
+        return documents.reduce((accPromise, document) => {
+            return accPromise.then(filteredDocuments => {
+                return DocumentVoter.getAllowedOperations(user, document).then((operations) => {
+                    return operations.includes(operationType) ? [...filteredDocuments, document] : filteredDocuments;
+                });
+            });
+        }, Promise.resolve([]));
+    };
+
+    /**
      * @param {string} operationType - Can be one of following: "view", "chat", "write", "share", "remove"
      * @param {User} user
      * @param {Document} document
@@ -26,11 +42,10 @@ class DocumentVoter {
     }
 
     /**
-     *
      * @param {User} user
      * @param {Document} document
      *
-     * @returns {Promise<array>}
+     * @returns {Promise<String[]>}
      */
     static getAllowedOperations(user, document) {
         return new Promise((resolve) => {

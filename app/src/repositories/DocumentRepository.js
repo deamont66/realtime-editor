@@ -7,7 +7,6 @@ const Message = require('../model/Message');
 const User = require('../model/User');
 
 const Errors = require('../utils/Errors');
-const DocumentVoter = require("../security/DocumentVoter");
 
 
 const getDocumentsDetails = (user, documents) => {
@@ -30,22 +29,6 @@ const getDocumentDetails = (user, document) => {
     });
 };
 
-const filterDocumentsByUserRights = (documents, user, operation) => {
-    return new Promise((resolve, reject) => {
-        const filteredDocuments = [];
-        const promises = documents.map((document) => {
-            return DocumentVoter.can(operation, user, document).then(() => {
-                filteredDocuments.push(document);
-            }).catch(() => {
-                // ignore promise rejection
-            });
-        });
-        return Promise.all(promises).then(() => {
-            resolve(filteredDocuments);
-        }, reject);
-    });
-};
-
 /**
  * Gets documents by User owner.
  * @param {User} user
@@ -53,9 +36,7 @@ const filterDocumentsByUserRights = (documents, user, operation) => {
  */
 const getDocumentsByOwner = (user) => {
     return Document.find({owner: user})
-        .exec().then((documents) => {
-            return getDocumentsDetails(user, documents);
-        });
+        .exec();
 };
 
 /**
@@ -72,8 +53,6 @@ const getSharedDocumentsByUser = (user) => {
             return documentInvites.map((documentInvite) => {
                 return documentInvite.document;
             })
-        }).then((documents) => {
-            return getDocumentsDetails(user, documents);
         });
 };
 
@@ -92,10 +71,6 @@ const getLastDocumentsByUser = (user) => {
             return userAccessArray.map((userAccess) => {
                 return userAccess.document;
             });
-        }).then((documents) => {
-            return filterDocumentsByUserRights(documents, user, 'view');
-        }).then((documents) => {
-            return getDocumentsDetails(user, documents);
         });
 };
 
@@ -231,6 +206,7 @@ module.exports = {
     getSharedDocumentsByUser: getSharedDocumentsByUser,
     getLastDocumentsByUser: getLastDocumentsByUser,
     getDocumentById: getDocumentById,
+    getDocumentsDetails: getDocumentsDetails,
     createDocument: createDocument,
     removeDocument: removeDocument,
     updateLastContent: updateLastContent,

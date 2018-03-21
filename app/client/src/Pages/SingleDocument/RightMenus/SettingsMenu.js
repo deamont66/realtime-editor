@@ -1,30 +1,53 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import {withRouter} from 'react-router-dom';
+import {translate} from 'react-i18next';
+import withStyles from 'material-ui/styles/withStyles';
+
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
 
 import axios from '../../../Utils/Axios';
 
 import DocumentSettingsForm from "../../Settings/DefaultDocumentSettings/DocumentSettingsForm";
 
+const styles = theme => ({
+    title: {
+        fontWeight: 500
+    },
+});
+
 class SettingsMenu extends React.Component {
 
-    handleRemoveDocumentClick() {
-        axios.delete('/document/'+this.props.documentId).then(() => {
-            this.props.history.push('/document');
-        }).catch((err) => {
-            console.error(err);
-        })
-    }
+    handleRemoveDocumentClick = () => {
+        if (window.confirm(this.props.t('settings_menu.remove_question'))) {
+            axios.delete('/document/' + this.props.documentId).then(() => {
+                this.props.history.push('/document');
+            }).catch((err) => {
+                console.error(err);
+            });
+        }
+    };
 
     render() {
+        const {classes, t, allowedOperations} = this.props;
+
+        if(!allowedOperations.includes('write')) return null;
+
         return (
             <div className="Comp-ShareMenu">
+                <Typography className={classes.title} variant={'subheading'}
+                            component={'h2'}>{t('settings_menu.title')}</Typography>
                 <DocumentSettingsForm settings={this.props.settings} onSettingsChange={this.props.onSettingsChange}/>
-                <br/>
-                <p>Removing document cannot be taken back!</p>
-                <button onClick={this.handleRemoveDocumentClick.bind(this)}>Remove document</button>
-                <br/>
-                <button onClick={this.props.onClose}>Close</button>
+
+                {allowedOperations.includes('remove') && <div>
+                    <Typography className={classes.title} variant={'subheading'} component={'h3'}
+                                paragraph>{t('settings_menu.remove_title')}</Typography>
+                    <Typography variant={'body1'} paragraph>{t('settings_menu.remove_text')}</Typography>
+
+                    <Button size={'small'} variant={'raised'}
+                            onClick={this.handleRemoveDocumentClick}>{t('settings_menu.remove_button')}</Button>
+                </div>}
             </div>
         );
     }
@@ -35,13 +58,15 @@ SettingsMenu.propTypes = {
     onSettingsChange: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     documentId: PropTypes.string.isRequired,
+    allowedOperations: PropTypes.array.isRequired,
 };
 
 SettingsMenu.defaultProps = {
-    onClose: () => {}
+    onClose: () => {
+    }
 };
 
-export default withRouter(SettingsMenu);
+export default translate()(withRouter(withStyles(styles)(SettingsMenu)));
 
 
 

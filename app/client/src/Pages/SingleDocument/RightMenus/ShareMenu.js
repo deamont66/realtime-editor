@@ -31,6 +31,9 @@ class ShareMenu extends React.Component {
                 shareLinkRights: res.data.shareLinkRights,
                 documentInvites: res.data.documentInvites
             });
+        }).catch(err => {
+            console.error(err);
+            this.props.onClose();
         });
     }
 
@@ -45,8 +48,9 @@ class ShareMenu extends React.Component {
             shareLinkRights: this.state.shareLinkRights
         }).then(() => {
             this.loadRights();
-        }).catch((err) => {
+        }).catch(err => {
             console.error(err);
+            this.props.onClose();
         });
     }
 
@@ -57,9 +61,11 @@ class ShareMenu extends React.Component {
             to: username
         }).then(() => {
             this.loadRights();
-        }).catch((err) => {
+        }).catch(err => {
             if (err.response.status === 404) {
                 console.log('Username not found');
+            } else {
+                this.props.onClose();
             }
             console.error(err.response);
         });
@@ -68,7 +74,7 @@ class ShareMenu extends React.Component {
     handleRemoveUserRights(userId) {
         axios.delete('/document/' + this.props.documentId + '/rights/' + userId).then(() => {
             this.loadRights();
-        }).catch((err) => {
+        }).catch(err => {
             console.error(err);
         });
     }

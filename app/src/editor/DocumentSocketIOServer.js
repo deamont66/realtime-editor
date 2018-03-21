@@ -73,56 +73,62 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {function} responseCallback - join/rejoin response callback
      */
     addClient(socket, responseCallback) {
-        socket.join(this.document._id);
+        DocumentRepository.getDocumentById(this.document).then(document => {
+            socket.join(document._id);
 
-        this.getClient(socket).name = socket.request.user.username || `Anonymous ${getAnimalNameFromSeed(socket.handshake.sessionID)}`;
+            this.getClient(socket).name = socket.request.user.username || `Anonymous ${getAnimalNameFromSeed(socket.handshake.sessionID)}`;
 
-        socket.on('operation', (revision, operation, selection) => {
-            this.onOperation(socket, revision, operation, selection);
-        });
-
-        socket.on('selection', (selection) => {
-            this.onSelection(socket, selection);
-        });
-
-        socket.on('settings', (settings) => {
-            this.onSettings(socket, settings);
-        });
-
-        socket.on('chat_message', (message, callback) => {
-            this.onMessage(socket, message, callback);
-        });
-
-        socket.on('disconnect', () => {
-            this.onDisconnect(socket);
-        });
-
-        socket.to(this.document._id).emit('set_name', socket.id, this.getClient(socket).name);
-
-        if (socket.request.user.logged_in) {
-            DocumentRepository.updateUserAccess(this.document, socket.request.user).catch((err) => {
-                debug(err);
+            socket.on('operation', (revision, operation, selection) => {
+                this.onOperation(socket, revision, operation, selection);
             });
-        }
 
-        Promise.all([
-            DocumentVoter.getAllowedOperations(socket.request.user, this.document),
-            MessageRepository.getLastMessages(this.document)
-        ]).then(([operations, messages]) => {
-            if (!operations.includes('view')) {
-                debug('Disconnected: Insufficient permission');
-                socket.emit('disconnect_error', 404);
-                socket.disconnect(true);
-                return;
+            socket.on('selection', (selection) => {
+                this.onSelection(socket, selection);
+            });
+
+            socket.on('settings', (settings) => {
+                this.onSettings(socket, settings);
+            });
+
+            socket.on('chat_message', (message, callback) => {
+                this.onMessage(socket, message, callback);
+            });
+
+            socket.on('disconnect', () => {
+                this.onDisconnect(socket);
+            });
+
+            socket.to(document._id).emit('set_name', socket.id, this.getClient(socket).name);
+
+            if (socket.request.user.logged_in) {
+                DocumentRepository.updateUserAccess(document, socket.request.user).catch((err) => {
+                    debug(err);
+                });
             }
-            responseCallback({
-                value: this.value,
-                revision: this.getRevision(),
-                clients: this.users,
-                settings: Object.assign({title: this.document.title}, this.document.settings.toJSON()),
-                operations: operations,
-                messages: operations.includes('chat') ? messages : [],
+
+            Promise.all([
+                DocumentVoter.getAllowedOperations(socket.request.user, document),
+                MessageRepository.getLastMessages(this.document)
+            ]).then(([operations, messages]) => {
+                if (!operations.includes('view')) {
+                    debug('Disconnected: Insufficient permission');
+                    socket.emit('disconnect_error', 404);
+                    socket.disconnect(true);
+                    return;
+                }
+                responseCallback({
+                    value: this.value,
+                    revision: this.getRevision(),
+                    clients: this.users,
+                    settings: Object.assign({title: document.title}, document.settings.toJSON()),
+                    operations: operations,
+                    messages: operations.includes('chat') ? messages : [],
+                });
             });
+        }).catch(() => {
+            debug('Disconnected: Not found');
+            socket.emit('disconnect_error', 404);
+            socket.disconnect(true);
         });
     }
 

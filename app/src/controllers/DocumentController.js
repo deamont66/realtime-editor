@@ -6,23 +6,30 @@ const Errors = require('../utils/Errors');
 
 module.exports = {
     getDocuments: (req, res, next) => {
-        DocumentRepository.getDocumentsByOwner(req.user).then((documents) => {
-            res.json(documents);
-        }).catch((err) => {
+        DocumentRepository.getDocumentsByOwner(req.user)
+            .then((documents) => DocumentRepository.getDocumentsDetails(req.user, documents))
+            .then((documents) => {
+                res.json(documents);
+            }).catch((err) => {
             next(err);
         });
     },
     getLastDocuments: (req, res, next) => {
-        DocumentRepository.getLastDocumentsByUser(req.user).then((documents) => {
-            res.json(documents);
-        }).catch((err) => {
+        DocumentRepository.getLastDocumentsByUser(req.user)
+            .then((documents) => DocumentVoter.filter('view', req.user, documents))
+            .then((documents) => DocumentRepository.getDocumentsDetails(req.user, documents))
+            .then((documents) => {
+                res.json(documents);
+            }).catch((err) => {
             next(err);
         });
     },
     getSharedDocuments: (req, res, next) => {
-        DocumentRepository.getSharedDocumentsByUser(req.user).then((documents) => {
-            res.json(documents);
-        }).catch((err) => {
+        DocumentRepository.getSharedDocumentsByUser(req.user)
+            .then((documents) => DocumentRepository.getDocumentsDetails(req.user, documents))
+            .then((documents) => {
+                res.json(documents);
+            }).catch((err) => {
             next(err);
         });
     },

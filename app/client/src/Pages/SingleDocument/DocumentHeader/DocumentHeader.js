@@ -41,7 +41,8 @@ class DocumentHeader extends React.Component {
                     <DocumentStatus disconnected={this.props.disconnected} state={this.props.clientState}/>
                 </Grid>
                 <Grid item xs={12} md className={classes.clientsGrid}>
-                    <DocumentClients clients={this.props.clients} toggleMenu={this.props.toggleMenu}/>
+                    <DocumentClients clients={this.props.clients} toggleMenu={this.props.toggleMenu}
+                                     allowedOperations={this.props.allowedOperations}/>
                 </Grid>
             </Grid>
         );

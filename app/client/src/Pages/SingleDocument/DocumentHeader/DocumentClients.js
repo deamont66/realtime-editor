@@ -47,7 +47,7 @@ const styles = theme => ({
 class DocumentClients extends React.Component {
 
     render() {
-        const {classes, t, toggleMenu} = this.props;
+        const {classes, t, toggleMenu, allowedOperations} = this.props;
 
         const realClients = this.props.clients.filter((s1, pos, arr) => {
             // removes next records with same name (every username will be shown only once)
@@ -59,30 +59,38 @@ class DocumentClients extends React.Component {
 
         return (
             <ul className={classes.root}>
-                <li className={classes.item}>
-                    <Tooltip title={t('document_clients.settings_title')} placement="bottom">
-                        <Button variant="fab" mini className={classNames(classes.avatar, classes.avatarButton)}
-                                onClick={() => toggleMenu('settings')}>
-                            <Settings/>
-                        </Button>
-                    </Tooltip>
-                </li>
-                <li className={classes.item}>
-                    <Tooltip title={t('document_clients.chat_title')} placement="bottom">
-                        <Button variant="fab" mini className={classNames(classes.avatar, classes.avatarButton)}
-                                onClick={() => toggleMenu('chat')}>
-                            <Chat/>
-                        </Button>
-                    </Tooltip>
-                </li>
-                <li className={classes.separator}>&nbsp;</li>
-                {moreCount > 0 && <li className={classes.item}>
-                    <Tooltip title={t('document_clients.next_clients', {count: moreCount})} placement="bottom">
-                        <Avatar className={classes.avatar}>
-                            {moreCount.toString().slice(0, 2).toLocaleUpperCase()}
-                        </Avatar>
-                    </Tooltip>
-                </li>}
+                {allowedOperations.includes('write') && (
+                    <li className={classes.item}>
+                        <Tooltip title={t('document_clients.settings_title')} placement="bottom">
+                            <Button variant="fab" mini className={classNames(classes.avatar, classes.avatarButton)}
+                                    onClick={() => toggleMenu('settings')}>
+                                <Settings/>
+                            </Button>
+                        </Tooltip>
+                    </li>
+                )}
+                {allowedOperations.includes('chat') && (
+                    <li className={classes.item}>
+                        <Tooltip title={t('document_clients.chat_title')} placement="bottom">
+                            <Button variant="fab" mini className={classNames(classes.avatar, classes.avatarButton)}
+                                    onClick={() => toggleMenu('chat')}>
+                                <Chat/>
+                            </Button>
+                        </Tooltip>
+                    </li>
+                )}
+                {(allowedOperations.includes('write') || allowedOperations.includes('chat')) && (
+                    <li className={classes.separator}>&nbsp;</li>
+                )}
+                {moreCount > 0 && (
+                    <li className={classes.item}>
+                        <Tooltip title={t('document_clients.next_clients', {count: moreCount})} placement="bottom">
+                            <Avatar className={classes.avatar}>
+                                {moreCount.toString().slice(0, 2).toLocaleUpperCase()}
+                            </Avatar>
+                        </Tooltip>
+                    </li>
+                )}
                 {realClients.reverse().slice(0, showMaxClients).map((client) => {
                     const name = client.name || t('document_clients.anonymous');
 
@@ -96,15 +104,17 @@ class DocumentClients extends React.Component {
                         </li>
                     )
                 })}
-                <li className={classes.item}>
-                    <Tooltip title={t('document_clients.share_title')} placement="bottom">
-                        <Button variant="raised" color="secondary" size="small"
-                                className={classNames(classes.avatar, classes.sharedButton)}
-                                onClick={() => toggleMenu('share')}>
-                            {t('document_clients.share_text')}
-                        </Button>
-                    </Tooltip>
-                </li>
+                {allowedOperations.includes('share') && (
+                    <li className={classes.item}>
+                        <Tooltip title={t('document_clients.share_title')} placement="bottom">
+                            <Button variant="raised" color="secondary" size="small"
+                                    className={classNames(classes.avatar, classes.sharedButton)}
+                                    onClick={() => toggleMenu('share')}>
+                                {t('document_clients.share_text')}
+                            </Button>
+                        </Tooltip>
+                    </li>
+                )}
             </ul>
         );
     }
@@ -113,6 +123,7 @@ class DocumentClients extends React.Component {
 DocumentClients.propTypes = {
     clients: PropTypes.array.isRequired,
     toggleMenu: PropTypes.func.isRequired,
+    allowedOperations: PropTypes.array.isRequired,
 };
 
 export default translate()(withStyles(styles)(DocumentClients));

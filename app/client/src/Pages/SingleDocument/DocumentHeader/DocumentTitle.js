@@ -103,7 +103,6 @@ class DocumentTitle extends React.Component {
         if (!this.canvas) this.canvas = document.createElement("canvas");
         const context = this.canvas.getContext("2d");
         context.font = fontSize + " " + this.props.theme.typography.fontFamily;
-        console.log(context.font);
         const metrics = context.measureText(text);
         return metrics.width;
     };
@@ -120,6 +119,7 @@ class DocumentTitle extends React.Component {
                        className={classes.input} margin={'none'}
                        placeholder={t('document_title.placeholder')}
                        onChange={this.handleTitleChange}
+                       disableUnderline={this.props.readOnly}
                 />
                 <Tooltip title={t('document_title.save_button')} placement="bottom"
                          className={classNames(classes.tooltip, {[classes.hidden]: this.state.newTitle === this.props.title})}>

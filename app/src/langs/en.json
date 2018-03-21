@@ -115,6 +115,13 @@
     "next_clients": "And one more client",
     "next_clients_plural": "And {{count}} more clients"
   },
+  "settings_menu": {
+    "title": "Document settings",
+    "remove_title": "Remove document",
+    "remove_text": "This operation cannot be taken back.",
+    "remove_question": "Are you sure about permanently removing this document?",
+    "remove_button": "Remove"
+  },
   "document_settings": {
     "theme": "Theme",
     "mode": "Mode (language)",

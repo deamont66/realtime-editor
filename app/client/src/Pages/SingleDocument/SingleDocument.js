@@ -112,6 +112,7 @@ class SingleDocument extends React.Component {
                     <RightMenus documentId={this.documentId}
                                 settings={this.state.settings}
                                 messages={this.state.messages}
+                                allowedOperations={this.state.allowedOperations}
                                 menu={this.state.menu}
                                 toggleMenu={this.handleMenuChange}
                                 onSettingsChange={this.clientSocket.handleSettingsChange}
