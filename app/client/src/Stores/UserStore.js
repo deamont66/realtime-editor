@@ -50,6 +50,7 @@ class UserStore extends EventEmitter {
                 this.emit('value', null);
             }).then(() => {
                 resolve();
+                window.location.reload();
             });
         });
     }

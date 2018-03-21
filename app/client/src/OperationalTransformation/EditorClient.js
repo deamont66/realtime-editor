@@ -208,7 +208,7 @@ class EditorClient extends Client {
         this.clients[clientId] = new OtherClient(
             clientId,
             this.editorAdapter,
-            clientObj.name || clientId,
+            clientObj.name,
             clientObj.selection ? Selection.fromJSON(clientObj.selection) : null
         );
     }
