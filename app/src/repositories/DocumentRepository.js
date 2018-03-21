@@ -7,6 +7,7 @@ const Message = require('../model/Message');
 const User = require('../model/User');
 
 const Errors = require('../utils/Errors');
+const DocumentVoter = require("../security/DocumentVoter");
 
 
 const getDocumentsDetails = (user, documents) => {
@@ -26,6 +27,22 @@ const getDocumentDetails = (user, document) => {
         if (invite) data.from = invite.from.username;
         if (accessed) data.lastAccessed = accessed.accessTime;
         return data;
+    });
+};
+
+const filterDocumentsByUserRights = (documents, user, operation) => {
+    return new Promise((resolve, reject) => {
+        const filteredDocuments = [];
+        const promises = documents.map((document) => {
+            return DocumentVoter.can(operation, user, document).then(() => {
+                filteredDocuments.push(document);
+            }).catch(() => {
+                // ignore promise rejection
+            });
+        });
+        return Promise.all(promises).then(() => {
+            resolve(filteredDocuments);
+        }, reject);
     });
 };
 
@@ -74,7 +91,9 @@ const getLastDocumentsByUser = (user) => {
         .then((userAccessArray) => {
             return userAccessArray.map((userAccess) => {
                 return userAccess.document;
-            })
+            });
+        }).then((documents) => {
+            return filterDocumentsByUserRights(documents, user, 'view');
         }).then((documents) => {
             return getDocumentsDetails(user, documents);
         });
