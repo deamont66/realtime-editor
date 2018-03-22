@@ -51,7 +51,7 @@ class SingleDocument extends React.Component {
             },
             allowedOperations: [],
             messages: [],
-            menu: null,
+            menu: "share",
         };
 
         this.documentId = this.props.match.params.documentId;

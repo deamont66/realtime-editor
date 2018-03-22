@@ -122,6 +122,29 @@
     "remove_question": "Are you sure about permanently removing this document?",
     "remove_button": "Remove"
   },
+  "share_menu": {
+    "title": "Share document"
+  },
+  "link_rights": {
+    "link_title": "Document link",
+    "link_label": "Permanent document link",
+    "link_copied_text": "Copied!",
+    "link_copy_title": "Copy link to clipboard",
+    "open_settings_title": "Toggle link settings",
+    "link_rights_title": "Document link settings",
+    "link_rights_label": "Documents rights (every one have those)",
+    "link_rights_cancel_button": "Reset",
+    "link_rights_save_button": "Save",
+    "link_rights_saved_text": "Saved!"
+  },
+  "document_rights": {
+    "no_access": "No access",
+    "read_access": "Read access",
+    "chat_access": "Chat access",
+    "write_access": "Write access",
+    "share_access": "Share access",
+    "remove_access": "Remove access"
+  },
   "document_settings": {
     "theme": "Theme",
     "mode": "Mode (language)",

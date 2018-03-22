@@ -1,8 +1,8 @@
 module.exports = [
-    {title: 'No access'},
-    {title: 'Read access'},
-    {title: 'Chat access'},
-    {title: 'Write access'},
-    {title: 'Share access'},
-    {title: 'Remove access', assignable: false}
+    {title: 'document_rights.no_access'},
+    {title: 'document_rights.read_access'},
+    {title: 'document_rights.chat_access'},
+    {title: 'document_rights.write_access'},
+    {title: 'document_rights.share_access'},
+    {title: 'document_rights.remove_access', assignable: false}
 ];

@@ -8,9 +8,9 @@ import IconButton from 'material-ui/IconButton';
 
 import Close from 'material-ui-icons/Close';
 
-import ShareMenu from "./ShareMenu";
+import ShareMenu from "./ShareMenu/ShareMenu";
 import ChatMenu from "./ChatMenu";
-import SettingsMenu from "./SettingsMenu";
+import SettingsMenu from "./SettingsMenu/SettingsMenu";
 
 const MENUS = {
     share: ShareMenu,
