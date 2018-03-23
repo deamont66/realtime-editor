@@ -11,7 +11,7 @@ import Input, {InputLabel} from "material-ui/Input";
 import {MenuItem} from "material-ui/Menu";
 import Select from "material-ui/Select";
 
-import Collapse from 'material-ui/es/transitions/Collapse';
+import Collapse from 'material-ui/transitions/Collapse';
 
 import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
 import axios from '../../../../../Utils/Axios';
