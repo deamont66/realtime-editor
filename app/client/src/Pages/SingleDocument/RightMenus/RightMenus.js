@@ -25,7 +25,7 @@ const styles = theme => ({
         padding: theme.spacing.unit,
         paddingTop: theme.spacing.unit * 2,
         position: 'relative',
-        height: 'calc(100vh - 64px - 72px)',
+        maxHeight: 'calc(100vh - 64px - 72px)',
         overflow: 'auto',
         minWidth: 'min-content'
     },
@@ -42,7 +42,9 @@ const styles = theme => ({
         zIndex: 20,
     },
     contentActive: {
-        width: 300
+        [theme.breakpoints.up('sm')]: {
+            width: 300
+        }
     }
 });
 
