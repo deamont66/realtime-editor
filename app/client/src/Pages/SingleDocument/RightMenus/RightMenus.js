@@ -54,20 +54,16 @@ class RightMenus extends React.Component {
         this.props.toggleMenu(null);
     };
 
-    handleMenuChange = (menu) => {
-        this.props.toggleMenu(menu);
-    };
-
     render() {
         const {classes, menu, ...childProps} = this.props;
 
         return (
-            <Grid className={ClassNames(classes.root, {
-                [classes.rootNonActive]: menu === null
-            })} xs={12} sm item>
-                {menu !== null && <IconButton className={classes.closeButton} onClick={this.handleMenuClose}>
-                    <Close/>
-                </IconButton>}
+            <Grid className={ClassNames(classes.root, {[classes.rootNonActive]: menu === null})} xs={12} sm item>
+                {menu !== null && (
+                    <IconButton className={classes.closeButton} onClick={this.handleMenuClose}>
+                        <Close/>
+                    </IconButton>
+                )}
                 <div className={ClassNames({
                     [classes.contentActive]: menu !== null
                 })}>

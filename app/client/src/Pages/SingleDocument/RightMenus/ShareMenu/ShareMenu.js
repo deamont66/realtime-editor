@@ -78,17 +78,6 @@ class ShareMenu extends React.Component {
         );
     }
 
-
-    /*return (
-
-            <hr/>
-            <div>
-
-            </div>
-
-        </div>
-    );*/
-
 }
 
 ShareMenu.propTypes = {
