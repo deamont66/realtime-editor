@@ -34,8 +34,8 @@ function hashCode(string) {
     let hash = 0, i, chr;
     if (string.length === 0) return hash;
     for (i = 0; i < string.length; i++) {
-        chr   = string.charCodeAt(i);
-        hash  = ((hash << 5) - hash) + chr;
+        chr = string.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
     }
     return hash;
@@ -50,6 +50,7 @@ function getAnimalNameFromSeed(seed) {
     return animals[Math.abs(hashCode(seed)) % animals.length];
 }
 
+
 /**
  * Socket.io implementation of EditorServer.
  */
@@ -62,7 +63,7 @@ class DocumentSocketIOServer extends DocumentServer {
     constructor(document, operations) {
         super(document.lastAckContent, operations);
 
-        this.document = document;
+        this.documentId = document._id;
         this.users = {};
     }
 
@@ -73,8 +74,8 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {function} responseCallback - join/rejoin response callback
      */
     addClient(socket, responseCallback) {
-        DocumentRepository.getDocumentById(this.document).then(document => {
-            socket.join(document._id);
+        DocumentRepository.getDocumentById(this.documentId).then(document => {
+            socket.join(this.documentId);
 
             this.getClient(socket).name = socket.request.user.username || `Anonymous ${getAnimalNameFromSeed(socket.handshake.sessionID)}`;
 
@@ -98,7 +99,7 @@ class DocumentSocketIOServer extends DocumentServer {
                 this.onDisconnect(socket);
             });
 
-            socket.to(document._id).emit('set_name', socket.id, this.getClient(socket).name);
+            socket.to(this.documentId).emit('set_name', socket.id, this.getClient(socket).name);
 
             if (socket.request.user.logged_in) {
                 DocumentRepository.updateUserAccess(document, socket.request.user).catch((err) => {
@@ -141,20 +142,25 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {Selection} selectionJSON - new serialized Selection range from client
      */
     onOperation(socket, revision, operationJSON, selectionJSON) {
-        const wrapped = createFromJSON(operationJSON, selectionJSON);
-        if (!wrapped) return;
+        this.getDocumentAndValidateRights('write', socket).then((document) => {
+            const wrapped = createFromJSON(operationJSON, selectionJSON);
+            if (!wrapped) return;
 
-        try {
-            const transformedWrapped = this.receiveOperation(revision, wrapped);
-            socket.emit('ack');
-            socket.to(this.document._id)
-                .emit('operation', socket.id, transformedWrapped.wrapped.toJSON(), transformedWrapped.meta);
+            try {
+                const transformedWrapped = this.receiveOperation(revision, wrapped);
+                socket.emit('ack');
+                socket.to(this.documentId)
+                    .emit('operation', socket.id, transformedWrapped.wrapped.toJSON(), transformedWrapped.meta);
 
-            this.getClient(socket).selection = transformedWrapped.meta;
-            this.onDocumentChange(socket, transformedWrapped.wrapped);
-        } catch (exc) {
-            debug(exc);
-        }
+                this.getClient(socket).selection = transformedWrapped.meta;
+                this.onDocumentChange(socket, document, transformedWrapped.wrapped);
+            } catch (exc) {
+                debug(exc);
+            }
+        }).catch((errorCode) => {
+            socket.emit('disconnect_error', errorCode);
+            socket.disconnect(true);
+        });
     }
 
     /**
@@ -164,9 +170,14 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {Selection} selectionJSON - new serialized Selection range from client
      */
     onSelection(socket, selectionJSON) {
-        const selection = selectionJSON && Selection.fromJSON(selectionJSON);
-        this.getClient(socket).selection = selection;
-        socket.to(this.document._id).emit('selection', socket.id, selection);
+        this.getDocumentAndValidateRights('write', socket).then(() => {
+            const selection = selectionJSON && Selection.fromJSON(selectionJSON);
+            this.getClient(socket).selection = selection;
+            socket.to(this.documentId).emit('selection', socket.id, selection);
+        }).catch((errorCode) => {
+            socket.emit('disconnect_error', errorCode);
+            socket.disconnect(true);
+        });
     }
 
     /**
@@ -176,24 +187,24 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {Object} settings - DocumentSettings object with title field
      */
     onSettings(socket, settings) {
-        DocumentVoter.can('write', socket.request.user, this.document).then(() => {
-            socket.nsp.to(this.document._id).emit('settings', settings);
-            DocumentRepository.updateSettings(this.document, settings).then((document) => {
-                this.document = document;
-            });
-        }).catch(() => {
-            socket.emit('disconnect_error', 403);
+        this.getDocumentAndValidateRights('write', socket).then((document) => {
+            socket.nsp.to(this.documentId).emit('settings', settings);
+            DocumentRepository.updateSettings(document, settings);
+        }).catch((errorCode) => {
+            socket.emit('disconnect_error', errorCode);
+            socket.disconnect(true);
         });
     }
 
     onMessage(socket, message, callback) {
-        DocumentVoter.can('chat', socket.request.user, this.document).then(() => {
-            MessageRepository.createMessage(this.document, socket.request.user, message).then((messageObj) => {
-                socket.to(this.document._id).emit('chat_message', messageObj);
+        this.getDocumentAndValidateRights('chat', socket).then((document) => {
+            MessageRepository.createMessage(document, socket.request.user, message).then((messageObj) => {
+                socket.to(this.documentId).emit('chat_message', messageObj);
                 callback(messageObj);
             });
-        }).catch(() => {
-            socket.emit('disconnect_error', 403);
+        }).catch((errorCode) => {
+            socket.emit('disconnect_error', errorCode);
+            socket.disconnect(true);
         });
     }
 
@@ -201,18 +212,13 @@ class DocumentSocketIOServer extends DocumentServer {
      * Persists document change to DB
      *
      * @param {Socket} socket - socket.io socket instance
+     * @param {Document} document - document instance
      * @param {TextOperation} operation - new operation to store
      */
-    onDocumentChange(socket, operation) {
-        DocumentVoter.can('write', socket.request.user, this.document).then(() => {
-            const revision = this.getRevision();
-            DocumentRepository.updateLastContent(this.document, this.value).then((document) => {
-                this.document = document;
-            });
-            OperationRepository.saveOperation(this.document, socket.request.user, revision, operation);
-        }).catch(() => {
-            socket.emit('disconnect_error', 403);
-        });
+    onDocumentChange(socket, document, operation) {
+        const revision = this.getRevision();
+        DocumentRepository.updateLastContent(document, this.value);
+        OperationRepository.saveOperation(document, socket.request.user, revision, operation);
     }
 
     /**
@@ -231,12 +237,24 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {Socket} socket - socket.io socket instance
      */
     onDisconnect(socket) {
-        if (!Object.keys(socket.server.sockets.adapter.rooms).includes(this.document._id)) {
+        if (!Object.keys(socket.server.sockets.adapter.rooms).includes(this.documentId)) {
             this.emit('empty-room');
         }
 
         delete this.users[socket.id];
-        socket.to(this.document._id).emit('client_left', socket.id);
+        socket.to(this.documentId).emit('client_left', socket.id);
+    }
+
+    getDocumentAndValidateRights(right, socket) {
+        let found = false;
+        return DocumentRepository.getDocumentById(this.documentId).then((document) => {
+            found = true;
+            return DocumentVoter.can(right, socket.request.user, document).then(() => {
+                return document;
+            });
+        }).catch(() => {
+            return Promise.reject(found ? 403 : 404);
+        });
     }
 }
 
