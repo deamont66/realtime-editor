@@ -128,12 +128,13 @@
   "link_rights": {
     "link_title": "Document link",
     "link_label": "Permanent document link",
+    "current_level_title": "Current public link rights",
     "link_copied_text": "Copied!",
     "link_copy_title": "Copy link to clipboard",
     "open_settings_title": "Toggle link settings",
     "link_rights_title": "Document link settings",
     "link_rights_label": "Documents rights (every one have those)",
-    "link_rights_cancel_button": "Reset",
+    "link_rights_cancel_button": "Cancel",
     "link_rights_save_button": "Save",
     "link_rights_saved_text": "Saved!"
   },
@@ -144,6 +145,16 @@
     "write_access": "Write access",
     "share_access": "Share access",
     "remove_access": "Remove access"
+  },
+  "individual_shares": {
+    "title": "Individual invites"
+  },
+  "add_individual_share": {
+    "new_invite_button": "New invite",
+    "username_label": "Username",
+    "rights_label": "Rights",
+    "cancel_button": "Cancel",
+    "invite_button": "Invite"
   },
   "document_settings": {
     "theme": "Theme",
@@ -201,5 +212,14 @@
     "validation": {
       "match": "Fields with new password must match"
     }
+  },
+  "error": {
+    "cannot_invite_owner": "Cannot invite owner",
+    "not_found": "Not found",
+    "user_already_logged_in": "Already logged in",
+    "user_not_logged_in": "Already not logged in",
+    "invalid_parameters": "Invalid parameters",
+    "insufficient_permission": "Insufficient permission",
+    "server_error": "Server error"
   }
 }

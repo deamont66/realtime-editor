@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
+import withStyles from 'material-ui/styles/withStyles';
 
 import Typography from 'material-ui/Typography';
 import Select from 'material-ui/Select';
@@ -10,8 +11,20 @@ import {InputLabel} from "material-ui/Input";
 import {FormControl, FormHelperText} from "material-ui/Form";
 import Collapse from 'material-ui/transitions/Collapse';
 
-import DocumentRightsEnum from "../../../../Utils/DocumentRightsEnum";
-import axios from "../../../../Utils/Axios";
+import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
+import axios from "../../../../../Utils/Axios";
+
+const styles = theme => ({
+    root: {
+        paddingRight: theme.spacing.unit / 2
+    },
+    buttons: {
+        marginBottom: theme.spacing.unit * 2
+    },
+    button: {
+        marginLeft: theme.spacing.unit
+    }
+});
 
 class ShareLinkSettings extends React.Component {
 
@@ -37,34 +50,44 @@ class ShareLinkSettings extends React.Component {
         })
     };
 
-    handleLinkRightsSubmit = () => {
+    handleLinkRightsSubmit = (evt) => {
+        evt.preventDefault();
+
         axios.put('/document/' + this.props.documentId + '/rights', {
             shareLinkRights: this.state.shareLinkRights
         }).then(() => {
             this.props.onReload();
-            this.handleStatus('saved')();
+            this.handleStatus('saved')(() => {
+                this.props.toggleSettingsOpen();
+            });
         }).catch(err => {
             console.error(err);
             this.props.onClose();
         });
     };
 
-    handleStatus = field => () => {
+    handleStatus = field => (cb) => {
         this.setState({
             [field]: true
         }, () => {
             setTimeout(() => this.setState({
                 [field]: false
-            }), 2000);
+            }, cb), 2000);
         })
     };
 
+    handleCancelClick = () =>  {
+        this.props.toggleSettingsOpen();
+        this.props.onReload();
+    };
+
     render() {
-        const {t} = this.props;
+        const {t, classes} = this.props;
 
         return (
-            <Collapse in={this.props.open} mountOnEnter unmountOnExit>
-                <div>
+            <Collapse in={this.props.open} mountOnEnter unmountOnExit className={classes.root}>
+
+                <form onSubmit={this.handleLinkRightsSubmit}>
                     <Typography variant={'subheading'}
                                 component={'h3'}>{t('link_rights.link_rights_title')}</Typography>
                     <FormControl fullWidth>
@@ -81,21 +104,23 @@ class ShareLinkSettings extends React.Component {
                         <FormHelperText>{this.state.saved && t('link_rights.link_rights_saved_text')}</FormHelperText>
                     </FormControl>
 
-                    <Typography component={'div'} align={'right'}>
-                        <Button onClick={this.props.onReload}>
+                    <Typography component={'div'} align={'right'} className={classes.buttons}>
+                        <Button size="small" className={classes.button} onClick={this.handleCancelClick}>
                             {t('link_rights.link_rights_cancel_button')}
                         </Button>
-                        <Button variant={'raised'} color={'secondary'} onClick={this.handleLinkRightsSubmit}>
+                        <Button size="small" variant={'raised'} color={'secondary'} className={classes.button}
+                                type="submit">
                             {t('link_rights.link_rights_save_button')}
                         </Button>
                     </Typography>
-                </div>
+                </form>
             </Collapse>
         );
     }
 }
 
 ShareLinkSettings.propTypes = {
+    toggleSettingsOpen: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     documentId: PropTypes.string.isRequired,
@@ -103,4 +128,4 @@ ShareLinkSettings.propTypes = {
     onReload: PropTypes.func.isRequired
 };
 
-export default translate()(ShareLinkSettings);
+export default withStyles(styles)(translate()(ShareLinkSettings));

@@ -26,7 +26,8 @@ class LinkRights extends React.Component {
                            shareLinkRights={this.props.shareLinkRights}
                 />
 
-                <ShareLinkSettings onReload={this.props.onReload}
+                <ShareLinkSettings toggleSettingsOpen={this.handleSettingsOpenToggle}
+                                   onReload={this.props.onReload}
                                    onClose={this.props.onClose}
                                    documentId={this.props.documentId}
                                    shareLinkRights={this.props.shareLinkRights}

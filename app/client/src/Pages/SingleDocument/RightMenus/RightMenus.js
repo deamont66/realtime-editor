@@ -24,7 +24,10 @@ const styles = theme => ({
         borderLeft: `1px solid ${theme.palette.grey[300]}`,
         padding: theme.spacing.unit,
         paddingTop: theme.spacing.unit * 2,
-        position: 'relative'
+        position: 'relative',
+        height: 'calc(100vh - 64px - 72px)',
+        overflow: 'auto',
+        minWidth: 'min-content'
     },
     rootNonActive: {
         padding: 0,

@@ -15,7 +15,7 @@ import ContentCopy from 'material-ui-icons/ContentCopy';
 import Settings from 'material-ui-icons/Settings';
 
 import ShareButtons from './ShareButtons';
-import DocumentRightsEnum from "../../../../Utils/DocumentRightsEnum";
+import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
 
 const styles = theme => ({
     linkInput: {
@@ -54,7 +54,12 @@ class ShareLink extends React.Component {
         return (
             <div>
                 <Typography variant={'subheading'}
-                            component={'h3'}>{t('link_rights.link_title')} ({t(DocumentRightsEnum[this.props.shareLinkRights].title)})</Typography>
+                            component={'h3'}>
+                    {t('link_rights.link_title')}
+                    <Tooltip title={t('link_rights.current_level_title')}>
+                        <span> ({t(DocumentRightsEnum[this.props.shareLinkRights].title)})</span>
+                    </Tooltip>
+                </Typography>
 
                 <FormControl className={classes.linkInput}>
                     <InputLabel htmlFor="link_input">{t('link_rights.link_label')}</InputLabel>
