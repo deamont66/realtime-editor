@@ -14,6 +14,7 @@ import CloseIcon from 'material-ui-icons/Close';
 import axios from '../../../Utils/Axios';
 import UserStore from "../../../Stores/UserStore";
 import SubmitButtons from "../SubmitButtons";
+import PasswordStrengthEstimator, {estimateStrength} from "../../../Components/PasswordStrengthEstimator";
 
 const styles = theme => ({
     close: {
@@ -109,28 +110,37 @@ class AccountSettings extends React.Component {
             data.password = this.state.password;
         }
 
-        if (isEmpty || errorMessage) {
-            this.showMessage(errorMessage || this.props.t('settings.no_changes'), error);
-            return;
-        }
-
-        axios.put('/user', data).then(() => {
-            UserStore.checkLoggedIn();
-            this.showMessage(this.props.t('settings.saved'));
-        }).catch((err) => {
-            let error = 'username';
-            let message = error.message;
-
-            if (err.response) {
-                const code = err.response.data.code;
-                if (code === 4003) {
-                    error = 'password';
-                }
-                message = err.response.data.message;
+        const promise = (!data.newPassword) ? Promise.resolve() : estimateStrength(this.state.password, [this.state.username, this.state.email]);
+        promise.then((res) => {
+            if (res && res.guesses <= 100) {
+                errorMessage = this.props.t('password.validation.easy');
+                error = 'newPassword2';
             }
 
-            this.showMessage(message, error);
+            if (isEmpty || errorMessage) {
+                this.showMessage(errorMessage || this.props.t('settings.no_changes'), error);
+                return;
+            }
+
+            axios.put('/user', data).then(() => {
+                UserStore.checkLoggedIn();
+                this.showMessage(this.props.t('settings.saved'));
+            }).catch((err) => {
+                let error = 'username';
+                let message = error.message;
+
+                if (err.response) {
+                    const code = err.response.data.code;
+                    if (code === 4003) {
+                        error = 'password';
+                    }
+                    message = err.response.data.message;
+                }
+
+                this.showMessage(message, error);
+            });
         });
+
     }
 
     render() {
@@ -166,7 +176,13 @@ class AccountSettings extends React.Component {
                         <InputLabel htmlFor="new_password_input">{t('newPassword.label')}</InputLabel>
                         <Input id="new_password_input" value={this.state.newPassword}
                                onChange={this.handleChange('newPassword')} type="password"/>
-                        <FormHelperText>{t('newPassword.helper')}</FormHelperText>
+
+                        <FormHelperText>{this.state.newPassword.length === 0 ? (
+                            t('newPassword.helper')
+                        ) : (
+                            <PasswordStrengthEstimator password={this.state.newPassword}
+                                                       inputs={[this.state.username, this.state.email]}/>
+                        )}</FormHelperText>
                     </FormControl>
 
                     <FormControl fullWidth className={classes.formControl} error={this.state.error === 'newPassword2'}>
@@ -179,9 +195,7 @@ class AccountSettings extends React.Component {
                         </FormHelperText>
                     </FormControl>
 
-
                     <br/>
-
 
                     <FormControl fullWidth className={classes.formControl} error={this.state.error === 'password'}>
                         <InputLabel htmlFor="password_input">{t('password.currentLabel')}</InputLabel>

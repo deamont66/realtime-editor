@@ -11,6 +11,7 @@ import Input, {InputLabel} from 'material-ui/Input';
 import Button from 'material-ui/Button';
 
 import UserStore from "../../Stores/UserStore";
+import PasswordStrengthEstimator, {estimateStrength} from "../../Components/PasswordStrengthEstimator";
 import MaterialLink from "../../Components/MaterialLink";
 
 const styles = theme => ({
@@ -47,7 +48,7 @@ class SignUp extends React.Component {
             password: '',
 
             message: null,
-            error: ''
+            error: '',
         }
     }
 
@@ -76,19 +77,28 @@ class SignUp extends React.Component {
             error = 'password';
         }
 
-        this.setState({
-            message: message,
-            error: error
-        });
+        estimateStrength(this.state.password, [this.state.username, this.state.email]).then((res) => {
+            console.log(res);
 
-        if (message !== null) return;
+            if (res.guesses <= 100) {
+                message = this.props.t('password.validation.easy');
+                error = 'password';
+            }
 
-        UserStore.singUp(this.state.username, this.state.password, this.state.email).then(() => {
-            this.props.history.push('/document');
-        }).catch((error) => {
             this.setState({
-                message: error.response.data.message,
-                error: error.response.data.code === 4004 ? 'username' : ''
+                message: message,
+                error: error
+            });
+
+            if (message !== null) return;
+
+            UserStore.singUp(this.state.username, this.state.password, this.state.email).then(() => {
+                this.props.history.push('/document');
+            }).catch((error) => {
+                this.setState({
+                    message: error.response.data.message,
+                    error: error.response.data.code === 4004 ? 'username' : ''
+                });
             });
         });
     };
@@ -129,10 +139,12 @@ class SignUp extends React.Component {
                                 <InputLabel htmlFor="password_input">{t('password.label')}</InputLabel>
                                 <Input id="password_input" value={this.state.password}
                                        onChange={this.handleChange('password')} type="password"/>
-                                {this.state.message !== null && !['username', 'email'].includes(this.state.error) &&
                                 <FormHelperText>
-                                    {this.state.message}
-                                </FormHelperText>}
+                                    {this.state.message !== null && !['username', 'email'].includes(this.state.error) && this.state.message}
+                                    {(this.state.message === null || ['username', 'email'].includes(this.state.error)) && (
+                                        <PasswordStrengthEstimator password={this.state.password} inputs={[this.state.username, this.state.email]}/>
+                                    )}
+                                </FormHelperText>
                             </FormControl>
                         </Grid>
 
@@ -145,7 +157,8 @@ class SignUp extends React.Component {
 
                         <Grid item xs={12}>
                             <Typography component="p" align={'center'} className={classes.signUp}>
-                                {t('signUp.sign_in.text')} <MaterialLink to="/sign-in">{t('signUp.sign_in.link_text')}</MaterialLink>
+                                {t('signUp.sign_in.text')} <MaterialLink
+                                to="/sign-in">{t('signUp.sign_in.link_text')}</MaterialLink>
                             </Typography>
                         </Grid>
                     </Grid>

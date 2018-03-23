@@ -198,20 +198,25 @@
   "password": {
     "label": "Password",
     "currentLabel": "Current password",
-    "currentHelper": "Enter your current password so we know it is really you.",
+    "currentHelper": "Enter your current password so we know it is really you",
     "validation": {
       "required": "Field password is required",
-      "invalid_credentials": "User invalid credentials"
+      "invalid_credentials": "User invalid credentials",
+      "easy": "This password is too easy. Add another word or two. Uncommon words are better."
     }
   },
   "newPassword": {
     "label": "New password",
     "againLabel": "New password again",
-    "helper": "Only enter if you want to change password.",
-    "againHelper": "Please enter same password as before.",
+    "helper": "Only enter if you want to change password",
+    "againHelper": "Please enter same password as before",
     "validation": {
       "match": "Fields with new password must match"
     }
+  },
+  "password_estimator": {
+    "in_centuries": "Attacker could guess this in centuries",
+    "in_param": "Attacker could guess this in {{param}}"
   },
   "error": {
     "cannot_invite_owner": "Cannot invite owner",
