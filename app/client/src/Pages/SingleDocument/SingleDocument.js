@@ -38,7 +38,7 @@ class SingleDocument extends React.Component {
 
             settings: {
                 title: '',
-                theme: 'material',
+                theme: 'default',
                 mode: 0,
                 tabSize: 4,
                 indentUnit: 4,
@@ -51,7 +51,7 @@ class SingleDocument extends React.Component {
             },
             allowedOperations: [],
             messages: [],
-            menu: "share",
+            menu: null,
         };
 
         this.documentId = this.props.match.params.documentId;
