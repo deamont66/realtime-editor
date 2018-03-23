@@ -21,11 +21,11 @@ const styles = theme => ({
         paddingRight: theme.spacing.unit / 2
     },
     usernameInput: {
-        width: 162
+        width: 'calc(100% - 130px - 8px)'
     },
     rightsSelect: {
         marginLeft: theme.spacing.unit,
-        width: 125
+        width: 130
     },
     buttonWrapper: {
         position: 'absolute',

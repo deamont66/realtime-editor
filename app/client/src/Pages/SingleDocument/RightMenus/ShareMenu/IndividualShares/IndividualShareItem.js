@@ -21,8 +21,10 @@ const styles = theme => ({
         paddingRight: 0
     },
     button: {
-        width: 32,
-        height: 48
+        [theme.breakpoints.up('sm')]: {
+            width: 32,
+            height: 48
+        }
     }
 });
 

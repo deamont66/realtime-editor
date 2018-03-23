@@ -26,7 +26,10 @@ const styles = theme => ({
         display: 'inline-block',
         margin: theme.spacing.unit / 2,
         marginTop: theme.spacing.unit,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        [theme.breakpoints.down('xs')]: {
+            margin: theme.spacing.unit,
+        }
     }
 });
 

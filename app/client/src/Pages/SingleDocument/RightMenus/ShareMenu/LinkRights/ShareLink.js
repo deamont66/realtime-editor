@@ -19,12 +19,17 @@ import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
 
 const styles = theme => ({
     linkInput: {
-        width: 'calc(100% - (32px * 2))',
+        [theme.breakpoints.up('sm')]: {
+            width: 'calc(100% - (32px * 2))',
+        },
+        width: 'calc(100% - (48px * 2))',
         paddingRight: theme.spacing.unit
     },
     linkCopyButtons: {
-        width: 32,
-        height: 32
+        [theme.breakpoints.up('sm')]: {
+            width: 32,
+            height: 32
+        }
     }
 });
 
