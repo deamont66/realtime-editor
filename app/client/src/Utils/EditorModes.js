@@ -136,10 +136,16 @@ const _Modes = [
 
 module.exports = {
     all: _Modes,
+
     require: () => {
-        _Modes.forEach((mode) => {
-            if(mode.require)
-                require('codemirror/mode/' + mode.mode + '/' + mode.mode + '.js');
+        return new Promise(resolve => {
+            require.ensure([], () => {
+                _Modes.forEach((mode) => {
+                    if(mode.require)
+                        require('codemirror/mode/' + mode.mode + '/' + mode.mode + '.js');
+                });
+                resolve();
+            });
         });
     }
 };

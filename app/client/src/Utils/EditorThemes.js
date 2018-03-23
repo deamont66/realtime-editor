@@ -55,9 +55,14 @@ const Themes = {
 module.exports = {
     all: Themes,
     require: () => {
-        Object.keys(Themes).forEach((themeKey) => {
-            if(themeKey !== 'default')
-                require('codemirror/theme/' + themeKey + '.css')
+        return new Promise(resolve => {
+            require.ensure([], () => {
+                Object.keys(Themes).forEach((themeKey) => {
+                    if(themeKey !== 'default')
+                        require('codemirror/theme/' + themeKey + '.css')
+                });
+                resolve();
+            });
         });
     }
 };

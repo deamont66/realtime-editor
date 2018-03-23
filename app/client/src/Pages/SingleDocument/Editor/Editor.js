@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {UnControlled as CodeMirror} from 'react-codemirror2';
+import {UnControlled as ReactCodeMirror} from 'react-codemirror2';
 
 import Grid from 'material-ui/Grid';
 
@@ -13,14 +13,31 @@ import './Editor.css';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/selection/active-line';
 
-import 'codemirror/keymap/emacs';
-import 'codemirror/keymap/sublime';
-import 'codemirror/keymap/vim';
-
-EditorModes.require();
-EditorThemes.require();
+const loadKeymaps = () => {
+    return new Promise(resolve => {
+        require.ensure([], () => {
+            require('codemirror/keymap/emacs');
+            require('codemirror/keymap/sublime');
+            require('codemirror/keymap/vim');
+            resolve();
+        });
+    });
+};
 
 class Editor extends React.Component {
+
+    componentDidMount() {
+        Promise.all([
+            EditorModes.require(),
+            EditorThemes.require(),
+            loadKeymaps()
+        ]).then(() => {
+            // After all loaded, force codeMirror to reload mode and forceUpdate component
+            if(this.editor)
+                this.editor.setOption('mode', EditorModes.all[this.props.settings.mode].mode);
+            this.forceUpdate();
+        })
+    }
 
     componentDidUpdate() {
         // Renders all dynamically generated parts of CodeMirror editor.
@@ -33,7 +50,7 @@ class Editor extends React.Component {
                 fontSize: this.props.settings.fontSize,
                 display: (this.props.visible) ? 'block' : 'none'
             }}>
-                <CodeMirror
+                <ReactCodeMirror
                     className={'codemirror-editor'}
                     options={{
                         mode: EditorModes.all[this.props.settings.mode].mode,
