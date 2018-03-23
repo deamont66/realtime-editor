@@ -26,6 +26,14 @@ const loadKeymaps = () => {
 
 class Editor extends React.Component {
 
+    constructor() {
+        super();
+
+        this.state = {
+            loaded: false
+        }
+    }
+
     componentDidMount() {
         Promise.all([
             EditorModes.require(),
@@ -33,9 +41,9 @@ class Editor extends React.Component {
             loadKeymaps()
         ]).then(() => {
             // After all loaded, force codeMirror to reload mode and forceUpdate component
-            if(this.editor)
-                this.editor.setOption('mode', EditorModes.all[this.props.settings.mode].mode);
-            this.forceUpdate();
+            this.setState({
+                loaded: true
+            });
         })
     }
 
@@ -53,13 +61,13 @@ class Editor extends React.Component {
                 <ReactCodeMirror
                     className={'codemirror-editor'}
                     options={{
-                        mode: EditorModes.all[this.props.settings.mode].mode,
-                        theme: this.props.settings.theme,
+                        mode: this.state.loaded ? EditorModes.all[this.props.settings.mode].mode : 'null',
+                        theme: this.state.loaded ? this.props.settings.theme : 'default',
                         tabSize: this.props.settings.tabSize,
                         indentUnit: this.props.settings.indentUnit,
                         indentWithTabs: this.props.settings.indentWithTabs,
 
-                        keyMap: this.props.settings.keyMap,
+                        keyMap: this.state.loaded ? this.props.settings.keyMap : 'default',
                         styleActiveLine: this.props.settings.styleActiveLine === 'nonEmpty'
                             ? {nonEmpty: true} : (this.props.settings.styleActiveLine === 'true'),
                         lineWrapping: this.props.settings.lineWrapping,
