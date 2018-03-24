@@ -15,6 +15,7 @@ import axios from '../../../Utils/Axios';
 
 import DocumentSettingsForm from "./DocumentSettingsForm";
 import SubmitButtons from "../SubmitButtons";
+import MetaTags from "../../../Components/MetaTags";
 
 const styles = theme => ({
     close: {
@@ -92,6 +93,7 @@ class DefaultDocumentSettings extends React.Component {
         const {t} = this.props;
         return (
             <div className="Comp-DefaultDocumentSettings">
+                <MetaTags title={t('app.titles.document_settings')}/>
                 {this.state.settings === null && <LinearProgress/>}
 
                 {this.state.settings !== null && <form onSubmit={this.handleSubmit.bind(this)} className="settings-form">

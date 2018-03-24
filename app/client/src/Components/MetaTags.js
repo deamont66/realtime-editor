@@ -11,7 +11,6 @@ class MetaTags extends React.Component {
         return (
             <Helmet titleTemplate={`%s - ${t('app.name')}`} defaultTitle={t('app.name')}>
                 {/*-- COMMON TAGS --*/}
-                <meta charset="utf-8"/>
                 {this.props.title && <title>{this.props.title}</title>}
 
                 {/*-- Search Engine --*/}
@@ -24,7 +23,6 @@ class MetaTags extends React.Component {
                 {/*<meta itemProp="image" content="Image"/>*/}
 
                 {/*-- Twitter --*/}
-                <meta name="twitter:card" content="summary"/>
                 {this.props.title && <meta name="twitter:title" content={this.props.title}/>}
                 {this.props.description && <meta name="twitter:description" content={this.props.description}/>}
                 {/*<meta name="twitter:site" content="@realtime"/>*/}
@@ -35,11 +33,6 @@ class MetaTags extends React.Component {
                 {this.props.description && <meta name="og:description" content={this.props.description}/>}
                 {/*<meta name="og:image" content="Image preview"/>*/}
                 <meta name="og:url" content={window.location.href}/>
-                <meta name="og:site_name" content={t('app.name')}/>
-                <meta name="og:locale" content="en_Us"/>
-                <meta name="fb:admins" content="100000628442315"/>
-                <meta name="fb:app_id" content="2043973792282808"/>
-                <meta name="og:type" content="website"/>
             </Helmet>
         );
     }

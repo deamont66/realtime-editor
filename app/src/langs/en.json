@@ -7,7 +7,9 @@
       "sign_in": "Sign In",
       "my_documents": "My documents",
       "last_documents": "Last documents",
-      "shared_documents": "Shared documents"
+      "shared_documents": "Shared documents",
+      "account_settings": "Account Settings",
+      "document_settings": "Document Settings"
     }
   },
   "appBar": {

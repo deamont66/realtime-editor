@@ -28,6 +28,7 @@ services:
       - ./app/client/yarn.lock:/app/client/yarn.lock
       - ./app/client/public:/app/client/public
       - ./app/client/src:/app/client/src
+      - ./app/client/build-prod:/app/client/build-prod
       - ./app/.env:/app/.env
     environment:
       - SERVER_PORT=3001

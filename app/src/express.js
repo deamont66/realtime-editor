@@ -24,22 +24,10 @@ module.exports = function (session) {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use(require('./routes/main'));
-
-    app.use('/static', express.static(path.join(__dirname, '../client/build-prod/static')));
-    app.use('/resources', express.static(path.join(__dirname, '../client/build-prod/resources')));
+    app.use(express.static(path.join(__dirname, '../client/build-prod'), {index: false}));
     app.use(express.static(path.join(__dirname, 'public')));
 
-    app.use(/^\/(?!api|locales).*$/, function (req, res, next) {
-        res.sendFile(path.join(__dirname, '../client/build-prod/index.html'));
-    });
-
-    // catch 404 and forward to error handler
-    app.use(function (req, res, next) {
-        var err = new Error('Not Found');
-        err.status = 404;
-        next(err);
-    });
+    app.use(require('./routes/main'));
 
     // error handler
     app.use(function (err, req, res, next) {
@@ -54,7 +42,8 @@ module.exports = function (session) {
             }
 
             if (req.app.get('env') === 'development') {
-                response.stack = err;
+                response.error = err;
+                response.stack = err.stack;
             }
             res.status(err.status || 500).json(response);
         } else {

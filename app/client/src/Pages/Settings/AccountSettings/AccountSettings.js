@@ -15,6 +15,7 @@ import axios from '../../../Utils/Axios';
 import UserStore from "../../../Stores/UserStore";
 import SubmitButtons from "../SubmitButtons";
 import PasswordStrengthEstimator, {estimateStrength} from "../../../Components/PasswordStrengthEstimator";
+import MetaTags from "../../../Components/MetaTags";
 
 const styles = theme => ({
     close: {
@@ -152,6 +153,7 @@ class AccountSettings extends React.Component {
 
         return (
             <div className="Comp-AccountSettings">
+                <MetaTags title={t('app.titles.account_settings')}/>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <Typography variant="title" gutterBottom>
                         {t('account_settings.general_title')}

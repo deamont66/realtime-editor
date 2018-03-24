@@ -6,7 +6,7 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
-import LinearProgress from "material-ui/es/Progress/LinearProgress";
+import LinearProgress from "material-ui/Progress/LinearProgress";
 
 const styles = theme => ({
     button: {
