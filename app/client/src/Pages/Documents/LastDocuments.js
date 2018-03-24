@@ -8,6 +8,7 @@ import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 
 import DocumentTable from "./DocumentTable/DocumentTable";
+import MetaTags from "../../Components/MetaTags";
 
 const styles = theme => ({
     root: {
@@ -57,6 +58,7 @@ class LastDocuments extends React.Component {
 
         return (
             <div>
+                <MetaTags title={t('app.titles.last_documents')}/>
                 <div className={classes.root}>
                     <Typography variant="headline" gutterBottom className={classes.headline}>
                         {t('last_documents.headline')}

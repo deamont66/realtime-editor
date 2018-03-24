@@ -12,6 +12,7 @@ import Tooltip from 'material-ui/Tooltip';
 import Add from 'material-ui-icons/Add';
 
 import DocumentTable from "./DocumentTable/DocumentTable";
+import MetaTags from "../../Components/MetaTags";
 
 const styles = theme => ({
     root: {
@@ -75,6 +76,7 @@ class MyDocuments extends React.Component {
 
         return (
             <div>
+                <MetaTags title={t('app.titles.my_documents')}/>
                 <div className={classes.root}>
                     <Typography variant="headline" gutterBottom className={classes.headline}>
                         {t('my_documents.headline')}

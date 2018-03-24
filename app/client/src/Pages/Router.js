@@ -1,4 +1,5 @@
 import React from 'react';
+import {translate} from 'react-i18next';
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -13,13 +14,16 @@ import LastDocuments from "./Documents/LastDocuments";
 import Settings from "./Settings/Settings";
 import Layout from "./Layout/Layout";
 import Error404 from "./Errors/Error404";
+import MetaTags from "../Components/MetaTags";
 
 class Router extends React.Component {
 
     render() {
+        const {t} = this.props;
         return (
             <BrowserRouter>
                 <Layout user={this.props.user} onDarkThemeToggle={this.props.onDarkThemeToggle}>
+                    <MetaTags description={t('app.description')}/>
                     <Switch>
                         <Route exact path={'/sign-up'} render={(props) => (
                             this.props.user === null ? <SignUp {...props}/> : <Redirect to={'/'}/>)}/>
@@ -79,4 +83,4 @@ Router.defaultProps = {
     user: null,
 };
 
-export default Router;
+export default translate()(Router);

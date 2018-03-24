@@ -12,6 +12,7 @@ import Button from 'material-ui/Button';
 
 import UserStore from "../../Stores/UserStore";
 import MaterialLink from "../../Components/MaterialLink";
+import MetaTags from "../../Components/MetaTags";
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -73,6 +74,7 @@ class SignIn extends React.Component {
 
         return (
             <Paper elevation={4} className={classes.root}>
+                <MetaTags title={t('app.titles.sign_in')}/>
                 <form onSubmit={this.handleSubmit}>
                     <Grid container className={classes.root}>
                         <Grid item xs={12}>

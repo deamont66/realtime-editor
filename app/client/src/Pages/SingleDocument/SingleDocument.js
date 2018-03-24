@@ -12,6 +12,7 @@ import DocumentHeader from "./DocumentHeader/DocumentHeader";
 import Error404 from "../Errors/Error404";
 
 import ClientSocket from "./ClientSocket";
+import MetaTags from "../../Components/MetaTags";
 
 const styles = theme => ({
     root: {
@@ -94,6 +95,7 @@ class SingleDocument extends React.Component {
 
         return (
             <div className={classes.root}>
+                <MetaTags title={this.state.settings.title}/>
                 <DocumentHeader disconnected={this.state.disconnected} clientState={this.state.clientState}
                                 title={this.state.settings.title} allowedOperations={this.state.allowedOperations}
                                 onSettingsChange={this.clientSocket.handleSettingsChange}
