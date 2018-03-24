@@ -102,7 +102,7 @@ class SignUp extends React.Component {
                 this.props.history.push('/document');
             }).catch((error) => {
                 this.setState({
-                    message: error.response.data.message,
+                    message: this.props.t(error.response.data.message),
                     error: error.response.data.code === 4004 ? 'username' : '',
                     loading: false
                 });

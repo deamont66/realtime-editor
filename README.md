@@ -1,34 +1,45 @@
 # Realtime editor
 
-## Ukázka (demo)
-Aktuálně není k dispozici žádné demo.
+## Demo version
+Demo version is publicly available at [http://editor.simecekjiri.cz](http://editor.simecekjiri.cz) 
 
-[![Ukázka](https://i.imgur.com/vP61Bn1.png "Click for video")](https://i.imgur.com/vP61Bn1.gifv)
+### Screenshot
+[![Demo screen](https://imgur.com/tVEYL1T)](https://i.imgur.com/tVEYL1T.png)
 
-## Production
-Ke spuštění je potřeba nainstalovaný docker a docker-compose.
+## Production image
+You will need docker and docker compose.
 
 ```bash
 docker-compose up -d app_prod
 ```
 
-Docker compose vytvoří docker image projektu (po kompilaci) a ten poté spustí. Image je dále možné šířit (například nahrát na hub) bez nutnosti kopírování zdrojových kódů.
+This command will create docker image including all project files (after compilation and minification), all project dependencies and it'll start it.
+The image is ready for distribution (without any source code) ie. on docker hub.
+
+```bash
+docker-compose up -d --build app_prod
+```
+
+This command will rebuild docker image when already exists. This could be used for version updates.
 
 ## Development
-Ke spuštění je potřeba nainstalovaný docker a docker-compose.
+You will need docker and docker compose.
 
 ```bash
 docker-compose up app_dev
 ```
+This command will create and run docker image with developer utilities and all project dependencies.
+This includes real-time compilation on code change, proxy settings for create-react-app and more. 
 
-Po spuštění je vytvořen docker image s nainstavanými technologiemi a závislostmi.
-Zárověň jsou vytvořeny docker volumes pro většinu složek projektu a projekt samotný
-běží uvnitř containeru pomocí příkazů nodemon a react-scripts start
-(kód je kompilován při každé změně zdrojových kódů).
-
-## Ukončení
+## Stop all running containers
 ```bash
 docker-compose down
 ```
 
-Pro ukončení dev containeru 2x `ctrl + c`.
+Developer container can be closed by pressing `ctrl + c`. 
+
+## Database
+This project uses [MongoDB](https://docs.mongodb.com) and the database is already included in docker-compose.yml.
+
+## Licence
+Project will be licensed under MIT (after author's graduation).
