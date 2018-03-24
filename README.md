@@ -4,7 +4,7 @@
 Demo version is publicly available at [http://editor.simecekjiri.cz](http://editor.simecekjiri.cz) 
 
 ### Screenshot
-[![Demo screen](https://imgur.com/tVEYL1T)](https://i.imgur.com/tVEYL1T.png)
+[![Demo screen](https://i.imgur.com/tVEYL1T.png)](https://imgur.com/tVEYL1T)
 
 ## Production image
 You will need docker and docker compose.
