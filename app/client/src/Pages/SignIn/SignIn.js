@@ -9,6 +9,7 @@ import {FormControl, FormHelperText, FormControlLabel} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
+import {LinearProgress} from "material-ui/Progress";
 
 import UserStore from "../../Stores/UserStore";
 import MaterialLink from "../../Components/MaterialLink";
@@ -46,7 +47,8 @@ class SignIn extends React.Component {
             username: '',
             password: '',
 
-            message: null
+            message: null,
+            loading: false
         }
     }
 
@@ -57,14 +59,17 @@ class SignIn extends React.Component {
     handleSubmit = evt => {
         evt.preventDefault();
         this.setState({
-            message: null
+            message: null,
+            loading: true
         });
 
         UserStore.singIn(this.state.username, this.state.password).then(() => {
+            this.setState({loading: false});
             this.props.history.push('/document');
         }).catch((error) => {
             this.setState({
-                message: this.props.t(error.response.data.message)
+                message: this.props.t(error.response.data.message),
+                loading: false
             });
         });
     };
@@ -119,6 +124,7 @@ class SignIn extends React.Component {
                             <Button type="submit" fullWidth size="large" variant="raised" color="secondary" className={classes.button}>
                                 {t('signIn.submit_button')}
                             </Button>
+                            {this.state.loading && <LinearProgress color="secondary"/>}
                         </Grid>
 
                         <Grid item xs={12}>

@@ -30,7 +30,8 @@ class DefaultDocumentSettings extends React.Component {
         this.state = {
             settings: null,
             open: false,
-            message: ''
+            message: '',
+            loading: false
         }
     }
 
@@ -72,15 +73,18 @@ class DefaultDocumentSettings extends React.Component {
     handleSubmit(evt) {
         evt.preventDefault();
 
+        this.setState({loading: true});
         axios.put('/user/document-settings', {
             settings: this.state.settings
         }).then((res) => {
             this.showMessage(this.props.t('settings.saved'));
             this.setState({
-                settings: res.data.settings
+                settings: res.data.settings,
+                loading: false
             });
         }).catch((err) => {
             console.log(err);
+            this.setState({loading: false});
         });
     }
 
@@ -102,7 +106,7 @@ class DefaultDocumentSettings extends React.Component {
 
                     <DocumentSettingsForm settings={this.state.settings} onSettingsChange={this.handleSettingsChange.bind(this)}/>
 
-                    <SubmitButtons onReset={() => this.loadUserSettings()}/>
+                    <SubmitButtons loading={this.state.loading} onReset={() => this.loadUserSettings()}/>
                 </form>}
                 <Snackbar
                     anchorOrigin={{

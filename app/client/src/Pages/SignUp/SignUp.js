@@ -9,6 +9,7 @@ import Grid from 'material-ui/Grid';
 import {FormControl, FormHelperText} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import Button from 'material-ui/Button';
+import {LinearProgress} from 'material-ui/Progress';
 
 import UserStore from "../../Stores/UserStore";
 import PasswordStrengthEstimator, {estimateStrength} from "../../Components/PasswordStrengthEstimator";
@@ -50,6 +51,7 @@ class SignUp extends React.Component {
 
             message: null,
             error: '',
+            loading: false
         }
     }
 
@@ -93,12 +95,16 @@ class SignUp extends React.Component {
 
             if (message !== null) return;
 
+            this.setState({loading: true});
+
             UserStore.singUp(this.state.username, this.state.password, this.state.email).then(() => {
+                this.setState({loading: false});
                 this.props.history.push('/document');
             }).catch((error) => {
                 this.setState({
                     message: error.response.data.message,
-                    error: error.response.data.code === 4004 ? 'username' : ''
+                    error: error.response.data.code === 4004 ? 'username' : '',
+                    loading: false
                 });
             });
         });
@@ -155,6 +161,7 @@ class SignUp extends React.Component {
                                     className={classes.button}>
                                 {t('signUp.submit_button')}
                             </Button>
+                            {this.state.loading && <LinearProgress color="secondary"/>}
                         </Grid>
 
                         <Grid item xs={12}>

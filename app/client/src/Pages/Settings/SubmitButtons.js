@@ -6,6 +6,7 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
+import LinearProgress from "material-ui/es/Progress/LinearProgress";
 
 const styles = theme => ({
     button: {
@@ -27,6 +28,7 @@ class SubmitButtons extends React.Component {
                 <Button type="submit" variant="raised" color="secondary" className={classes.button}>
                     {t('settings.button.submit')}
                 </Button>
+                {this.props.loading && <LinearProgress color="secondary"/>}
             </Typography>
         );
     }
@@ -34,6 +36,11 @@ class SubmitButtons extends React.Component {
 
 SubmitButtons.propTypes = {
     onReset: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired
+};
+
+SubmitButtons.defaultProps = {
+    loading: false
 };
 
 export default translate()(withStyles(styles)(SubmitButtons));

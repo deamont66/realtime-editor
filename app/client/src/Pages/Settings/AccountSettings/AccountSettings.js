@@ -46,6 +46,8 @@ class AccountSettings extends React.Component {
             password: '',
             newPassword: '',
             newPassword2: '',
+
+            loading: false
         }
     }
 
@@ -122,9 +124,11 @@ class AccountSettings extends React.Component {
                 return;
             }
 
+            this.setState({loading: true});
             axios.put('/user', data).then(() => {
                 UserStore.checkLoggedIn();
                 this.showMessage(this.props.t('settings.saved'));
+                this.setState({loading: false});
             }).catch((err) => {
                 let error = 'username';
                 let message = error.message;
@@ -136,8 +140,8 @@ class AccountSettings extends React.Component {
                     }
                     message = err.response.data.message;
                 }
-
                 this.showMessage(message, error);
+                this.setState({loading: false});
             });
         });
 
@@ -204,7 +208,7 @@ class AccountSettings extends React.Component {
                         <FormHelperText>{t('password.currentHelper')}</FormHelperText>
                     </FormControl>
 
-                    <SubmitButtons onReset={() => this.setState(this.getInitialState(this.props))}/>
+                    <SubmitButtons loading={this.state.loading} onReset={() => this.setState(this.getInitialState(this.props))}/>
                 </form>
                 <Snackbar
                     anchorOrigin={{
