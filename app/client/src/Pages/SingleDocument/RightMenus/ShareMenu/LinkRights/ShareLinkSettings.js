@@ -18,8 +18,12 @@ const styles = theme => ({
     root: {
         paddingRight: theme.spacing.unit / 2
     },
+    title: {
+        marginTop: theme.spacing.unit,
+        marginBottom: theme.spacing.unit / 2,
+    },
     buttons: {
-        marginBottom: theme.spacing.unit * 2
+        marginBottom: theme.spacing.unit
     },
     button: {
         marginLeft: theme.spacing.unit
@@ -89,7 +93,7 @@ class ShareLinkSettings extends React.Component {
 
                 <form onSubmit={this.handleLinkRightsSubmit}>
                     <Typography variant={'subheading'}
-                                component={'h3'}>{t('link_rights.link_rights_title')}</Typography>
+                                component={'h3'} className={classes.title}>{t('link_rights.link_rights_title')}</Typography>
                     <FormControl fullWidth>
                         <InputLabel htmlFor="linkRights">{t('link_rights.link_rights_label')}</InputLabel>
                         <Select inputProps={{id: 'linkRights'}} onChange={this.handleLinkRightsChange}

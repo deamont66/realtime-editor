@@ -1,10 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
+import withStyles from 'material-ui/styles/withStyles';
 
 import Typography from 'material-ui/Typography';
 import AddIndividualShare from "./AddIndividualShare";
 import ListIndividualShares from "./ListIndividualShares";
+
+const styles = theme => ({
+   title: {
+       marginTop: theme.spacing.unit,
+       marginBottom: theme.spacing.unit / 2,
+   },
+});
 
 class IndividualShares extends React.Component {
 
@@ -27,11 +35,11 @@ class IndividualShares extends React.Component {
     };
 
     render() {
-        const {t} = this.props;
+        const {t, classes} = this.props;
 
         return (
             <div style={{position: 'relative'}}>
-                <Typography variant={'subheading'} component={'h3'}>
+                <Typography variant={'subheading'} component={'h3'} className={classes.title}>
                     {t('individual_shares.title')}
                 </Typography>
 
@@ -61,4 +69,4 @@ IndividualShares.propTypes = {
     onClose: PropTypes.func.isRequired
 };
 
-export default translate()(IndividualShares);
+export default withStyles(styles)(translate()(IndividualShares));

@@ -18,6 +18,10 @@ import ShareButtons from './ShareButtons';
 import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
 
 const styles = theme => ({
+    title: {
+        marginTop: theme.spacing.unit,
+        marginBottom: theme.spacing.unit / 2,
+    },
     linkInput: {
         [theme.breakpoints.up('sm')]: {
             width: 'calc(100% - (32px * 2))',
@@ -59,7 +63,7 @@ class ShareLink extends React.Component {
         return (
             <div>
                 <Typography variant={'subheading'}
-                            component={'h3'}>
+                            component={'h3'} className={classes.title}>
                     {t('link_rights.link_title')}
                     <Tooltip title={t('link_rights.current_level_title')}>
                         <span> ({t(DocumentRightsEnum[this.props.shareLinkRights].title)})</span>
