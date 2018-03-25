@@ -11,7 +11,10 @@ const userSchema = new Schema({
     recoverEnd: Date,
     lastLogin: { type: Date, required: true, default: () => Date.now() },
 
-    CTUUsername: { type: String, required: false }
+    CTUUsername: { type: String, required: false },
+    googleId: { type: String, required: false },
+    facebookId: { type: String, required: false },
+    twitterId: { type: String, required: false },
 });
 
 userSchema.methods.toJSON = function () {

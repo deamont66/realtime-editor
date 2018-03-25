@@ -60,8 +60,28 @@ module.exports = {
     getCTUSingIn: function (req, res, next) {
         return passport.authenticate('ctu')(req, res, next);
     },
-
     getCTUSignInCallback: function (req, res, next) {
         return passport.authenticate('ctu', handleAuthentication(req, res, next))(req, res, next);
+    },
+
+    getGoogleSignIn: function (req, res, next) {
+        return passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'] })(req, res, next);
+    },
+    getGoogleSignInCallback: function (req, res, next) {
+        return passport.authenticate('google', handleAuthentication(req, res, next))(req, res, next);
+    },
+
+    getFacebookSignIn: function (req, res, next) {
+        return passport.authenticate('facebook', { scope: ['public_profile'] })(req, res, next);
+    },
+    getFacebookSignInCallback: function (req, res, next) {
+        return passport.authenticate('facebook', handleAuthentication(req, res, next))(req, res, next);
+    },
+
+    getTwitterSignIn: function (req, res, next) {
+        return passport.authenticate('twitter')(req, res, next);
+    },
+    getTwitterSignInCallback: function (req, res, next) {
+        return passport.authenticate('twitter', handleAuthentication(req, res, next))(req, res, next);
     }
 };

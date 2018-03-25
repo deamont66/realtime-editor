@@ -24,6 +24,18 @@ const getUserByCTUUsername = (username) => {
     return User.findOne({CTUUsername: username}).populate('defaultSettings').exec();
 };
 
+const getUserByGoogleId = (googleId) => {
+    return User.findOne({googleId: googleId}).populate('defaultSettings').exec();
+};
+
+const getUserByFacebookId = (facebookId) => {
+    return User.findOne({facebookId: facebookId}).populate('defaultSettings').exec();
+};
+
+const getUserByTwitterId = (twitterId) => {
+    return User.findOne({twitterId: twitterId}).populate('defaultSettings').exec();
+};
+
 /**
  * Gets User by id.
  *
@@ -46,6 +58,18 @@ const createUser = (user) => {
             return new DocumentSettings().save().then((defaultSettings) => {
                 return User(Object.assign(user, {password: hash, defaultSettings: defaultSettings})).save();
             });
+        });
+};
+
+const getUniqueUsername = (proposedUsername, tryCount = 0) => {
+    return User
+        .findOne({username: proposedUsername})
+        .then(function (user) {
+            if (user) {
+                proposedUsername += (tryCount + 1);
+                return getUniqueUsername(proposedUsername, (tryCount + 1)); // <== return statement here
+            }
+            return proposedUsername;
         });
 };
 
@@ -102,8 +126,12 @@ const updateDefaultDocumentSettings = (user, settings) => {
 module.exports = {
     getUserByUsername: getUserByUsername,
     getUserByCTUUsername: getUserByCTUUsername,
+    getUserByGoogleId: getUserByGoogleId,
+    getUserByFacebookId: getUserByFacebookId,
+    getUserByTwitterId: getUserByTwitterId,
     getUserById: getUserById,
     createUser: createUser,
+    getUniqueUsername: getUniqueUsername,
     updateUser: updateUser,
     updateDefaultDocumentSettings: updateDefaultDocumentSettings
 };

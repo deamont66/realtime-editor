@@ -61,7 +61,10 @@
       "text": "Don't have an account?",
       "link_text": "Create an account"
     },
-    "CTU": "Sing in using CTU account"
+    "CTU": "Sing in using CTU account",
+    "google": "Sing in using Google account",
+    "facebook": "Sing in using Facebook account",
+    "twitter": "Sing in using Twitter account"
   },
   "my_documents": {
     "headline": "My documents",

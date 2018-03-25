@@ -14,9 +14,9 @@ import Tooltip from 'material-ui/Tooltip';
 import {LinearProgress} from "material-ui/Progress";
 
 import CTU from "../../Components/Icons/CTU";
-//import Facebook from "../../Components/Icons/CTU";
-//import Google from "../../Components/Icons/CTU";
-//import Twitter from "../../Components/Icons/CTU";
+import Google from "../../Components/Icons/Google";
+import Facebook from "../../Components/Icons/Facebook";
+import Twitter from "../../Components/Icons/Twitter";
 
 import UserStore from "../../Stores/UserStore";
 import MaterialLink from "../../Components/MaterialLink";
@@ -44,6 +44,9 @@ const styles = theme => ({
         fontSize: theme.typography.pxToRem(16)
     },
     socialWrapper: {
+        margin: theme.spacing.unit * 2,
+        marginTop: 0,
+        marginBottom: theme.spacing.unit,
     },
     socialIcon: {
         //width: 32,
@@ -152,21 +155,21 @@ class SignIn extends React.Component {
                                         <CTU className={classes.socialIcon}/>
                                     </IconButton>
                                 </Tooltip>
-                                {/*<Tooltip title={'Sing in using Google account'} placement={'top'}>
-                                    <a href={'/api/auth/ctu'} className={classes.socialLink}>
+                                <Tooltip title={t('signIn.google')} placement={'right'}>
+                                    <IconButton href={'/api/auth/google'} size="large" variant="raised" className={classes.socialWrapper}>
                                         <Google className={classes.socialIcon}/>
-                                    </a>
+                                    </IconButton>
                                 </Tooltip>
-                                <Tooltip title={'Sing in using Twitter account'} placement={'top'}>
-                                    <a href={'/api/auth/ctu'} className={classes.socialLink}>
-                                        <Twitter className={classes.socialIcon}/>
-                                    </a>
-                                </Tooltip>
-                                <Tooltip title={'Sing in using Facebook account'} placement={'top'}>
-                                    <a href={'/api/auth/ctu'} className={classes.socialLink}>
+                                <Tooltip title={t('signIn.facebook')} placement={'right'}>
+                                    <IconButton href={'/api/auth/facebook'} size="large" variant="raised" className={classes.socialWrapper}>
                                         <Facebook className={classes.socialIcon}/>
-                                    </a>
-                                </Tooltip>*/}
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title={t('signIn.twitter')} placement={'right'}>
+                                    <IconButton href={'/api/auth/twitter'} size="large" variant="raised" className={classes.socialWrapper}>
+                                        <Twitter className={classes.socialIcon}/>
+                                    </IconButton>
+                                </Tooltip>
                             </Typography>
                         </Grid>
 

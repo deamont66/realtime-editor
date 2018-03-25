@@ -22,4 +22,16 @@ router.post('/', [
 router.get('/ctu', validator.validateNotLoggedIn, controller.getCTUSingIn);
 router.get('/ctu/callback', validator.validateNotLoggedIn, controller.getCTUSignInCallback);
 
+/* -- Google OAuth2Strategy --*/
+router.get('/google', validator.validateNotLoggedIn, controller.getGoogleSignIn);
+router.get('/google/callback', validator.validateNotLoggedIn, controller.getGoogleSignInCallback);
+
+/* -- Facebook OAuth2Strategy --*/
+router.get('/facebook', validator.validateNotLoggedIn, controller.getFacebookSignIn);
+router.get('/facebook/callback', validator.validateNotLoggedIn, controller.getFacebookSignInCallback);
+
+/* -- Twitter OAuthStrategy --*/
+router.get('/twitter', validator.validateNotLoggedIn, controller.getTwitterSignIn);
+router.get('/twitter/callback', validator.validateNotLoggedIn, controller.getTwitterSignInCallback);
+
 module.exports = router;
