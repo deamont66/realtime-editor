@@ -49,8 +49,7 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit,
     },
     socialIcon: {
-        //width: 32,
-        //height: 32,
+        height: 'auto'
     }
 });
 
