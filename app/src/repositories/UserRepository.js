@@ -5,35 +5,24 @@ const DocumentSettings = require('../model/DocumentSettings');
 const debug = require('debug')('editor:authController');
 
 /**
+ * Gets User by field value.
+ *
+ * @param {String} field - Field name
+ * @param {String} value - Expected field value
+ * @returns {Promise<User>}
+ */
+const getUserBy = (field, value) => {
+    return User.findOne({[field]: value}).populate('defaultSettings').exec();
+};
+
+/**
  * Gets User by username.
  *
  * @param {String} username
  * @returns {Promise<User>}
  */
 const getUserByUsername = (username) => {
-    return User.findOne({username: username}).populate('defaultSettings').exec();
-};
-
-/**
- * Gets User by CTU username.
- *
- * @param {String} username - Czech Technical University username
- * @returns {Promise<User>}
- */
-const getUserByCTUUsername = (username) => {
-    return User.findOne({CTUUsername: username}).populate('defaultSettings').exec();
-};
-
-const getUserByGoogleId = (googleId) => {
-    return User.findOne({googleId: googleId}).populate('defaultSettings').exec();
-};
-
-const getUserByFacebookId = (facebookId) => {
-    return User.findOne({facebookId: facebookId}).populate('defaultSettings').exec();
-};
-
-const getUserByTwitterId = (twitterId) => {
-    return User.findOne({twitterId: twitterId}).populate('defaultSettings').exec();
+    return getUserBy('username', username);
 };
 
 /**
@@ -43,7 +32,7 @@ const getUserByTwitterId = (twitterId) => {
  * @returns {Promise<User>}
  */
 const getUserById = (userId) => {
-    return User.findOne({_id: userId}).populate('defaultSettings').exec();
+    return getUserBy('_id', userId);
 };
 
 /**
@@ -124,11 +113,8 @@ const updateDefaultDocumentSettings = (user, settings) => {
 };
 
 module.exports = {
+    getUserBy: getUserBy,
     getUserByUsername: getUserByUsername,
-    getUserByCTUUsername: getUserByCTUUsername,
-    getUserByGoogleId: getUserByGoogleId,
-    getUserByFacebookId: getUserByFacebookId,
-    getUserByTwitterId: getUserByTwitterId,
     getUserById: getUserById,
     createUser: createUser,
     getUniqueUsername: getUniqueUsername,

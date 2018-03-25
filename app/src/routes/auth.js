@@ -3,9 +3,12 @@ const router = require('express').Router();
 const validator = require('../middlewares/UserMiddleware');
 const controller = require('../controllers/AuthController');
 
-router.delete('/', [
-    validator.validateLoggedIn
-], controller.deleteSignOut);
+router.delete('/', validator.validateLoggedIn, controller.deleteSignOut);
+
+router.post('/', [
+    validator.validateNotLoggedIn,
+    validator.validateSignUp
+], controller.postLocalSignUp);
 
 /* -- LocalStrategy -- */
 router.post('/signIn', [
@@ -13,25 +16,28 @@ router.post('/signIn', [
     validator.validateSignIn
 ], controller.postLocalSignIn);
 
-router.post('/', [
-    validator.validateNotLoggedIn,
-    validator.validateSignUp
-], controller.postLocalSignUp);
-
 /* -- CTU OAuth2Strategy --*/
-router.get('/ctu', validator.validateNotLoggedIn, controller.getCTUSingIn);
-router.get('/ctu/callback', validator.validateNotLoggedIn, controller.getCTUSignInCallback);
+router.delete('/ctu', validator.validateLoggedIn, controller.deleteField('CTUUsername'));
+router.get('/ctu', validator.validateNotLoggedIn, controller.getCTUAuthenticate);
+router.get('/ctu/connect', validator.validateLoggedIn, controller.getCTUAuthenticate);
+router.get('/ctu/callback', controller.getCTUCallback);
 
 /* -- Google OAuth2Strategy --*/
-router.get('/google', validator.validateNotLoggedIn, controller.getGoogleSignIn);
-router.get('/google/callback', validator.validateNotLoggedIn, controller.getGoogleSignInCallback);
+router.delete('/google', validator.validateLoggedIn, controller.deleteField('googleId'));
+router.get('/google', validator.validateNotLoggedIn, controller.getGoogleAuthenticate);
+router.get('/google/connect', validator.validateLoggedIn, controller.getGoogleAuthenticate);
+router.get('/google/callback', controller.getGoogleCallback);
 
 /* -- Facebook OAuth2Strategy --*/
-router.get('/facebook', validator.validateNotLoggedIn, controller.getFacebookSignIn);
-router.get('/facebook/callback', validator.validateNotLoggedIn, controller.getFacebookSignInCallback);
+router.delete('/facebook', validator.validateLoggedIn, controller.deleteField('facebookId'));
+router.get('/facebook', validator.validateNotLoggedIn, controller.getFacebookAuthenticate);
+router.get('/facebook/connect', validator.validateLoggedIn, controller.getFacebookAuthenticate);
+router.get('/facebook/callback', controller.getFacebookCallback);
 
 /* -- Twitter OAuthStrategy --*/
-router.get('/twitter', validator.validateNotLoggedIn, controller.getTwitterSignIn);
-router.get('/twitter/callback', validator.validateNotLoggedIn, controller.getTwitterSignInCallback);
+router.delete('/twitter', validator.validateLoggedIn, controller.deleteField('twitterId'));
+router.get('/twitter', validator.validateNotLoggedIn, controller.getTwitterAuthenticate);
+router.get('/twitter/connect', validator.validateLoggedIn, controller.getTwitterAuthenticate);
+router.get('/twitter/callback', controller.getTwitterCallback);
 
 module.exports = router;

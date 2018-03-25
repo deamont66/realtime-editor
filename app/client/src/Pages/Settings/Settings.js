@@ -12,6 +12,7 @@ import Card, {CardContent} from 'material-ui/Card';
 
 import AccountSettings from "./AccountSettings/AccountSettings";
 import DefaultDocumentSettings from "./DefaultDocumentSettings/DefaultDocumentSettings";
+import ConnectedAccounts from "./ConnectedAccounts/ConnectedAccounts";
 
 const styles = theme => ({
     headline: {
@@ -47,6 +48,7 @@ class Settings extends React.Component {
                         <Tabs value={this.props.location.pathname} onChange={this.handleTabChange}>
                             <Tab value={'/settings'} label={t('settings.account_settings_tab')} href={'/settings'}/>
                             <Tab value={'/settings/document'} label={t('settings.document_settings_tab')} href={'/settings/document'}/>
+                            <Tab value={'/settings/connected'} label={t('settings.connected_settings_tab')} href={'/settings/connected'}/>
                         </Tabs>
                     </AppBar>
                     <CardContent>
@@ -56,6 +58,9 @@ class Settings extends React.Component {
                             )}/>
                             <Route path={'/settings/document'} exact render={(props) => (
                                 <DefaultDocumentSettings {...props} user={this.props.user}/>
+                            )}/>
+                            <Route path={'/settings/connected'} exact render={(props) => (
+                                <ConnectedAccounts {...props} user={this.props.user}/>
                             )}/>
 
                             <Redirect to={'/settings'}/>

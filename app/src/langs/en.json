@@ -9,7 +9,8 @@
       "last_documents": "Last documents",
       "shared_documents": "Shared documents",
       "account_settings": "Account Settings",
-      "document_settings": "Document Settings"
+      "document_settings": "Document Settings",
+      "connected_settings": "Connected Accounts"
     }
   },
   "appBar": {
@@ -100,6 +101,7 @@
     "headline": "Settings",
     "account_settings_tab": "Account settings",
     "document_settings_tab": "Document settings",
+    "connected_settings_tab": "Connected accounts",
     "saved": "Changes saved",
     "no_changes": "No changes were made",
     "button": {
@@ -110,6 +112,15 @@
   "account_settings": {
     "general_title": "General settings",
     "password_title": "Password settings"
+  },
+  "connected_settings": {
+    "title": "Connected accounts",
+    "paragraph": "Here you see all connected third party accounts. Connected accounts can be used as a faster sign in option.",
+    "disconnect_title": "Disconnect this account by clicking on X",
+    "connect_title": "Connect new account under current profile",
+    "connect_button": "Connect",
+    "connected_text": "Already connected",
+    "no_password_warning": "You are about to remove your last account but does not have set up regular password! If you will continue you may never be able to sign in under this profile again and all your documents could be lost."
   },
   "default_document_settings": {
     "title": "Default settings",
@@ -242,6 +253,7 @@
     "user_not_logged_in": "Already not logged in",
     "invalid_parameters": "Invalid parameters",
     "insufficient_permission": "Insufficient permission",
-    "server_error": "Server error"
+    "server_error": "Server error",
+    "fieldAlreadyUsed": "Field is already used with another account"
   }
 }

@@ -7,13 +7,18 @@ const debug = require('debug')('editor:authController');
 
 const handleAuthentication = (req, res, next, redirect = true) => (err, user) => {
     const onError = (err) => (redirect) ? res.redirect('/sign-in') : next(err);
-    const onSuccess = (user) => (redirect) ? res.redirect('/document') : res.status(200).json({status: 'success', user: user});
+    const onSuccess = (user) => (redirect) ? res.redirect(req.session.redirectTo) : res.status(200).json({
+        status: 'success',
+        user: user
+    });
 
     if (err || !user) {
+        debug(err);
         return onError(err || Errors.userInvalidCredential);
     }
     req.login(user, function (err) {
         if (err) {
+            debug(err);
             return onError(err);
         }
         onSuccess(user);
@@ -22,14 +27,21 @@ const handleAuthentication = (req, res, next, redirect = true) => (err, user) =>
 
 
 module.exports = {
-    deleteSignOut: function (req, res, next) {
+    deleteSignOut: (req, res, next) => {
         req.logout();
         res.sendStatus(204);
     },
-    postLocalSignIn: function (req, res, next) {
-        passport.authenticate('local', handleAuthentication(req, res, next, false))(req, res, next);
+
+    deleteField: field => (req, res, next) => {
+        req.user[field] = undefined;
+        req.user.save().then(() => {
+            res.sendStatus(204);
+        }).catch((err) => {
+            next(err);
+        })
     },
-    postLocalSignUp: function (req, res, next) {
+
+    postLocalSignUp: (req, res, next) => {
         UserRepository.createUser({
             email: req.body.email,
             username: req.body.username,
@@ -57,31 +69,17 @@ module.exports = {
         });
     },
 
-    getCTUSingIn: function (req, res, next) {
-        return passport.authenticate('ctu')(req, res, next);
-    },
-    getCTUSignInCallback: function (req, res, next) {
-        return passport.authenticate('ctu', handleAuthentication(req, res, next))(req, res, next);
-    },
+    postLocalSignIn: (req, res, next) => passport.authenticate('local', handleAuthentication(req, res, next, false))(req, res, next),
 
-    getGoogleSignIn: function (req, res, next) {
-        return passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login', 'email'] })(req, res, next);
-    },
-    getGoogleSignInCallback: function (req, res, next) {
-        return passport.authenticate('google', handleAuthentication(req, res, next))(req, res, next);
-    },
+    getCTUAuthenticate: (req, res, next) => passport.authenticate('ctu')(req, res, next),
+    getCTUCallback: (req, res, next) => passport.authenticate('ctu', handleAuthentication(req, res, next))(req, res, next),
 
-    getFacebookSignIn: function (req, res, next) {
-        return passport.authenticate('facebook', { scope: ['public_profile'] })(req, res, next);
-    },
-    getFacebookSignInCallback: function (req, res, next) {
-        return passport.authenticate('facebook', handleAuthentication(req, res, next))(req, res, next);
-    },
+    getGoogleAuthenticate: (req, res, next) => passport.authenticate('google', {scope: ['https://www.googleapis.com/auth/plus.login', 'email']})(req, res, next),
+    getGoogleCallback: (req, res, next) => passport.authenticate('google', handleAuthentication(req, res, next))(req, res, next),
 
-    getTwitterSignIn: function (req, res, next) {
-        return passport.authenticate('twitter')(req, res, next);
-    },
-    getTwitterSignInCallback: function (req, res, next) {
-        return passport.authenticate('twitter', handleAuthentication(req, res, next))(req, res, next);
-    }
+    getFacebookAuthenticate: (req, res, next) => passport.authenticate('facebook', {scope: ['public_profile']})(req, res, next),
+    getFacebookCallback: (req, res, next) => passport.authenticate('facebook', handleAuthentication(req, res, next))(req, res, next),
+
+    getTwitterAuthenticate: (req, res, next) => passport.authenticate('twitter')(req, res, next),
+    getTwitterCallback: (req, res, next) => passport.authenticate('twitter', handleAuthentication(req, res, next))(req, res, next)
 };

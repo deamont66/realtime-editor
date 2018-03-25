@@ -1,7 +1,7 @@
 # Realtime editor
 
 ## Demo version
-Demo version is publicly available at [http://editor.simecekjiri.cz](http://editor.simecekjiri.cz) 
+Demo version is publicly available at [https://editor.simecekjiri.cz](https://editor.simecekjiri.cz) 
 
 ### Screenshot
 [![Demo screen](https://i.imgur.com/tVEYL1T.png)](https://imgur.com/tVEYL1T)
@@ -39,7 +39,7 @@ docker-compose down
 Developer container can be closed by pressing `ctrl + c`. 
 
 ## Database
-This project uses [MongoDB](https://docs.mongodb.com) and the database is already included in docker-compose.yml.
+This project uses [MongoDB](https://docs.mongodb.com) as a persistent storage and the database container is already included in docker-compose.yml.
 
 ## Licence
 Project will be licensed under MIT (after author's graduation).

@@ -44,6 +44,11 @@ router.all('/settings/document', (req, res, next) => {
     renderWithMeta(req, res, next);
 });
 
+router.all('/settings/connected', (req, res, next) => {
+    res.locals.title = translate['app']['titles']['connected_settings'];
+    renderWithMeta(req, res, next);
+});
+
 router.all('/document', (req, res, next) => {
     res.locals.title = translate['app']['titles']['my_documents'];
     renderWithMeta(req, res, next);

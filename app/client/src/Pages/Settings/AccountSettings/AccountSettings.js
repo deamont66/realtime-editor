@@ -154,7 +154,7 @@ class AccountSettings extends React.Component {
         const {classes, t} = this.props;
 
         return (
-            <div className="Comp-AccountSettings">
+            <div>
                 <MetaTags title={t('app.titles.account_settings')}/>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <Typography variant="title" gutterBottom>

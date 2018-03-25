@@ -29,6 +29,12 @@ module.exports = {
         code: 4004,
         status: 422
     },
+    fieldAlreadyUsed: {
+        json: true,
+        message: 'error.field_already_used',
+        code: 4005,
+        status: 422
+    },
 
     invalidParameters: function (message, field = null) {
         const error = {
