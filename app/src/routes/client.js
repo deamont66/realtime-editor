@@ -11,8 +11,6 @@ const renderWithMeta = (req, res, next) => {
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
     const metaTags = generateMetaTags(fullUrl, res.locals.title, res.locals.description);
 
-    console.log(res.locals.title);
-
     fs.readFile(path.join(__dirname, '../../client/build-prod/index.html'), (err, data) => {
         if (err) {
             next(err);

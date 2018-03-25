@@ -179,7 +179,6 @@ const updateDocumentShareLinkRights = (document, shareLinkRights) => {
 };
 
 const updateDocumentInvite = (document, from, to, rights) => {
-    console.log(document.owner, to._id);
     return (document.owner.equals(to._id))
         ? Promise.reject(Errors.cannotInviteDocumentOwner)
         : DocumentInvite.findOneAndUpdate({

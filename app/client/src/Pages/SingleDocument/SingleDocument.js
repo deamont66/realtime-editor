@@ -13,6 +13,7 @@ import Error404 from "../Errors/Error404";
 
 import ClientSocket from "./ClientSocket";
 import MetaTags from "../../Components/MetaTags";
+import PropTypes from "prop-types";
 
 const styles = theme => ({
     root: {
@@ -65,6 +66,12 @@ class SingleDocument extends React.Component {
 
     componentWillUnmount() {
         this.clientSocket.close();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if ((nextProps.user === null && this.props.user !== null) || (this.props.user && nextProps.user && this.props.user.username !== nextProps.user.username)) {
+            this.clientSocket.connect();
+        }
     }
 
     handleStateChange = (newState, callback) => {
@@ -126,6 +133,8 @@ class SingleDocument extends React.Component {
     }
 }
 
-SingleDocument.propTypes = {};
+SingleDocument.propTypes = {
+    user: PropTypes.object,
+};
 
 export default withStyles(styles)(SingleDocument);

@@ -20,7 +20,7 @@ class SubmitButtons extends React.Component {
         const {classes, t} = this.props;
 
         return (
-            <Typography align="right">
+            <Typography align="right" component={'div'}>
                 <Button type="button" className={classes.button}
                         onClick={() => this.props.onReset()}>
                     {t('settings.button.reset')}

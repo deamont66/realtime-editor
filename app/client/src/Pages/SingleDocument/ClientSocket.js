@@ -13,6 +13,7 @@ class ClientSocket {
     }
 
     connect() {
+        if(this.socket) this.socket.close();
         this.socket = io('/documents', {
             path: '/api/socket.io',
             query: 'documentId=' + this.documentId
@@ -25,7 +26,7 @@ class ClientSocket {
             });
 
             this.socket.emit('join', (obj) => {
-                console.log(obj);
+                // console.log(obj);
                 this.init(obj.value, obj.revision, obj.clients, this.editorClient ? this.editorClient.serverAdapter : new SocketIOAdapter(this.socket));
                 this.onSettings(obj.settings);
 

@@ -60,7 +60,8 @@
     "sign_up": {
       "text": "Don't have an account?",
       "link_text": "Create an account"
-    }
+    },
+    "CTU": "Sing in using CTU account"
   },
   "my_documents": {
     "headline": "My documents",

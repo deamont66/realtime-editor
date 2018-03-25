@@ -81,8 +81,6 @@ class SignUp extends React.Component {
         }
 
         estimateStrength(this.state.password, [this.state.username, this.state.email]).then((res) => {
-            console.log(res);
-
             if (res.guesses <= 100) {
                 message = this.props.t('password.validation.easy');
                 error = 'password';

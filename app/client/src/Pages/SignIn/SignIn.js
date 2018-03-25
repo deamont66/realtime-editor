@@ -9,7 +9,14 @@ import {FormControl, FormHelperText, FormControlLabel} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import Tooltip from 'material-ui/Tooltip';
 import {LinearProgress} from "material-ui/Progress";
+
+import CTU from "../../Components/Icons/CTU";
+//import Facebook from "../../Components/Icons/CTU";
+//import Google from "../../Components/Icons/CTU";
+//import Twitter from "../../Components/Icons/CTU";
 
 import UserStore from "../../Stores/UserStore";
 import MaterialLink from "../../Components/MaterialLink";
@@ -35,6 +42,12 @@ const styles = theme => ({
     },
     signUp: {
         fontSize: theme.typography.pxToRem(16)
+    },
+    socialWrapper: {
+    },
+    socialIcon: {
+        //width: 32,
+        //height: 32,
     }
 });
 
@@ -121,15 +134,46 @@ class SignIn extends React.Component {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Button type="submit" fullWidth size="large" variant="raised" color="secondary" className={classes.button}>
+                            <Button type="submit" fullWidth size="large" variant="raised" color="secondary"
+                                    className={classes.button}>
                                 {t('signIn.submit_button')}
                             </Button>
                             {this.state.loading && <LinearProgress color="secondary"/>}
                         </Grid>
 
                         <Grid item xs={12}>
+                            <Typography component="p" align="center">or</Typography>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Typography component="div" align={'center'}>
+                                <Tooltip title={t('signIn.CTU')} placement={'right'}>
+                                    <IconButton href={'/api/auth/ctu'} size="large" variant="raised" className={classes.socialWrapper}>
+                                        <CTU className={classes.socialIcon}/>
+                                    </IconButton>
+                                </Tooltip>
+                                {/*<Tooltip title={'Sing in using Google account'} placement={'top'}>
+                                    <a href={'/api/auth/ctu'} className={classes.socialLink}>
+                                        <Google className={classes.socialIcon}/>
+                                    </a>
+                                </Tooltip>
+                                <Tooltip title={'Sing in using Twitter account'} placement={'top'}>
+                                    <a href={'/api/auth/ctu'} className={classes.socialLink}>
+                                        <Twitter className={classes.socialIcon}/>
+                                    </a>
+                                </Tooltip>
+                                <Tooltip title={'Sing in using Facebook account'} placement={'top'}>
+                                    <a href={'/api/auth/ctu'} className={classes.socialLink}>
+                                        <Facebook className={classes.socialIcon}/>
+                                    </a>
+                                </Tooltip>*/}
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={12}>
                             <Typography component="p" align={'center'} className={classes.signUp}>
-                                {t('signIn.sign_up.text')} <MaterialLink to="/sign-up">{t('signIn.sign_up.link_text')}</MaterialLink>
+                                {t('signIn.sign_up.text')} <MaterialLink
+                                to="/sign-up">{t('signIn.sign_up.link_text')}</MaterialLink>
                             </Typography>
                         </Grid>
                     </Grid>

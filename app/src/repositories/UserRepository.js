@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../model/User');
 const DocumentSettings = require('../model/DocumentSettings');
 
+const debug = require('debug')('editor:authController');
+
 /**
  * Gets User by username.
  *
@@ -10,6 +12,16 @@ const DocumentSettings = require('../model/DocumentSettings');
  */
 const getUserByUsername = (username) => {
     return User.findOne({username: username}).populate('defaultSettings').exec();
+};
+
+/**
+ * Gets User by CTU username.
+ *
+ * @param {String} username - Czech Technical University username
+ * @returns {Promise<User>}
+ */
+const getUserByCTUUsername = (username) => {
+    return User.findOne({CTUUsername: username}).populate('defaultSettings').exec();
 };
 
 /**
@@ -29,7 +41,7 @@ const getUserById = (userId) => {
  * @returns {Promise<User>} created user document
  */
 const createUser = (user) => {
-    return bcrypt.hash(user.password, 10)
+    return (user.password) ? bcrypt.hash(user.password, 10) : Promise.resolve()
         .then(function (hash) {
             return new DocumentSettings().save().then((defaultSettings) => {
                 return User(Object.assign(user, {password: hash, defaultSettings: defaultSettings})).save();
@@ -89,6 +101,7 @@ const updateDefaultDocumentSettings = (user, settings) => {
 
 module.exports = {
     getUserByUsername: getUserByUsername,
+    getUserByCTUUsername: getUserByCTUUsername,
     getUserById: getUserById,
     createUser: createUser,
     updateUser: updateUser,

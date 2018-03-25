@@ -235,7 +235,7 @@ class EditorClient extends Client {
     }
 
     onClientLeft(clientId) {
-        console.log("User disconnected: " + clientId);
+        // console.log("User disconnected: " + clientId);
         const client = this.clients[clientId];
         if (!client) {
             return;
@@ -315,7 +315,7 @@ class EditorClient extends Client {
     }
 
     applyOperation(operation) {
-        console.log(operation);
+        // console.log(operation);
         this.editorAdapter.applyOperation(operation);
         this.updateSelection();
         this.undoManager.transform(new WrappedOperation(operation, null));

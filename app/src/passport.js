@@ -1,8 +1,9 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const CTUOAuth2Strategy = require('./security/CTUOAuth2Strategy');
 
 const UserRepository = require('./repositories/UserRepository');
-const Errors = require('./utils/Errors');
+const AuthRepository = require('./repositories/AuthRepository');
 
 passport.serializeUser(function (user, done) {
     done(null, user._id);
@@ -22,17 +23,7 @@ passport.use(
         usernameField: 'username',
         passwordField: 'password'
     }, function (username, password, done) {
-        UserRepository.getUserByUsername(username).then(function (user) {
-            if (!user) {
-                return Promise.reject(Errors.userInvalidCredential);
-            }
-            return user.authenticate(password).then((valid) => {
-                if (!valid) return Promise.reject(Errors.userInvalidCredential);
-                user.lastLogin = Date.now();
-                user.save();
-                return user;
-            });
-        }).then((user) => {
+        AuthRepository.getAndAuthenticateUser(username, password).then((user) => {
             done(null, user);
         }).catch((error) => {
             setTimeout(function () {
@@ -41,3 +32,21 @@ passport.use(
         });
     })
 );
+
+passport.use(new CTUOAuth2Strategy({
+        authorizationURL: 'https://auth.fit.cvut.cz/oauth/oauth/authorize',
+        tokenURL: 'https://auth.fit.cvut.cz/oauth/oauth/token',
+        clientID: process.env.CTU_CLIENT_ID,
+        clientSecret: process.env.CTU_CLIENT_SECRET,
+        callbackURL: `${process.env.BASE_URL}/api/auth/ctu/callback`
+    },
+    function (accessToken, refreshToken, profile, done) {
+        AuthRepository.getOrCreateUserByCTUUsername(profile.username, profile.email).then((user) => {
+            done(null, user);
+        }).catch((error) => {
+            setTimeout(function () {
+                done(error, false);
+            }, 3000);
+        });
+    }
+));

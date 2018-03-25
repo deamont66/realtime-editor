@@ -107,13 +107,15 @@ class AccountSettings extends React.Component {
             isEmpty = false;
         }
         if (!this.state.password) {
-            errorMessage = this.props.t('password.validation.required');
-            error = 'password';
+            if (this.props.user.has_password) {
+                errorMessage = this.props.t('password.validation.required');
+                error = 'password';
+            }
         } else {
             data.password = this.state.password;
         }
 
-        const promise = (!data.newPassword) ? Promise.resolve() : estimateStrength(this.state.password, [this.state.username, this.state.email]);
+        const promise = (!data.newPassword) ? Promise.resolve() : estimateStrength(this.state.newPassword, [this.state.username, this.state.email]);
         promise.then((res) => {
             if (res && res.guesses <= 100) {
                 errorMessage = this.props.t('password.validation.easy');
@@ -139,7 +141,7 @@ class AccountSettings extends React.Component {
                     if (code === 4003) {
                         error = 'password';
                     }
-                    message = err.response.data.message;
+                    message = this.props.t(err.response.data.message);
                 }
                 this.showMessage(message, error);
                 this.setState({loading: false});
@@ -201,16 +203,17 @@ class AccountSettings extends React.Component {
                         </FormHelperText>
                     </FormControl>
 
-                    <br/>
+                    {this.props.user.has_password && (
+                        <FormControl fullWidth className={classes.formControl} error={this.state.error === 'password'}>
+                            <InputLabel htmlFor="password_input">{t('password.currentLabel')}</InputLabel>
+                            <Input id="password_input" value={this.state.password}
+                                   onChange={this.handleChange('password')} type="password"/>
+                            <FormHelperText>{t('password.currentHelper')}</FormHelperText>
+                        </FormControl>
+                    )}
 
-                    <FormControl fullWidth className={classes.formControl} error={this.state.error === 'password'}>
-                        <InputLabel htmlFor="password_input">{t('password.currentLabel')}</InputLabel>
-                        <Input id="password_input" value={this.state.password}
-                               onChange={this.handleChange('password')} type="password"/>
-                        <FormHelperText>{t('password.currentHelper')}</FormHelperText>
-                    </FormControl>
-
-                    <SubmitButtons loading={this.state.loading} onReset={() => this.setState(this.getInitialState(this.props))}/>
+                    <SubmitButtons loading={this.state.loading}
+                                   onReset={() => this.setState(this.getInitialState(this.props))}/>
                 </form>
                 <Snackbar
                     anchorOrigin={{

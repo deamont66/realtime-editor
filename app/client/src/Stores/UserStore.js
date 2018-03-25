@@ -5,7 +5,7 @@ class UserStore extends EventEmitter {
 
     singIn(username, password) {
         return new Promise((resolve, reject) => {
-            axios.post('/user/signIn', {
+            axios.post('/auth/signIn', {
                 username: username,
                 password: password
             }).then((res) => {
@@ -19,7 +19,7 @@ class UserStore extends EventEmitter {
 
     singUp(username, password, email) {
         return new Promise((resolve, reject) => {
-            axios.post('/user/', {
+            axios.post('/auth/', {
                 username: username,
                 password: password,
                 email: email
@@ -46,11 +46,10 @@ class UserStore extends EventEmitter {
 
     logOut () {
         return new Promise((resolve) => {
-            axios.delete('/user/').then(() => {
+            axios.delete('/auth/').then(() => {
                 this.emit('value', null);
             }).then(() => {
                 resolve();
-                window.location.reload();
             });
         });
     }
