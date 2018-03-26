@@ -8,15 +8,20 @@ import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import {CircularProgress} from 'material-ui/Progress';
-import List, {ListItem, ListItemText} from 'material-ui/List';
+import List from 'material-ui/List';
 
 import MessageListItem from "./MessageListItem";
 
 const styles = theme => ({
     root: {
         flex: 1,
-        maxHeight: 'calc(100vh + 16px - 49px - 58px - 64px - 72px - 5px)',
+        maxHeight: 'calc(100vh + 16px - 49px - 58px - 64px - 72px - 3px)',
         overflow: 'auto',
+        borderTop: `1px solid ${theme.palette.grey[300]}`,
+        borderBottom: `1px solid ${theme.palette.grey[300]}`
+    },
+    topAction: {
+        marginTop: theme.spacing.unit
     }
 });
 
@@ -97,14 +102,18 @@ class MessageList extends React.Component {
         return (
             <Grid item xs={12} className={classes.root} id={'message_list_container'}>
 
-                {this.state.showStart && <Typography align={'center'} component={'div'}>
-                    {t('message_list.chat_start')}
-                </Typography>}
-                {this.state.loading && <Typography align={'center'} component={'div'}>
-                    <CircularProgress color={'secondary'}/>
-                </Typography>}
+                {this.state.showStart && (
+                    <Typography align={'center'} component={'div'} className={classes.topAction}>
+                        {t('message_list.chat_start')}
+                    </Typography>
+                )}
+                {this.state.loading && (
+                    <Typography align={'center'} component={'div'} className={classes.topAction}>
+                        <CircularProgress color={'secondary'}/>
+                    </Typography>
+                )}
                 {!this.state.loading && !this.state.showStart && this.props.messages.length !== 0 && (
-                    <Typography align={'center'} component={'div'}>
+                    <Typography align={'center'} component={'div'} className={classes.topAction}>
                         <Button size={'small'} onClick={this.loadMore}>
                             {t('message_list.load_more_button')}
                         </Button>
@@ -119,9 +128,11 @@ class MessageList extends React.Component {
                         )
                     })}
                 </List>
-                {this.props.messages.length === 0 && (<Typography align={'center'} component={'div'}>
-                    {t('message_list.empty')}
-                </Typography>)}
+                {this.props.messages.length === 0 && (
+                    <Typography align={'center'} component={'div'} className={classes.topAction}>
+                        {t('message_list.empty')}
+                    </Typography>
+                )}
                 <span id={'message_list_down'} ref={down => this.down = down}/>
             </Grid>
         );

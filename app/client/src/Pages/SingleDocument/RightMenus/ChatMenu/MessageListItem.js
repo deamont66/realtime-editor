@@ -4,7 +4,7 @@ import {translate} from 'react-i18next';
 import classNames from 'classnames';
 import withStyles from 'material-ui/styles/withStyles';
 
-import {ListItem, ListItemText} from 'material-ui/List';
+import {ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import MessageListItemText from "./MessageListItemText";
 

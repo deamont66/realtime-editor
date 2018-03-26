@@ -14,14 +14,14 @@ import Send from 'material-ui-icons/Send';
 const styles = theme => ({
     root: {
         flex: 1,
-        flexGrow: 0,
-        borderTop: `1px solid ${theme.palette.grey[400]}`
+        flexGrow: 0
     },
     formControl: {
         width: 'calc(100% - 48px)',
         paddingLeft: theme.spacing.unit * 2
     },
     sendButton: {
+        // eslint-disable-next-line
         ['&:hover, &:focus']: {
             color: theme.palette.secondary.main
         }
