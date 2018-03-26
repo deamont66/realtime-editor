@@ -8,6 +8,7 @@ import withStyles from 'material-ui/styles/withStyles';
 import Tooltip from 'material-ui/Tooltip';
 import Avatar from 'material-ui/Avatar';
 import Button from 'material-ui/Button';
+import Badge from 'material-ui/Badge';
 
 import Chat from 'material-ui-icons/Chat';
 import Settings from 'material-ui-icons/Settings';
@@ -23,7 +24,8 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit
     },
     avatar: {
-        marginTop: theme.spacing.unit
+        marginTop: theme.spacing.unit,
+        color: theme.palette.common.white
     },
     avatarButton: {
         boxShadow: 'none',

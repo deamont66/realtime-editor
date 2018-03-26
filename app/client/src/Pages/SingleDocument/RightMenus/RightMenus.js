@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import Close from 'material-ui-icons/Close';
 
 import ShareMenu from "./ShareMenu/ShareMenu";
-import ChatMenu from "./ChatMenu";
+import ChatMenu from "./ChatMenu/ChatMenu";
 import SettingsMenu from "./SettingsMenu/SettingsMenu";
 
 const MENUS = {
@@ -43,7 +43,8 @@ const styles = theme => ({
     },
     contentActive: {
         [theme.breakpoints.up('sm')]: {
-            width: 300
+            width: 300,
+            height: '100%'
         }
     }
 });

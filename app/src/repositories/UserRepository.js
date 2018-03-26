@@ -55,10 +55,10 @@ const getUserById = (userId) => {
  * @returns {Promise<User>} created user document
  */
 const createUser = (user) => {
-    return (user.password) ? bcrypt.hash(user.password, 10) : Promise.resolve()
+    return ((user.password) ? bcrypt.hash(user.password, 10) : Promise.resolve())
         .then(function (hash) {
             return new DocumentSettings().save().then((defaultSettings) => {
-                return User(Object.assign(user, {password: hash, defaultSettings: defaultSettings})).save();
+                return new User(Object.assign(user, {password: hash, defaultSettings: defaultSettings})).save();
             });
         });
 };

@@ -11,9 +11,11 @@ import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import Menu, {MenuItem} from 'material-ui/Menu';
 import Tooltip from 'material-ui/Tooltip';
+import Hidden from 'material-ui/Hidden';
 
 import MenuIcon from 'material-ui-icons/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
+import Add from 'material-ui-icons/Add';
 
 import NavLinkMenuItem from "../../Components/NavLinkMenuItem";
 import UserStore from "../../Stores/UserStore";
@@ -82,7 +84,8 @@ class AppBarMenu extends React.Component {
                 {this.props.user &&
                 <Button variant="raised" color="secondary" size="small" className={classes.createButton}
                         onClick={this.createNewDocument}>
-                    {t('appBar.create_button')}
+                    <Hidden smDown>{t('appBar.create_button')}</Hidden>
+                    <Hidden mdUp><Add/></Hidden>
                 </Button>}
 
                 {!this.props.user && <Button color="inherit" onClick={() => {

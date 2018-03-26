@@ -109,7 +109,7 @@ class DocumentSocketIOServer extends DocumentServer {
 
             Promise.all([
                 DocumentVoter.getAllowedOperations(socket.request.user, document),
-                MessageRepository.getLastMessages(this.document)
+                MessageRepository.getLastMessages(this.documentId)
             ]).then(([operations, messages]) => {
                 if (!operations.includes('view')) {
                     debug('Disconnected: Insufficient permission');

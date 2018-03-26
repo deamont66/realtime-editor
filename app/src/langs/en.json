@@ -150,6 +150,19 @@
     "remove_question": "Are you sure about permanently removing this document?",
     "remove_button": "Remove"
   },
+  "chat_menu": {
+    "title": "Document chat"
+  },
+  "message_list": {
+    "empty": "There are no messages yet.",
+    "my_message_name": "Me",
+    "chat_start": "This is start of this conversation",
+    "load_more_button": "Load more"
+  },
+  "send_message_form": {
+    "input_placeholder": "Type a message",
+    "submit_title": "Send message"
+  },
   "share_menu": {
     "title": "Share document"
   },

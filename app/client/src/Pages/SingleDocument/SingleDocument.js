@@ -1,5 +1,6 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
+import moment from 'moment';
 
 import withStyles from 'material-ui/styles/withStyles';
 
@@ -13,6 +14,7 @@ import Error404 from "../Errors/Error404";
 
 import ClientSocket from "./ClientSocket";
 import MetaTags from "../../Components/MetaTags";
+import axios from "../../Utils/Axios";
 import PropTypes from "prop-types";
 
 const styles = theme => ({
@@ -53,7 +55,7 @@ class SingleDocument extends React.Component {
             },
             allowedOperations: [],
             messages: [],
-            menu: null,
+            menu: 'chat',
         };
 
         this.documentId = this.props.match.params.documentId;
@@ -83,6 +85,29 @@ class SingleDocument extends React.Component {
             return {
                 menu: (oldState.menu === menu) ? null : menu
             }
+        });
+    };
+
+    handleLoadMoreChatMessage = (emptyCallback) => {
+        const lastDate = this.state.messages.reduce((acc, message) => {
+            const messageDate = moment(message.date);
+            return acc.isBefore(messageDate) ? acc : messageDate;
+        }, moment());
+
+        axios.get(`/document/${this.documentId}/messages`, {
+            params: {
+                lastDate: lastDate.toDate()
+            }
+        }).then((res) => {
+            const newMessages = res.data.messages;
+            if (newMessages.length === 0) {
+                emptyCallback()
+            } else {
+                newMessages.forEach((message) => this.clientSocket.addChatMessage(message));
+            }
+        }).catch(() => {
+            console.error('error');
+            emptyCallback();
         });
     };
 
@@ -119,6 +144,7 @@ class SingleDocument extends React.Component {
 
                     {this.state.connected &&
                     <RightMenus documentId={this.documentId}
+                                user={this.props.user}
                                 settings={this.state.settings}
                                 messages={this.state.messages}
                                 allowedOperations={this.state.allowedOperations}
@@ -126,6 +152,7 @@ class SingleDocument extends React.Component {
                                 toggleMenu={this.handleMenuChange}
                                 onSettingsChange={this.clientSocket.handleSettingsChange}
                                 onMessageSubmit={this.clientSocket.handleMessageSubmit}
+                                onLoadMoreChatMessage={this.handleLoadMoreChatMessage}
                     />}
                 </Grid>
             </div>
