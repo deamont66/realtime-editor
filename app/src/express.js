@@ -23,6 +23,7 @@ module.exports = function (session) {
 
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(passport.authenticate('remember-me'));
 
     app.use(express.static(path.join(__dirname, '../client/build-prod'), {index: false}));
     app.use(express.static(path.join(__dirname, 'public')));

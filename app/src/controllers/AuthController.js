@@ -1,4 +1,5 @@
 const UserRepository = require('../repositories/UserRepository');
+const AuthRepository = require('../repositories/AuthRepository');
 const Errors = require('../utils/Errors');
 const passport = require('passport');
 
@@ -21,14 +22,27 @@ const handleAuthentication = (req, res, next, redirect = true) => (err, user) =>
             debug(err);
             return onError(err);
         }
-        onSuccess(user);
+        ((req.body.rememberMe) ?
+            AuthRepository.issueRememberMeToken(user)
+                .then(token => res.cookie('remember_me', token, {
+                    path: '/',
+                    httpOnly: true,
+                    maxAge: 604800000
+                })) : Promise.resolve())
+            .then(() => {
+                return onSuccess(user);
+            })
+            .catch((err) => {
+                return onError(err);
+            });
     });
 };
 
 
 module.exports = {
-    deleteSignOut: (req, res, next) => {
+    deleteSignOut: (req, res) => {
         req.logout();
+        res.clearCookie('remember_me');
         res.sendStatus(204);
     },
 
@@ -38,7 +52,7 @@ module.exports = {
             res.sendStatus(204);
         }).catch((err) => {
             next(err);
-        })
+        });
     },
 
     postLocalSignUp: (req, res, next) => {

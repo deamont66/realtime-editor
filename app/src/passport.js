@@ -1,5 +1,6 @@
 const passport = require('passport');
 
+const RememberMeStrategy = require('passport-remember-me').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -45,6 +46,19 @@ passport.deserializeUser(function (id, done) {
         done(null, user);
     });
 });
+
+passport.use(new RememberMeStrategy(
+    function(token, done) {
+        authenticate(AuthRepository.consumeRememberMeToken(token), done);
+    },
+    function(user, done) {
+        AuthRepository.issueRememberMeToken(user).then((token) => {
+            done(null, token);
+        }).catch(err => {
+            done(err, false);
+        });
+    }
+));
 
 passport.use(
     new LocalStrategy({

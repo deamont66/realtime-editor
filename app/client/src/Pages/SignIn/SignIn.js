@@ -61,6 +61,7 @@ class SignIn extends React.Component {
         this.state = {
             username: '',
             password: '',
+            rememberMe: false,
 
             message: null,
             loading: false
@@ -78,7 +79,7 @@ class SignIn extends React.Component {
             loading: true
         });
 
-        UserStore.singIn(this.state.username, this.state.password).then(() => {
+        UserStore.singIn(this.state.username, this.state.password, this.state.rememberMe).then(() => {
             this.setState({loading: false});
             this.props.history.push('/document');
         }).catch((error) => {
@@ -123,7 +124,7 @@ class SignIn extends React.Component {
                             <FormControl fullWidth>
                                 <FormControlLabel
                                     control={
-                                        <Checkbox/>
+                                        <Checkbox checked={this.state.rememberMe} onChange={(evt) => this.setState({rememberMe: evt.target.checked})}/>
                                     }
                                     label={t('signIn.remember_label')}
                                 />

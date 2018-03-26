@@ -2239,6 +2239,13 @@ passport-oauth2@1.x.x, passport-oauth2@^1.4.0:
     uid2 "0.0.x"
     utils-merge "1.x.x"
 
+passport-remember-me@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/passport-remember-me/-/passport-remember-me-0.0.1.tgz#0aa6095c82480f44619456aef363ccb929bc2bc3"
+  dependencies:
+    passport "~0.1.1"
+    pkginfo "0.2.x"
+
 passport-strategy@1.x.x:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/passport-strategy/-/passport-strategy-1.0.0.tgz#b5539aa8fc225a3d1ad179476ddf236b440f52e4"
@@ -2262,6 +2269,13 @@ passport@^0.4.0:
   dependencies:
     passport-strategy "1.x.x"
     pause "0.0.1"
+
+passport@~0.1.1:
+  version "0.1.18"
+  resolved "https://registry.yarnpkg.com/passport/-/passport-0.1.18.tgz#c8264479dcb6414cadbb66752d12b37e0b6525a1"
+  dependencies:
+    pause "0.0.1"
+    pkginfo "0.2.x"
 
 path-exists@^2.0.0:
   version "2.1.0"
@@ -2394,6 +2408,10 @@ pkg-dir@^1.0.0:
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-1.0.0.tgz#7a4b508a8d5bb2d629d447056ff4e9c9314cf3d4"
   dependencies:
     find-up "^1.0.0"
+
+pkginfo@0.2.x:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/pkginfo/-/pkginfo-0.2.3.tgz#7239c42a5ef6c30b8f328439d9b9ff71042490f8"
 
 postgres-array@~1.0.0:
   version "1.0.2"

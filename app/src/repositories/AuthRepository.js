@@ -4,8 +4,25 @@ const Errors = require('../utils/Errors');
 
 const debug = require('debug')('editor:authRepository');
 
+const consumeRememberMeToken = (token) => {
+    return UserRepository.getUserBy('rememberMeToken', token).then((user) => {
+        if (!user) {
+            return Promise.reject(Errors.userInvalidCredential);
+        }
+        user.rememberMeToken = undefined;
+        return user.save();
+    })
+};
+
+const issueRememberMeToken = (user) => {
+    return UserRepository.getUniqueToken('rememberMeToken').then((token) => {
+        user.rememberMeToken = token;
+        return user.save().then(() => token);
+    });
+};
+
 const getAndAuthenticateUser = (username, password) => {
-    return UserRepository.getUserByUsername(username).then(function (user) {
+    return UserRepository.getUserByUsername(username).then((user) => {
         if (!user) {
             return Promise.reject(Errors.userInvalidCredential);
         }
@@ -42,6 +59,8 @@ const connectFieldToUser = (field, value, user) => {
 };
 
 module.exports = {
+    consumeRememberMeToken: consumeRememberMeToken,
+    issueRememberMeToken: issueRememberMeToken,
     getAndAuthenticateUser: getAndAuthenticateUser,
     getOrCreateUserByField: getOrCreateUserByField,
     connectFieldToUser: connectFieldToUser

@@ -1,8 +1,21 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const User = require('../model/User');
 const DocumentSettings = require('../model/DocumentSettings');
 
 const debug = require('debug')('editor:authController');
+
+const generateRandomToken = ({ stringBase = 'base64', byteLength = 48 } = {}) =>{
+    return new Promise((resolve, reject) => {
+        crypto.randomBytes(byteLength, (err, buffer) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(buffer.toString(stringBase));
+            }
+        });
+    });
+};
 
 /**
  * Gets User by field value.
@@ -62,6 +75,17 @@ const getUniqueUsername = (proposedUsername, tryCount = 0) => {
         });
 };
 
+const getUniqueToken = (field) => {
+    return generateRandomToken().then(token => {
+        return User.findOne({[field]: token}).then((user) => {
+            if(user) {
+                return generateRandomToken();
+            }
+            return token;
+        })
+    });
+};
+
 /**
  * Updates user information.
  *
@@ -118,6 +142,7 @@ module.exports = {
     getUserById: getUserById,
     createUser: createUser,
     getUniqueUsername: getUniqueUsername,
+    getUniqueToken: getUniqueToken,
     updateUser: updateUser,
     updateDefaultDocumentSettings: updateDefaultDocumentSettings
 };

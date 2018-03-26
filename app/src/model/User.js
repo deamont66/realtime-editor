@@ -5,16 +5,17 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, lowercase: true, required: true },
-    password: { type: String, required: false },
+    password: String,
     defaultSettings: {type: mongoose.Schema.Types.ObjectId, ref: 'DocumentSettings', required: true},
-    recoverHash: String,
+    recoverToken: String,
     recoverEnd: Date,
     lastLogin: { type: Date, required: true, default: () => Date.now() },
+    rememberMeToken: String,
 
-    CTUUsername: { type: String, required: false },
-    googleId: { type: String, required: false },
-    facebookId: { type: String, required: false },
-    twitterId: { type: String, required: false },
+    CTUUsername: String,
+    googleId: String,
+    facebookId: String,
+    twitterId: String,
 });
 
 userSchema.methods.toJSON = function () {

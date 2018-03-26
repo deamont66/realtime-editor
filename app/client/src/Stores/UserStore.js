@@ -3,11 +3,12 @@ import axios from '../Utils/Axios';
 
 class UserStore extends EventEmitter {
 
-    singIn(username, password) {
+    singIn(username, password, rememberMe = false) {
         return new Promise((resolve, reject) => {
             axios.post('/auth/signIn', {
                 username: username,
-                password: password
+                password: password,
+                rememberMe: rememberMe
             }).then((res) => {
                 resolve(res.data.user);
                 this.emitSync('value', res.data.user);
