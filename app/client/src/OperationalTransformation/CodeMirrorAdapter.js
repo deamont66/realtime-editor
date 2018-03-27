@@ -214,12 +214,13 @@ class CodeMirrorAdapter {
         if (this.changeInProgress) {
             this.selectionChanged = true;
         } else {
-            this.trigger('selectionChange');
+            if (!this.cm.options.readOnly)
+                this.trigger('selectionChange');
         }
     }
 
     onBlur() {
-        if (!this.cm.somethingSelected()) {
+        if (!this.cm.somethingSelected() && !this.cm.options.readOnly) {
             this.trigger('blur');
         }
     }
