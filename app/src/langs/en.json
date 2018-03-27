@@ -161,7 +161,8 @@
   },
   "send_message_form": {
     "input_placeholder": "Type a message",
-    "submit_title": "Send message"
+    "submit_title": "Send message",
+    "sign_button_text": "Sign in"
   },
   "share_menu": {
     "title": "Share document"
