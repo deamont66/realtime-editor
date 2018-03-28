@@ -46,15 +46,14 @@ module.exports = {
         };
         _sendMail(mailOptions);
     },
-    sendForgotPasswordEmail: function (email, username, hash) {
+    sendForgotPasswordEmail: function (email, username, token) {
         const mailOptions = {
             to: email,
             subject: 'Realtime editor Password Change Request',
             template: 'forgotPassword',
             context: {
-                email: email,
                 username: username,
-                link: path.join(process.env.EMAIL_BASEURL, '/forgot-password?hash=' + hash)
+                link: path.join(process.env.BASE_URL, 'forgot-password', encodeURIComponent(token))
             }
         };
         _sendMail(mailOptions);

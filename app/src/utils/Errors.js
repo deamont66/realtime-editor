@@ -36,6 +36,7 @@ module.exports = {
         status: 422
     },
 
+
     invalidParameters: function (message, field = null) {
         const error = {
             json: true,
@@ -61,6 +62,12 @@ module.exports = {
         message: 'error.cannot_invite_owner',
         code: 4007,
         status: 422
+    },
+
+    forgetPasswordResponse: {
+        json: true,
+        message: 'error.forgot_password_response',
+        status: 200
     },
 
     serverError: {

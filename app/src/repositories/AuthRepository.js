@@ -1,4 +1,5 @@
 const UserRepository = require('./UserRepository');
+const moment = require('moment');
 
 const Errors = require('../utils/Errors');
 const mailer = require('../mailer');
@@ -18,6 +19,25 @@ const consumeRememberMeToken = (token) => {
 const issueRememberMeToken = (user) => {
     return UserRepository.getUniqueToken('rememberMeToken').then((token) => {
         user.rememberMeToken = token;
+        return user.save().then(() => token);
+    });
+};
+
+const consumeForgotPasswordToken = (token) => {
+    return UserRepository.getUserBy('recoverToken', token).then((user) => {
+        if (!user || moment().isAfter(user.recoverEnd)) {
+            return Promise.reject(Errors.userInvalidCredential);
+        }
+        user.recoverToken = undefined;
+        user.recoverEnd = undefined;
+        return user.save();
+    })
+};
+
+const issueForgotPasswordToken = (user) => {
+    return UserRepository.getUniqueToken('recoverToken').then((token) => {
+        user.recoverToken = token;
+        user.recoverEnd = moment().add(2, 'days').toDate();
         return user.save().then(() => token);
     });
 };
@@ -65,6 +85,8 @@ const connectFieldToUser = (field, value, user) => {
 module.exports = {
     consumeRememberMeToken: consumeRememberMeToken,
     issueRememberMeToken: issueRememberMeToken,
+    consumeForgotPasswordToken: consumeForgotPasswordToken,
+    issueForgotPasswordToken: issueForgotPasswordToken,
     getAndAuthenticateUser: getAndAuthenticateUser,
     getOrCreateUserByField: getOrCreateUserByField,
     connectFieldToUser: connectFieldToUser

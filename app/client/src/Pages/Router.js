@@ -13,6 +13,7 @@ import Settings from "./Settings/Settings";
 import Layout from "./Layout/Layout";
 import Error404 from "./Errors/Error404";
 import MetaTags from "../Components/MetaTags";
+import ForgotPassword from "./ForgotPassword";
 
 class Router extends React.Component {
 
@@ -29,9 +30,9 @@ class Router extends React.Component {
                         <Route exact path={'/sign-in'} render={(props) => (
                             this.props.user === null ? <SignIn {...props}/> : <Redirect to={'/'}/>)}/>
 
-                        <Route exact path={'/forgot-password'} render={(props) => (
-                            this.props.user === null ? <Typography>Forgot password form</Typography> :
-                                <Redirect to={'/'}/>//<ForgotPassword {...props}/>
+                        <Route path={'/forgot-password'} render={(props) => (
+                            this.props.user === null ? <ForgotPassword {...props}/> :
+                                <Redirect to={'/'}/>
                         )}/>
 
                         <Route exact path={'/'} render={() => (

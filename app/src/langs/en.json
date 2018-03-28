@@ -5,6 +5,7 @@
     "titles": {
       "sign_up": "Sign Up",
       "sign_in": "Sign In",
+      "forgot_password": "Forgot password",
       "my_documents": "My documents",
       "last_documents": "Last documents",
       "shared_documents": "Shared documents",
@@ -58,6 +59,7 @@
     "remember_label": "Remember Me",
     "forgot_link_text": "Forgot Password?",
     "submit_button": "Sign In",
+    "or_text": "or",
     "sign_up": {
       "text": "Don't have an account?",
       "link_text": "Create an account"
@@ -66,6 +68,24 @@
     "google": "Sing in using Google account",
     "facebook": "Sing in using Facebook account",
     "twitter": "Sing in using Twitter account"
+  },
+  "forgotPasswordRequest": {
+    "headline": "Request password change",
+    "submit_button": "Send request",
+    "sign_in": {
+      "text": "Do you know your password?",
+      "link_text": "Sign in"
+    }
+  },
+  "forgotPasswordChange": {
+    "headline": "Change your password",
+    "submit_button": "Change password",
+    "sign_in": {
+      "text": "Do you know your password?",
+      "link_text": "Sign in"
+    },
+    "success": "Password changed, you can try to sign in",
+    "invalid_token": "This link is not valid"
   },
   "my_documents": {
     "headline": "My documents",
@@ -268,6 +288,7 @@
     "invalid_parameters": "Invalid parameters",
     "insufficient_permission": "Insufficient permission",
     "server_error": "Server error",
-    "fieldAlreadyUsed": "Field is already used with another account"
+    "fieldAlreadyUsed": "Field is already used with another account",
+    "forgot_password_response": "Instructions email was sent to the corresponding email address"
   }
 }

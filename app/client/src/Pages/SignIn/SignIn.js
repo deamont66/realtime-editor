@@ -131,7 +131,7 @@ class SignIn extends React.Component {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Typography component="p" align="center">or</Typography>
+                            <Typography component="p" align="center">{t('signIn.or_text')}</Typography>
                         </Grid>
 
                         <SocialButtons/>

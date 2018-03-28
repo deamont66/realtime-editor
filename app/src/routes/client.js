@@ -34,6 +34,11 @@ router.all('/sign-up', (req, res, next) => {
     renderWithMeta(req, res, next);
 });
 
+router.all('/forgot-password', (req, res, next) => {
+    res.locals.title = translate['app']['titles']['forgot_password'];
+    renderWithMeta(req, res, next);
+});
+
 router.all('/settings', (req, res, next) => {
     res.locals.title = translate['app']['titles']['account_settings'];
     renderWithMeta(req, res, next);

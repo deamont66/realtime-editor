@@ -1,4 +1,5 @@
 const passport = require('passport');
+const moment = require('moment');
 
 const UserRepository = require('../repositories/UserRepository');
 const AuthRepository = require('../repositories/AuthRepository');
@@ -81,12 +82,43 @@ module.exports = {
                 status: 'success',
                 user: user.toJSON()
             });
-        }).catch(function (err) {
+        }).catch((err) => {
             err.json = true;
             if (err.code === 11000)
                 next(Errors.usernameAlreadyUsed);
             else
                 next(err);
+        });
+    },
+
+    getForgotPassword: (req, res, next) => {
+        UserRepository.getUserBy('recoverToken', req.params.token).then((user) => {
+            if(!user || moment().isAfter(user.recoverEnd)) return Promise.reject(Errors.notFound);
+        }).then(() => {
+            res.sendStatus(204);
+        }).catch((err) => {
+            next(err);
+        });
+    },
+    postForgetPassword: (req, res, next) => {
+        UserRepository.getUserByUsername(req.body.username).then(user => {
+            if (user.email !== req.body.email) return Promise.reject();
+            return AuthRepository.issueForgotPasswordToken(user).then(token => {
+                mailer.sendForgotPasswordEmail(user.email, user.username, token);
+                return Promise.reject();
+            });
+        }).catch((err) => {
+            if(err) debug(err);
+            res.status(200).json(Errors.forgetPasswordResponse);
+        })
+    },
+    putForgetPassword: (req, res, next) => {
+        AuthRepository.consumeForgotPasswordToken(req.params.token).then(user => {
+            return UserRepository.updateUser(user, {newPassword: req.body.newPassword});
+        }).then(() => {
+            res.sendStatus(204);
+        }).catch((err) => {
+            next(err);
         });
     },
 
