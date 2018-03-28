@@ -3,8 +3,6 @@ import {translate} from 'react-i18next';
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Typography from 'material-ui/Typography';
-
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
 import SingleDocument from "./SingleDocument/SingleDocument";
@@ -36,9 +34,8 @@ class Router extends React.Component {
                                 <Redirect to={'/'}/>//<ForgotPassword {...props}/>
                         )}/>
 
-                        <Route exact path={'/'} render={(props) => (
-                            <Typography>Homepage</Typography>//<Homepage {...props}/>
-                        )}/>
+                        <Route exact path={'/'} render={() => (
+                            this.props.user === null ? <Redirect to={'/sign-in'}/> : <Redirect to={'/document'}/>)}/>
 
                         <Route exact path={'/document'} render={(props) => (
                             this.props.user !== null ? <MyDocuments {...props} user={this.props.user}/> :
@@ -64,7 +61,7 @@ class Router extends React.Component {
                                 <Redirect to={'/sign-in'}/>
                         )}/>
 
-                        <Route render={(props) => (
+                        <Route render={() => (
                             <Error404/>
                         )}/>
                     </Switch>
