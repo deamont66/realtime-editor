@@ -7,7 +7,6 @@ import Grid from 'material-ui/Grid';
 import {FormControl} from 'material-ui/Form';
 import Input from 'material-ui/Input';
 import IconButton from 'material-ui/IconButton';
-import Button from 'material-ui/Button';
 import Tooltip from 'material-ui/Tooltip';
 
 import Send from 'material-ui-icons/Send';

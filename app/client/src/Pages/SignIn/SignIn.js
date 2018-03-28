@@ -9,18 +9,12 @@ import {FormControl, FormHelperText, FormControlLabel} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import Tooltip from 'material-ui/Tooltip';
 import {LinearProgress} from "material-ui/Progress";
-
-import CTU from "../../Components/Icons/CTU";
-import Google from "../../Components/Icons/Google";
-import Facebook from "../../Components/Icons/Facebook";
-import Twitter from "../../Components/Icons/Twitter";
 
 import UserStore from "../../Stores/UserStore";
 import MaterialLink from "../../Components/MaterialLink";
 import MetaTags from "../../Components/MetaTags";
+import SocialButtons from "./SocialButtons";
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -42,14 +36,6 @@ const styles = theme => ({
     },
     signUp: {
         fontSize: theme.typography.pxToRem(16)
-    },
-    socialWrapper: {
-        margin: theme.spacing.unit * 2,
-        marginTop: 0,
-        marginBottom: theme.spacing.unit,
-    },
-    socialIcon: {
-        height: 'auto'
     }
 });
 
@@ -148,30 +134,7 @@ class SignIn extends React.Component {
                             <Typography component="p" align="center">or</Typography>
                         </Grid>
 
-                        <Grid item xs={12}>
-                            <Typography component="div" align={'center'}>
-                                <Tooltip title={t('signIn.CTU')} placement={'right'}>
-                                    <IconButton href={'/api/auth/ctu'} size="large" variant="raised" className={classes.socialWrapper}>
-                                        <CTU className={classes.socialIcon}/>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title={t('signIn.google')} placement={'right'}>
-                                    <IconButton href={'/api/auth/google'} size="large" variant="raised" className={classes.socialWrapper}>
-                                        <Google className={classes.socialIcon}/>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title={t('signIn.facebook')} placement={'right'}>
-                                    <IconButton href={'/api/auth/facebook'} size="large" variant="raised" className={classes.socialWrapper}>
-                                        <Facebook className={classes.socialIcon}/>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title={t('signIn.twitter')} placement={'right'}>
-                                    <IconButton href={'/api/auth/twitter'} size="large" variant="raised" className={classes.socialWrapper}>
-                                        <Twitter className={classes.socialIcon}/>
-                                    </IconButton>
-                                </Tooltip>
-                            </Typography>
-                        </Grid>
+                        <SocialButtons/>
 
                         <Grid item xs={12}>
                             <Typography component="p" align={'center'} className={classes.signUp}>

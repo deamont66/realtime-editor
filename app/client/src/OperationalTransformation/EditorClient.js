@@ -33,27 +33,6 @@ class SelfMeta {
     }
 }
 
-/*class OtherMeta {
-    constructor(clientId, selection) {
-        this.clientId = clientId;
-        this.selection = selection;
-    }
-
-    static fromJSON(obj) {
-        return new OtherMeta(
-            obj.clientId,
-            obj.selection && Selection.fromJSON(obj.selection)
-        );
-    }
-
-    transform(operation) {
-        return new OtherMeta(
-            this.clientId,
-            this.selection && this.selection.transform(operation)
-        );
-    }
-}*/
-
 class OtherClient {
     constructor(id, editorAdapter, name, selection) {
         this.id = id;
@@ -315,7 +294,6 @@ class EditorClient extends Client {
     }
 
     applyOperation(operation) {
-        // console.log(operation);
         this.editorAdapter.applyOperation(operation);
         this.updateSelection();
         this.undoManager.transform(new WrappedOperation(operation, null));

@@ -26,7 +26,6 @@ class ClientSocket {
             });
 
             this.socket.emit('join', (obj) => {
-                // console.log(obj);
                 this.init(obj.value, obj.revision, obj.clients, this.editorClient ? this.editorClient.serverAdapter : new SocketIOAdapter(this.socket));
                 this.onSettings(obj.settings);
 
