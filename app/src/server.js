@@ -9,11 +9,7 @@ module.exports = function (port) {
     express.set('port', port);
 
     const server = http.createServer(express);
-    const io = require('socket.io')(server, {
-        path: '/api/socket.io',
-        serveClient: false,
-    });
-    require('../src/socketIo')(io, session);
+    require('../src/socketIo')(server, session);
 
     return server;
 };

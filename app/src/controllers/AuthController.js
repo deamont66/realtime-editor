@@ -1,10 +1,28 @@
+const passport = require('passport');
+
 const UserRepository = require('../repositories/UserRepository');
 const AuthRepository = require('../repositories/AuthRepository');
 const Errors = require('../utils/Errors');
-const passport = require('passport');
+const mailer = require('../mailer');
 
 const debug = require('debug')('editor:authController');
 
+
+const handleRemeberMeSuccess = (req, res, user, onSuccess, onError) => {
+    ((req.body.rememberMe) ?
+        AuthRepository.issueRememberMeToken(user)
+            .then(token => res.cookie('remember_me', token, {
+                path: '/',
+                httpOnly: true,
+                maxAge: 604800000
+            })) : Promise.resolve())
+        .then(() => {
+            return onSuccess(user);
+        })
+        .catch((err) => {
+            return onError(err);
+        });
+};
 
 const handleAuthentication = (req, res, next, redirect = true) => (err, user) => {
     const onError = (err) => (redirect) ? res.redirect('/sign-in') : next(err);
@@ -22,19 +40,7 @@ const handleAuthentication = (req, res, next, redirect = true) => (err, user) =>
             debug(err);
             return onError(err);
         }
-        ((req.body.rememberMe) ?
-            AuthRepository.issueRememberMeToken(user)
-                .then(token => res.cookie('remember_me', token, {
-                    path: '/',
-                    httpOnly: true,
-                    maxAge: 604800000
-                })) : Promise.resolve())
-            .then(() => {
-                return onSuccess(user);
-            })
-            .catch((err) => {
-                return onError(err);
-            });
+        handleRemeberMeSuccess(req, res, user, onSuccess, onError);
     });
 };
 
@@ -70,6 +76,7 @@ module.exports = {
                 });
             });
         }).then((user) => {
+            mailer.sendWelcomeEmail(user.email, user.username);
             res.status(200).json({
                 status: 'success',
                 user: user.toJSON()

@@ -1,5 +1,6 @@
 const sharedSession = require("express-socket.io-session");
 const passportSocketIo = require('passport.socketio');
+const socketIO = require('socket.io');
 
 const RoomList = require('./editor/RoomList');
 
@@ -19,7 +20,11 @@ const initSessionOnNamespace = (io, session) => {
     }));
 };
 
-module.exports = function (io, session) {
+module.exports = function (server, session) {
+    const io = socketIO(server, {
+        path: '/api/socket.io',
+        serveClient: false,
+    });
 
     initSessionOnNamespace(io, session);
 

@@ -1,6 +1,7 @@
 const UserRepository = require('./UserRepository');
 
 const Errors = require('../utils/Errors');
+const mailer = require('../mailer');
 
 const debug = require('debug')('editor:authRepository');
 
@@ -42,6 +43,9 @@ const getOrCreateUserByField = (field, value, username, email) => {
             return UserRepository.createUser({
                 username: uniqueUsername, email, ['field']: value
             });
+        }).then((user) => {
+            mailer.sendWelcomeEmail(user.email, user.username);
+            return user;
         });
     }).then((user) => {
         user.lastLogin = Date.now();
