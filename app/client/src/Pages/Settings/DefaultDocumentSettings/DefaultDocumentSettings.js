@@ -13,9 +13,9 @@ import CloseIcon from 'material-ui-icons/Close';
 
 import axios from '../../../Utils/Axios';
 
-import DocumentSettingsForm from "./DocumentSettingsForm";
-import SubmitButtons from "../SubmitButtons";
-import MetaTags from "../../../Components/MetaTags";
+import DocumentSettingsForm from './DocumentSettingsForm';
+import SubmitButtons from '../SubmitButtons';
+import MetaTags from '../../../Components/MetaTags';
 
 const styles = theme => ({
     close: {

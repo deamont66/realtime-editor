@@ -1,8 +1,8 @@
-import io from "socket.io-client";
-import SocketIOAdapter from "../../OperationalTransformation/SocketIOAdapter";
-import createColor from "../../Utils/ColorGenerator";
-import EditorClient from "../../OperationalTransformation/EditorClient";
-import CodeMirrorAdapter from "../../OperationalTransformation/CodeMirrorAdapter";
+import io from 'socket.io-client';
+
+import {SocketIOAdapter, EditorClient, CodeMirrorAdapter} from '../../OperationalTransformation';
+
+import createColor from '../../Utils/ColorGenerator';
 
 class ClientSocket {
     editorClient = null;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import List from 'material-ui/List';
 
-import IndividualShareItem from "./IndividualShareItem";
+import IndividualShareItem from './IndividualShareItem';
 
 class ListIndividualShares extends React.Component {
 

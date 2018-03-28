@@ -11,10 +11,10 @@ import Input, {InputLabel} from 'material-ui/Input';
 import Button from 'material-ui/Button';
 import {LinearProgress} from 'material-ui/Progress';
 
-import UserStore from "../../Stores/UserStore";
-import PasswordStrengthEstimator, {estimateStrength} from "../../Components/PasswordStrengthEstimator";
-import MaterialLink from "../../Components/MaterialLink";
-import MetaTags from "../../Components/MetaTags";
+import UserStore from '../../Stores/UserStore';
+import PasswordStrengthEstimator, {estimateStrength} from '../../Components/PasswordStrengthEstimator';
+import MaterialLink from '../../Components/MaterialLink';
+import MetaTags from '../../Components/MetaTags';
 
 const styles = theme => ({
     root: theme.mixins.gutters({

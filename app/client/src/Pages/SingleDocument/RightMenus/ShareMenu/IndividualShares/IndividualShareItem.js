@@ -10,9 +10,9 @@ import Avatar from 'material-ui/Avatar';
 import Delete from 'material-ui-icons/Delete';
 import Edit from 'material-ui-icons/Edit';
 
-import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
-import colorGenerator from "../../../../../Utils/ColorGenerator";
-import axios from "../../../../../Utils/Axios";
+import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
+import colorGenerator from '../../../../../Utils/ColorGenerator';
+import axios from '../../../../../Utils/Axios';
 
 
 const styles = theme => ({

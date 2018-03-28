@@ -11,8 +11,8 @@ import Tooltip from 'material-ui/Tooltip';
 
 import Add from 'material-ui-icons/Add';
 
-import DocumentTable from "./DocumentTable/DocumentTable";
-import MetaTags from "../../Components/MetaTags";
+import DocumentTable from './DocumentTable';
+import MetaTags from '../../Components/MetaTags';
 
 const styles = theme => ({
     root: {

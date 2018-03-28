@@ -8,7 +8,7 @@ import AppBar from 'material-ui/AppBar';
 import Hidden from 'material-ui/Hidden';
 
 import DrawerMenu from './DrawerMenu';
-import AppBarMenu from "./AppBarMenu";
+import AppBarMenu from './AppBarMenu';
 
 const drawerWidth = 240;
 

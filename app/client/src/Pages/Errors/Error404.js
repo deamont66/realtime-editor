@@ -5,7 +5,7 @@ import withStyles from 'material-ui/styles/withStyles';
 import Typography from 'material-ui/Typography';
 import Paper from 'material-ui/Paper';
 
-import MetaTags from "../../Components/MetaTags";
+import MetaTags from '../../Components/MetaTags';
 
 const styles = theme => ({
     root: theme.mixins.gutters({

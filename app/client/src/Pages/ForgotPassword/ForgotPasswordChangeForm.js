@@ -9,10 +9,9 @@ import Input, {InputLabel} from 'material-ui/Input';
 import {LinearProgress, CircularProgress} from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 
-import MaterialLink from "../../Components/MaterialLink";
-import axios from "../../Utils/Axios";
-import {estimateStrength} from "../../Components/PasswordStrengthEstimator";
-import PasswordStrengthEstimator from "../../Components/PasswordStrengthEstimator";
+import MaterialLink from '../../Components/MaterialLink';
+import axios from '../../Utils/Axios';
+import PasswordStrengthEstimator, {estimateStrength} from '../../Components/PasswordStrengthEstimator';
 
 const styles = theme => ({
     root: theme.mixins.gutters({

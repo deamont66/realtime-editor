@@ -11,7 +11,7 @@ import secondaryColor from 'material-ui/colors/pink';
 import Router from './Pages/Router';
 import UserStore from './Stores/UserStore';
 
-import Loading from "./Components/Loading";
+import Loading from './Components/Loading';
 
 class App extends Component {
 

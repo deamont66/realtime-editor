@@ -5,8 +5,8 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import Typography from 'material-ui/Typography';
 
-import DocumentSettingsForm from "../../../Settings/DefaultDocumentSettings/DocumentSettingsForm";
-import RemoveButton from "./RemoveButton";
+import {DocumentSettingsForm} from '../../../Settings/DefaultDocumentSettings';
+import RemoveButton from './RemoveButton';
 
 const styles = theme => ({
     title: {

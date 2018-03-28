@@ -10,7 +10,8 @@ import IconButton from 'material-ui/IconButton';
 import Tooltip from 'material-ui/Tooltip';
 
 import Send from 'material-ui-icons/Send';
-import LinkButton from "../../../../Components/LinkButton";
+
+import LinkButton from '../../../../Components/LinkButton';
 
 const styles = theme => ({
     root: {

@@ -9,12 +9,12 @@ import {FormControl, FormHelperText, FormControlLabel} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
-import {LinearProgress} from "material-ui/Progress";
+import {LinearProgress} from 'material-ui/Progress';
 
-import UserStore from "../../Stores/UserStore";
-import MaterialLink from "../../Components/MaterialLink";
-import MetaTags from "../../Components/MetaTags";
-import SocialButtons from "./SocialButtons";
+import UserStore from '../../Stores/UserStore';
+import MaterialLink from '../../Components/MaterialLink';
+import MetaTags from '../../Components/MetaTags';
+import SocialButtons from './SocialButtons';
 
 const styles = theme => ({
     root: theme.mixins.gutters({

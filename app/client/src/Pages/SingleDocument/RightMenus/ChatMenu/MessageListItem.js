@@ -6,7 +6,8 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import {ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
-import MessageListItemText from "./MessageListItemText";
+
+import MessageListItemText from './MessageListItemText';
 
 const styles = theme => ({
     root: {

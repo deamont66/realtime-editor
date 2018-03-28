@@ -7,15 +7,15 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
-import Input, {InputLabel} from "material-ui/Input";
-import {FormControl, FormHelperText} from "material-ui/Form";
-import Tooltip from "material-ui/Tooltip";
+import Input, {InputLabel} from 'material-ui/Input';
+import {FormControl, FormHelperText} from 'material-ui/Form';
+import Tooltip from 'material-ui/Tooltip';
 
 import ContentCopy from 'material-ui-icons/ContentCopy';
 import Settings from 'material-ui-icons/Settings';
 
 import ShareButtons from './ShareButtons';
-import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
+import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
 
 const styles = theme => ({
     title: {

@@ -6,9 +6,9 @@ import withStyles from 'material-ui/styles/withStyles';
 import Typography from 'material-ui/Typography';
 import {CircularProgress} from 'material-ui/Progress';
 
-import LinkRights from "./LinkRights/LinkRights";
-import axios from "../../../../Utils/Axios";
-import IndividualShares from "./IndividualShares/IndividualShares";
+import LinkRights from './LinkRights';
+import IndividualShares from './IndividualShares';
+import axios from '../../../../Utils/Axios';
 
 
 const styles = theme => ({

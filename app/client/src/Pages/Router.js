@@ -3,17 +3,16 @@ import {translate} from 'react-i18next';
 import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import SignIn from "./SignIn/SignIn";
-import SignUp from "./SignUp/SignUp";
-import SingleDocument from "./SingleDocument/SingleDocument";
-import MyDocuments from "./Documents/MyDocuments";
-import SharedDocuments from "./Documents/SharedDocuments";
-import LastDocuments from "./Documents/LastDocuments";
-import Settings from "./Settings/Settings";
-import Layout from "./Layout/Layout";
-import Error404 from "./Errors/Error404";
-import MetaTags from "../Components/MetaTags";
-import ForgotPassword from "./ForgotPassword";
+import Layout from './Layout';
+import MetaTags from '../Components/MetaTags';
+import Error404 from './Errors/Error404';
+
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+import SingleDocument from './SingleDocument';
+import {MyDocuments, SharedDocuments, LastDocuments} from './Documents';
+import Settings from './Settings';
+import ForgotPassword from './ForgotPassword';
 
 class Router extends React.Component {
 

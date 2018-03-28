@@ -10,8 +10,8 @@ import {MenuItem} from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 import Checkbox from 'material-ui/Checkbox';
 
-import EditorThemes from "../../../Utils/EditorThemes";
-import EditorModes from "../../../Utils/EditorModes";
+import EditorThemes from '../../../Utils/EditorThemes';
+import EditorModes from '../../../Utils/EditorModes';
 
 const styles = theme => ({
     formControl: {

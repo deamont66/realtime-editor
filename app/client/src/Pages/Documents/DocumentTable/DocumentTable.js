@@ -1,16 +1,16 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import moment from "moment";
+import moment from 'moment';
 
 import withStyles from 'material-ui/styles/withStyles';
 import Table, {TableRow, TableBody, TableCell, TableFooter, TablePagination} from 'material-ui/Table';
-import Typography from "material-ui/Typography";
-import Hidden from "material-ui/Hidden";
-import Tooltip from "material-ui/Tooltip";
+import Typography from 'material-ui/Typography';
+import Hidden from 'material-ui/Hidden';
+import Tooltip from 'material-ui/Tooltip';
 
-import MaterialLink from "../../../Components/MaterialLink";
-import DocumentTableHeader from "./DocumentTableHeader";
+import MaterialLink from '../../../Components/MaterialLink';
+import DocumentTableHeader from './DocumentTableHeader';
 
 const styles = theme => ({
     table: {

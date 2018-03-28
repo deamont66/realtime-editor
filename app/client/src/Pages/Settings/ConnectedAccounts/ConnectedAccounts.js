@@ -11,14 +11,14 @@ import Button from 'material-ui/Button';
 
 import Done from 'material-ui-icons/Done'
 
-import CTU from "../../../Components/Icons/CTU";
-import Google from "../../../Components/Icons/Google";
-import Facebook from "../../../Components/Icons/Facebook";
-import Twitter from "../../../Components/Icons/Twitter";
+import CTU from '../../../Components/Icons/CTU';
+import Google from '../../../Components/Icons/Google';
+import Facebook from '../../../Components/Icons/Facebook';
+import Twitter from '../../../Components/Icons/Twitter';
 
 import axios from '../../../Utils/Axios';
 import UserStore from '../../../Stores/UserStore';
-import MetaTags from "../../../Components/MetaTags";
+import MetaTags from '../../../Components/MetaTags';
 
 const styles = theme => ({
     socialIcon: {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import {TableHead, TableRow, TableCell, TableSortLabel} from 'material-ui/Table';
 import Tooltip from 'material-ui/Tooltip';
-import Hidden from "material-ui/Hidden";
+import Hidden from 'material-ui/Hidden';
 
 const columnData = [
     {id: 'title', numeric: false, disablePadding: false, label: 'documentTable.header.title'},

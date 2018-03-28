@@ -1,14 +1,14 @@
 import React from 'react';
 import {translate} from 'react-i18next';
-import axios from '../../Utils/Axios';
+import axios from "../../Utils/Axios";
 
 import withStyles from 'material-ui/styles/withStyles';
 import {LinearProgress} from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 
-import DocumentTable from "./DocumentTable/DocumentTable";
-import MetaTags from "../../Components/MetaTags";
+import DocumentTable from './DocumentTable';
+import MetaTags from '../../Components/MetaTags';
 
 const styles = theme => ({
     root: {

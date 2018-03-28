@@ -7,12 +7,13 @@ import Typography from 'material-ui/Typography';
 import Select from 'material-ui/Select';
 import {MenuItem} from 'material-ui/Menu';
 import Button from 'material-ui/Button';
-import {InputLabel} from "material-ui/Input";
-import {FormControl, FormHelperText} from "material-ui/Form";
+import {InputLabel} from 'material-ui/Input';
+import {FormControl, FormHelperText} from 'material-ui/Form';
+
 import Collapse from 'material-ui/transitions/Collapse';
 
-import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
-import axios from "../../../../../Utils/Axios";
+import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
+import axios from '../../../../../Utils/Axios';
 
 const styles = theme => ({
     root: {

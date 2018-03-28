@@ -5,8 +5,9 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import Paper from 'material-ui/Paper';
 
-import MetaTags from "../../Components/MetaTags";
-import {ForgotPasswordRequestFrom, ForgotPasswordChangeForm} from "./";
+import MetaTags from '../../Components/MetaTags';
+import ForgotPasswordRequestFrom from './ForgotPasswordRequestFrom';
+import ForgotPasswordChangeForm from './ForgotPasswordChangeForm';
 
 const styles = theme => ({
     root: theme.mixins.gutters({

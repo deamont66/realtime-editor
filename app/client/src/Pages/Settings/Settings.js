@@ -10,9 +10,9 @@ import Typography from 'material-ui/Typography';
 import Card, {CardContent} from 'material-ui/Card';
 
 
-import AccountSettings from "./AccountSettings/AccountSettings";
-import DefaultDocumentSettings from "./DefaultDocumentSettings/DefaultDocumentSettings";
-import ConnectedAccounts from "./ConnectedAccounts/ConnectedAccounts";
+import AccountSettings from './AccountSettings';
+import DefaultDocumentSettings from './DefaultDocumentSettings';
+import ConnectedAccounts from './ConnectedAccounts';
 
 const styles = theme => ({
     headline: {

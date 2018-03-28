@@ -17,9 +17,9 @@ import MenuIcon from 'material-ui-icons/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import Add from 'material-ui-icons/Add';
 
-import NavLinkMenuItem from "../../Components/NavLinkMenuItem";
-import UserStore from "../../Stores/UserStore";
-import axios from "../../Utils/Axios";
+import NavLinkMenuItem from '../../Components/NavLinkMenuItem';
+import UserStore from '../../Stores/UserStore';
+import axios from '../../Utils/Axios';
 
 const styles = theme => ({
     menuButton: {

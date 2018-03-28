@@ -4,8 +4,8 @@ import {translate} from 'react-i18next';
 import withStyles from 'material-ui/styles/withStyles';
 
 import Typography from 'material-ui/Typography';
-import AddIndividualShare from "./AddIndividualShare";
-import ListIndividualShares from "./ListIndividualShares";
+import AddIndividualShare from './AddIndividualShare';
+import ListIndividualShares from './ListIndividualShares';
 
 const styles = theme => ({
    title: {

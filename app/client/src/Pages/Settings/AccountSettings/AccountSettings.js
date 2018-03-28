@@ -12,10 +12,10 @@ import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
 
 import axios from '../../../Utils/Axios';
-import UserStore from "../../../Stores/UserStore";
-import SubmitButtons from "../SubmitButtons";
-import PasswordStrengthEstimator, {estimateStrength} from "../../../Components/PasswordStrengthEstimator";
-import MetaTags from "../../../Components/MetaTags";
+import UserStore from '../../../Stores/UserStore';
+import SubmitButtons from '../SubmitButtons';
+import PasswordStrengthEstimator, {estimateStrength} from '../../../Components/PasswordStrengthEstimator';
+import MetaTags from '../../../Components/MetaTags';
 
 const styles = theme => ({
     close: {

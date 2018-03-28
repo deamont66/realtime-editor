@@ -10,7 +10,7 @@ import Button from 'material-ui/Button';
 import {CircularProgress} from 'material-ui/Progress';
 import List from 'material-ui/List';
 
-import MessageListItem from "./MessageListItem";
+import MessageListItem from './MessageListItem';
 
 const styles = theme => ({
     root: {

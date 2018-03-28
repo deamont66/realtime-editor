@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ShareLinkSettings from "./ShareLinkSettings";
-import ShareLink from "./ShareLink";
+import ShareLinkSettings from './ShareLinkSettings';
+import ShareLink from './ShareLink';
 
 class LinkRights extends React.Component {
 

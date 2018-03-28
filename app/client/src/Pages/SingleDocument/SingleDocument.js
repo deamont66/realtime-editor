@@ -1,21 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import moment from 'moment';
-
 import withStyles from 'material-ui/styles/withStyles';
+import axios from '../../Utils/Axios';
 
 import {LinearProgress} from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
 
-import Editor from "./Editor/Editor";
-import RightMenus from "./RightMenus/RightMenus";
-import DocumentHeader from "./DocumentHeader/DocumentHeader";
-import Error404 from "../Errors/Error404";
+import Editor from './Editor';
+import RightMenus from './RightMenus';
+import DocumentHeader from './DocumentHeader';
+import ClientSocket from './ClientSocket';
 
-import ClientSocket from "./ClientSocket";
-import MetaTags from "../../Components/MetaTags";
-import axios from "../../Utils/Axios";
-import PropTypes from "prop-types";
+import Error404 from '../Errors/Error404';
+import MetaTags from '../../Components/MetaTags';
 
 const styles = theme => ({
     root: {

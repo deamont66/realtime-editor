@@ -2,7 +2,7 @@ import React from 'react';
 import {matchPath, withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import LinkMenuItem from "./LinkMenuItem";
+import LinkMenuItem from './LinkMenuItem';
 
 class NavLinkMenuItem extends React.Component {
 

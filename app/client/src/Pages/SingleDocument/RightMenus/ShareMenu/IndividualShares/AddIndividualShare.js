@@ -6,15 +6,15 @@ import withStyles from 'material-ui/styles/withStyles';
 
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
-import {FormControl, FormHelperText} from "material-ui/Form";
-import Input, {InputLabel} from "material-ui/Input";
-import {MenuItem} from "material-ui/Menu";
-import Select from "material-ui/Select";
+import {FormControl, FormHelperText} from 'material-ui/Form';
+import Input, {InputLabel} from 'material-ui/Input';
+import {MenuItem} from 'material-ui/Menu';
+import Select from 'material-ui/Select';
 
 import Collapse from 'material-ui/transitions/Collapse';
 
-import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
-import axios from '../../../../../Utils/Axios';
+import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
+import axios from "../../../../../Utils/Axios";
 
 const styles = theme => ({
     root: {

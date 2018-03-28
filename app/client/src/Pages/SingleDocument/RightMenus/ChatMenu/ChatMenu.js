@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
 import withStyles from 'material-ui/styles/withStyles';
 
-import Typography from "material-ui/Typography";
-import Grid from "material-ui/Grid";
+import Typography from 'material-ui/Typography';
+import Grid from 'material-ui/Grid';
 
-import ChatMessages from "./ChatMessages";
+import ChatMessages from './ChatMessages';
 
 const styles = theme => ({
     root: {

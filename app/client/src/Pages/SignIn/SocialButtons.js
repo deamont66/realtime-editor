@@ -7,10 +7,10 @@ import Typography from 'material-ui/Typography';
 import Tooltip from 'material-ui/Tooltip';
 import IconButton from 'material-ui/IconButton';
 
-import CTU from "../../Components/Icons/CTU";
-import Google from "../../Components/Icons/Google";
-import Facebook from "../../Components/Icons/Facebook";
-import Twitter from "../../Components/Icons/Twitter";
+import CTU from '../../Components/Icons/CTU';
+import Google from '../../Components/Icons/Google';
+import Facebook from '../../Components/Icons/Facebook';
+import Twitter from '../../Components/Icons/Twitter';
 
 const styles = theme => ({
 
