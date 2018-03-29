@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { translate } from 'react-i18next';
+import {translate} from 'react-i18next';
 
 import {withStyles} from 'material-ui/styles/index';
 import Toolbar from 'material-ui/Toolbar';
@@ -41,9 +41,14 @@ const styles = theme => ({
 
 class AppBarMenu extends React.Component {
 
-    state = {
-        anchorEl: null,
-    };
+    constructor() {
+        super();
+
+        this.state = {
+            anchorEl: null,
+        };
+    }
+
 
     handleMenu = event => {
         this.setState({anchorEl: event.currentTarget});
@@ -118,8 +123,12 @@ class AppBarMenu extends React.Component {
                         open={Boolean(this.state.anchorEl)}
                         onClose={this.handleClose}
                     >
-                        <NavLinkMenuItem onClick={this.handleClose} to={'/settings'} exact>{t('appBar.settings_button')}</NavLinkMenuItem>
-                        <MenuItem onClick={() => UserStore.logOut()}>{t('appBar.logout_button')}</MenuItem>
+                        <NavLinkMenuItem onClick={this.handleClose} to={'/settings'}
+                                         exact>{t('appBar.settings_button')}</NavLinkMenuItem>
+                        <MenuItem onClick={() => {
+                            this.handleClose();
+                            UserStore.logOut();
+                        }}>{t('appBar.logout_button')}</MenuItem>
                     </Menu>
                 </div>}
             </Toolbar>
