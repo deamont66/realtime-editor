@@ -8,6 +8,10 @@ import i18nInstance from './i18nInstance';
 import primaryColor from 'material-ui/colors/indigo';
 import secondaryColor from 'material-ui/colors/pink';
 
+import moment from 'moment';
+import 'moment/locale/cs';
+import 'moment/locale/en-gb';
+
 import Router from './Pages/Router';
 import UserStore from './Stores/UserStore';
 
@@ -26,6 +30,9 @@ class App extends Component {
         };
 
         i18nInstance.on('loaded', this.handleTranslationLoaded);
+        i18nInstance.on('languageChanged', (lng) => {
+            moment.locale(lng);
+        });
     }
 
     componentDidMount() {

@@ -1,19 +1,34 @@
 {
+  "app": {
+    "name": "Realtime editor",
+    "description": "Kolaborativní editor v reálném čase",
+    "titles": {
+      "sign_up": "Registrace",
+      "sign_in": "Přihlášení",
+      "forgot_password": "Zapomenuté heslo",
+      "my_documents": "Mé dokumenty",
+      "last_documents": "Poslední dokumenty",
+      "shared_documents": "Sdílené dokumenty",
+      "account_settings": "Nastavení účtu",
+      "document_settings": "Nastavení dokumentů",
+      "connected_settings": "Spojené účty"
+    }
+  },
   "appBar": {
     "title": "Realtime Editor",
     "create_button": "Vytvořit nový dokument",
     "logged_in_as": "Přihlášen jako {{username}}",
     "settings_button": "Nastavení",
-    "logout_button": "Odhlásit"
+    "logout_button": "Odhlásit se"
   },
   "drawerMenu": {
     "my_documents_item": {
-      "primary": "Moje dokumenty",
+      "primary": "Mé dokumenty",
       "secondary": "Vytvořenou mnou"
     },
     "shared_documents_item": {
-      "primary": "Sdíleno",
-      "secondary": "Sdíleno se mnou"
+      "primary": "Sdílené",
+      "secondary": "Sdílenou se mnou"
     },
     "last_documents_item": {
       "primary": "Poslední",
@@ -28,131 +43,253 @@
     },
     "language": {
       "primary": "Jazyk",
-      "aria_label": "Vybrat jazyk aplikace"
+      "aria_label": "Vyberte jazyk rozhraní"
     }
   },
   "signUp": {
     "headline": "Vytvořit nový účet",
-    "submit_button": "Vytvořit",
+    "submit_button": "Registrovat se",
     "sign_in": {
-      "text": "Již máte vytvořený účet?",
+      "text": "Již máte účet?",
       "link_text": "Přihlásit se"
     }
   },
   "signIn": {
-    "headline": "Přihlásit se do svého účtu",
-    "remember_label": "Zapamatovat",
+    "headline": "Přihlásit se do aplikace",
+    "remember_label": "Pamatovat si mne",
     "forgot_link_text": "Zapomněl jste heslo?",
     "submit_button": "Přihlásit se",
+    "or_text": "nebo",
     "sign_up": {
-      "text": "Ještě nemáte vytvořený účet?",
-      "link_text": "Vytvořit"
+      "text": "Ještě nemáte účet?",
+      "link_text": "Registrovat se"
+    },
+    "CTU": "Přihlásit se pomocí hesla ČVUT",
+    "google": "Přihlásit se pomocí Google účtu",
+    "facebook": "Přihlásit se pomocí Facebook účtu",
+    "twitter": "Přihlásit se pomocí Twitter účtu"
+  },
+  "forgotPasswordRequest": {
+    "headline": "Požádat o obnovu hesla",
+    "submit_button": "Odeslat požadavek",
+    "sign_in": {
+      "text": "Znáte své přihlašovací údaje?",
+      "link_text": "Přihlásit se"
     }
   },
+  "forgotPasswordChange": {
+    "headline": "Obnova Vašeho hesla",
+    "submit_button": "Změnit heslo",
+    "sign_in": {
+      "text": "Znáte své přihlašovací údaje?",
+      "link_text": "Přihlásit se"
+    },
+    "success": "Heslo změněno, nyní se můžete přihlásit",
+    "invalid_token": "Tento odkaz není platný"
+  },
   "my_documents": {
-    "headline": "My documents",
-    "subheading": "This is list of all documents created by you.",
-    "create_tooltip": "Create document"
+    "headline": "Mé dokumenty",
+    "subheading": "Toto jsou dokumenty, které jste vytvořil/a.",
+    "create_tooltip": "Vytvořit dokument"
   },
   "shared_documents": {
-    "headline": "Shared documents",
-    "subheading": "This is list of all documents somebody shared directly with you."
+    "headline": "Sdílené dokumenty",
+    "subheading": "Toto je seznam dokumentů, které s Vámi sdílí další uživatelé."
   },
   "last_documents": {
-    "headline": "Last accessed documents",
-    "subheading": "This is list of all documents you ever accessed (including public link documents)."
+    "headline": "Naposledy otevřené dokumenty",
+    "subheading": "V tomto seznamu vidíte dokumenty, které jste v poslední době otevřel/a (včetně veřejně dostupných dokumentů)."
   },
   "documentTable": {
-    "no_documents": "There are no documents",
-    "prev_label": "Previous Page",
-    "next_label": "Next Page",
-    "displayedRows": "{{from}}-{{to}} of {{count}}",
-    "rowsPerPageLabel": "Rows per page:",
-    "neverAccessed": "Never",
+    "no_documents": "Žádné dokumenty",
+    "prev_label": "Předchozí strana",
+    "next_label": "Následující strana",
+    "displayedRows": "{{from}}-{{to}} z {{count}}",
+    "rowsPerPageLabel": "Počet řádků na stranu:",
+    "neverAccessed": "Nikdy",
     "notShared": "--",
     "header": {
-      "title": "Title",
-      "lastAccessed": "Last accessed",
-      "lastChange": "Last changed",
-      "createdDate": "Created",
-      "owner": "Owner",
-      "from": "Shared by"
+      "title": "Název",
+      "lastAccessed": "Navštíveno",
+      "lastChange": "Změněno",
+      "createdDate": "Vytvořeno",
+      "owner": "Vlastník",
+      "from": "Nasdílel/a"
     }
   },
   "settings": {
-    "headline": "Settings",
-    "account_settings_tab": "Account settings",
-    "document_settings_tab": "Document settings",
-    "saved": "Changes saved",
-    "no_changes": "No changes were made",
+    "headline": "Nastavení",
+    "account_settings_tab": "Nastavení účtu",
+    "document_settings_tab": "Nastavení dokumentů",
+    "connected_settings_tab": "Spojené účty",
+    "saved": "Změny byly uloženy",
+    "no_changes": "Nebyly provedeny žádné změny",
     "button": {
-      "reset": "Reset",
-      "submit": "Save changes"
+      "reset": "Zrušit",
+      "submit": "Uložit změny"
     }
   },
   "account_settings": {
-    "general_title": "General settings",
-    "password_title": "Password settings"
+    "general_title": "Obecné nastavení",
+    "password_title": "Změna hesla"
+  },
+  "connected_settings": {
+    "title": "Spojené účty",
+    "paragraph": "Zde uvidíte všechny propojené účty služeb třetích stran. Spojené účty mohou být použité jako rychlejší možnost přihlášení do aplikace.",
+    "disconnect_title": "Odebrat účet kliknutím na X",
+    "connect_title": "Připojit nový účet pod aktuální profil",
+    "connect_button": "Připojit",
+    "connected_text": "Úspěšně připojeno",
+    "no_password_warning": "Chystáte se odebrat Váš poslední připojený účet, ale nemáte nastavené přihlašovací heslo! Pokud budete pokračovat můžete přijít o přístup k tomuto profilu a tím ztratit všechny Vaše dokumenty."
   },
   "default_document_settings": {
-    "title": "Default settings",
-    "paragraph": "This settings is used as default for newly created documents. Already existing documents and their current settings will not be changed."
+    "title": "Výchozí nastavení",
+    "paragraph": "Toto nastavení je použito jako výchozí nastavení nově vytvořených dokumentů. Již existující dokumenty a jejich aktuální nastavení nebude změněno."
+  },
+  "document_title": {
+    "placeholder": "Název dokumentu",
+    "save_button": "Uložit název"
+  },
+  "document_status": {
+    "synchronized": "Všechny změny uloženy",
+    "synchronization": "Čekám na potvrzení od serveru",
+    "disconnected": "Spojení se serverem ztraceno"
+  },
+  "document_clients": {
+    "settings_title": "Otevřít nastavení dokumentu",
+    "chat_title": "Otevřít konverzaci dokumentu",
+    "share_title": "Otevřít možnosti sdílení",
+    "share_text": "Sdílet",
+    "next_clients_0": "A jeden další uživatel",
+    "next_clients_1": "A další {{count}} uživatelé",
+    "next_clients_2": "A dalších {{count}} uživatelů"
+  },
+  "settings_menu": {
+    "title": "Nastavení dokumentu",
+    "remove_title": "Odstranit dokumnet",
+    "remove_text": "Tuto akci není možné vzít zpět!",
+    "remove_question": "Opravdu chcete trvale odstranit tento dokument?",
+    "remove_button": "Odstranit"
+  },
+  "chat_menu": {
+    "title": "Konverzace dokumentu"
+  },
+  "message_list": {
+    "empty": "Žádné zprávy v konverzaci.",
+    "my_message_name": "Já",
+    "chat_start": "Toto je začátek konverzace.",
+    "load_more_button": "Načíst více"
+  },
+  "send_message_form": {
+    "input_placeholder": "Napište zprávu",
+    "submit_title": "Odeslat zprávu",
+    "sign_button_text": "Přihlásit se"
+  },
+  "share_menu": {
+    "title": "Možnosti sdílení"
+  },
+  "link_rights": {
+    "link_title": "Trvalý odkaz na dokument",
+    "link_label": "Veřejný odkaz",
+    "current_level_title": "Aktuální práva uživatelů používající veřejný odkaz",
+    "link_copied_text": "Zkopírováno!",
+    "link_copy_title": "Zkopírovat odkaz do schránky",
+    "open_settings_title": "Přepnout nastavení odkazu",
+    "link_rights_title": "Nastavení veřejného odkazu",
+    "link_rights_label": "Práva uživatele",
+    "link_rights_cancel_button": "Zrušit",
+    "link_rights_save_button": "Uložit",
+    "link_rights_saved_text": "Uloženo!"
+  },
+  "document_rights": {
+    "no_access": "Žádný přístup",
+    "read_access": "Může číst",
+    "chat_access": "Může chatovat",
+    "write_access": "Může psát",
+    "share_access": "Může sdílet",
+    "remove_access": "Může odstranit"
+  },
+  "individual_shares": {
+    "title": "Jednotlivé pozvánky"
+  },
+  "add_individual_share": {
+    "new_invite_button": "Nová pozvánka",
+    "username_label": "Uživatelské jméno",
+    "rights_label": "Práva",
+    "cancel_button": "Zrušit",
+    "invite_button": "Pozvat"
   },
   "document_settings": {
-    "theme": "Theme",
-    "mode": "Mode (language)",
-    "tabSize": "Tabulator size",
-    "indentUnit": "Indent unit",
-    "indentWithTabs": "Indent with tabs",
-    "fontSize": "Font size",
+    "theme": "Vzhled",
+    "mode": "Mód (jazyk)",
+    "tabSize": "Velikost tabulátoru",
+    "indentUnit": "Velikost odsazení",
+    "indentWithTabs": "Odsazovat tabulátorem",
+    "fontSize": "Velikost písma",
     "keyMap": {
-      "label": "Keymap",
-      "default": "Default",
-      "emacs": "Emacs like",
-      "sublime": "Sublime Text like",
-      "vim": "Vim like"
+      "label": "Mapa znaků",
+      "default": "Výchozí",
+      "emacs": "Jako Emacs",
+      "sublime": "Jako Sublime Text",
+      "vim": "Jako Vim"
     },
     "styleActiveLine": {
-      "label": "Highlight active line",
-      "nonEmpty": "Yes, always",
-      "true": "Yes",
-      "false": "No"
+      "label": "Zvýraznit aktuální řádek",
+      "nonEmpty": "Ano, vždy",
+      "true": "Ano",
+      "false": "Ne"
     },
-    "lineWrapping": "Enable line wrapping",
-    "lineNumbers": "Show line numbers"
+    "lineWrapping": "Povolit zalamování řádků",
+    "lineNumbers": "Zobrazovat očíslování řádků"
   },
   "email": {
     "label": "Email",
-    "helper": "No one can see this, we'll only used it in case of you forgetting your password",
+    "helper": "Email nikdo neuvidí a bude použit pouze pro účely obnovy zapomenutého hesla",
     "validation": {
-      "required": "Field email is required",
-      "valid": "Field email has to be valid email address"
+      "required": "Email je povinné pole",
+      "valid": "Musíte zadat platnou emailovou adresu"
     }
   },
   "username": {
-    "label": "Username",
-    "helper": "Choose how will other users see you",
+    "label": "Uživatelské jméno",
+    "helper": "Zvolte si jak Vás uvidí ostatní uživatelé",
     "validation": {
-      "required": "Field username is required",
-      "already_used": "Username is already associated with another account"
+      "required": "Uživatelské jméno je povinné pole",
+      "already_used": "Toto uživatelské jméno již používá někdo jiný"
     }
   },
   "password": {
-    "label": "Password",
-    "currentLabel": "Current password",
-    "currentHelper": "Enter your current password so we know it is really you.",
+    "label": "Heslo",
+    "currentLabel": "Aktuální heslo",
+    "currentHelper": "Zadejte prosím Vaše aktuální heslo, abychom věděli, že jste to opravdu Vy",
     "validation": {
-      "required": "Field password is required",
-      "invalid_credentials": "User invalid credentials"
+      "required": "Heslo je povinné pole",
+      "invalid_credentials": "User invalid credentials",
+      "easy": "Toto heslo je příliš jednoduché, zkuste něco složitějšího"
     }
   },
   "newPassword": {
-    "label": "New password",
-    "againLabel": "New password again",
-    "helper": "Only enter if you want to change password.",
-    "againHelper": "Please enter same password as before.",
+    "label": "Nové heslo",
+    "againLabel": "Nové heslo znovu",
+    "helper": "Nové heslo zadávejte pouze pokud chcete změnit to stávající",
+    "againHelper": "Prosím zadejte znovu stejné heslo",
     "validation": {
-      "match": "Fields with new password must match"
+      "match": "Nová hesla se musí schodovat"
     }
+  },
+  "password_estimator": {
+    "in_centuries": "Útočník by mohl heslo prolomit za několik staletí",
+    "in_param": "Útočník by mohl heslo prolomit za {{param}}"
+  },
+  "error": {
+    "cannot_invite_owner": "Nelze pozvat vlastníka dokumentu",
+    "not_found": "Nenalezeno",
+    "user_already_logged_in": "Již jste přihlášen",
+    "user_not_logged_in": "Musíte být přihlášen",
+    "invalid_parameters": "Neplatné parametry",
+    "insufficient_permission": "Nedostatečné oprávnění",
+    "server_error": "Chyba serveru",
+    "fieldAlreadyUsed": "Tento účet již používá někdo jiný",
+    "forgot_password_response": "Pokyny pro obnovu hesla byli zaslány na příslušnou emailovou adresu"
   }
 }
