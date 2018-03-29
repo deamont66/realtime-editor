@@ -1,22 +1,24 @@
+const {matchedData} = require('express-validator/filter');
+
 const UserRepository = require('../repositories/UserRepository');
 const Errors = require('../utils/Errors');
-const passport = require('passport');
 
 const debug = require('debug')('userController');
 
 module.exports = {
-    getUser: function (req, res, next) {
+    getUser: function (req, res) {
         res.status(200).json({
             status: 'success',
             user: req.user.toJSON()
         });
     },
     putUser: function (req, res, next) {
-        req.user.authenticate(req.body.password).then((res) => {
+        const data = matchedData(req);
+        req.user.authenticate(data.password).then((res) => {
             if(!res && req.user.hasPassword()) {
                 return Promise.reject(Errors.userInvalidCredential);
             }
-            return UserRepository.updateUser(req.user, req.body);
+            return UserRepository.updateUser(req.user, data);
         }).then(() => {
             res.sendStatus(204);
         }).catch(function (err) {
@@ -26,7 +28,7 @@ module.exports = {
             next(err);
         });
     },
-    getDefaultDocumentSettings: function (req, res, next) {
+    getDefaultDocumentSettings: function (req, res) {
         const settings = req.user.defaultSettings.toObject();
         delete settings._id;
         delete settings.__v;
@@ -37,7 +39,8 @@ module.exports = {
         });
     },
     putDefaultDocumentSettings: function (req, res, next) {
-        UserRepository.updateDefaultDocumentSettings(req.user, req.body.settings).then((settings) => {
+        const data = matchedData(req);
+        UserRepository.updateDefaultDocumentSettings(req.user, data.settings).then((settings) => {
             res.status(200).json({
                 status: 'success',
                 settings: settings.toJSON()

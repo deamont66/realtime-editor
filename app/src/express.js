@@ -28,7 +28,7 @@ module.exports = function (session) {
     app.use(express.static(path.join(__dirname, '../client/build-prod'), {index: false}));
     app.use(express.static(path.join(__dirname, 'public')));
 
-    app.use(require('./routes/main'));
+    app.use(require('./routes'));
 
     // error handler
     app.use(function (err, req, res, next) {

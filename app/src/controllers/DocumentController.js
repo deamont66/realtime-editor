@@ -1,3 +1,5 @@
+const {matchedData} = require('express-validator/filter');
+
 const DocumentRepository = require('../repositories/DocumentRepository');
 const UserRepository = require('../repositories/UserRepository');
 const MessageRepository = require('../repositories/MessageRepository');
@@ -56,9 +58,10 @@ module.exports = {
     },
 
     getMessages: (req, res, next) => {
+        const data = matchedData(req);
         DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
             return DocumentVoter.can('chat', req.user, document).then(() => {
-                return MessageRepository.getLastMessages(document, req.query.lastDate, req.query.number).then((messages) => {
+                return MessageRepository.getLastMessages(document, data.lastDate, data.number).then((messages) => {
                     return messages;
                 });
             });
@@ -72,9 +75,10 @@ module.exports = {
         });
     },
     postCreateMessage: (req, res, next) => {
+        const data = matchedData(req);
         DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
             return DocumentVoter.can('chat', req.user, document).then(() => {
-                return MessageRepository.createMessage(document, req.user, req.body.message);
+                return MessageRepository.createMessage(document, req.user, data.message);
             });
         }).then(() => {
             res.json({
@@ -105,10 +109,11 @@ module.exports = {
         });
     },
     putLinkRights: (req, res, next) => {
+        const data = matchedData(req);
         DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
             if (!document) return Promise.reject(Errors.notFound);
             return DocumentVoter.can('share', req.user, document).then(() => {
-                return DocumentRepository.updateDocumentShareLinkRights(document, req.body.shareLinkRights);
+                return DocumentRepository.updateDocumentShareLinkRights(document, data.shareLinkRights);
             });
         }).then(() => {
             res.sendStatus(204);
@@ -118,13 +123,14 @@ module.exports = {
     },
 
     putUserRights: (req, res, next) => {
+        const data = matchedData(req);
         Promise.all([
             DocumentRepository.getDocumentById(req.params.documentId),
-            UserRepository.getUserByUsername(req.body.to)
+            UserRepository.getUserByUsername(data.to)
         ]).then(([document, toUser]) => {
             if (!document || !toUser) return Promise.reject(Errors.notFound);
             return DocumentVoter.can('share', req.user, document).then(() => {
-                return DocumentRepository.updateDocumentInvite(document, req.user, toUser, req.body.rights);
+                return DocumentRepository.updateDocumentInvite(document, req.user, toUser, data.rights);
             });
         }).then(() => {
             res.sendStatus(204);

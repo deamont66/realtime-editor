@@ -37,15 +37,15 @@ module.exports = {
     },
 
 
-    invalidParameters: function (message, field = null) {
+    invalidParameters: function (errors) {
         const error = {
             json: true,
-            message: message || 'error.invalid_parameters',
+            message:'error.invalid_parameters',
             code: 4005,
             status: 422
         };
-        if(field !== null) {
-            error.field = field;
+        if(errors) {
+            error.errors = errors;
         }
         return error;
     },

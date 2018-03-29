@@ -1,32 +1,19 @@
-const Errors = require('../utils/Errors');
+const {check} = require('express-validator/check');
 
-const validateSignIn = function (req, res, next) {
+const AbstractMiddleware = require('./AbstractMiddleware');
 
-    next();
-};
+class UserMiddleware extends AbstractMiddleware {
 
-const validateSignUp = function (req, res, next) {
-
-    next();
-};
-
-const validateLoggedIn = function (req, res, next) {
-    if (!req.user) {
-        next(Errors.userNotLoggedIn);
+    static validateUser() {
+        return [
+            check('email').optional().trim().not().isEmpty().withMessage('email.validation.required')
+                .isEmail().withMessage('email.validation.valid').normalizeEmail(),
+            check('username').optional().trim().not().isEmpty().withMessage('username.validation.required'),
+            check('password').optional().trim().not().isEmpty().withMessage('password.validation.required'),
+            check('newPassword').optional().trim().not().isEmpty().withMessage('password.validation.required'),
+            super.validateRequest()
+        ]
     }
-    next();
-};
+}
 
-const validateNotLoggedIn = function (req, res, next) {
-    if(req.user) {
-        next(Errors.userAlreadyLoggedIn);
-    }
-    next();
-};
-
-module.exports = {
-    validateSignIn: validateSignIn,
-    validateSignUp: validateSignUp,
-    validateLoggedIn: validateLoggedIn,
-    validateNotLoggedIn: validateNotLoggedIn,
-};
+module.exports = UserMiddleware;

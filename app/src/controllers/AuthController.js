@@ -1,5 +1,6 @@
 const passport = require('passport');
 const moment = require('moment');
+const {matchedData} = require('express-validator/filter');
 
 const UserRepository = require('../repositories/UserRepository');
 const AuthRepository = require('../repositories/AuthRepository');
@@ -9,7 +10,7 @@ const mailer = require('../mailer');
 const debug = require('debug')('editor:authController');
 
 
-const handleRemeberMeSuccess = (req, res, user, onSuccess, onError) => {
+const handleRememberMeSuccess = (req, res, user, onSuccess, onError) => {
     ((req.body.rememberMe) ?
         AuthRepository.issueRememberMeToken(user)
             .then(token => res.cookie('remember_me', token, {
@@ -41,7 +42,7 @@ const handleAuthentication = (req, res, next, redirect = true) => (err, user) =>
             debug(err);
             return onError(err);
         }
-        handleRemeberMeSuccess(req, res, user, onSuccess, onError);
+        handleRememberMeSuccess(req, res, user, onSuccess, onError);
     });
 };
 
@@ -63,11 +64,8 @@ module.exports = {
     },
 
     postLocalSignUp: (req, res, next) => {
-        UserRepository.createUser({
-            email: req.body.email,
-            username: req.body.username,
-            password: req.body.password,
-        }).then(function (user) {
+        const userData = matchedData(req);
+        UserRepository.createUser(userData).then(function (user) {
             return new Promise((resolve, reject) => {
                 req.login(user, function (err) {
                     if (err) {
