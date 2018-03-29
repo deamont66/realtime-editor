@@ -69,7 +69,7 @@ module.exports = {
             return new Promise((resolve, reject) => {
                 req.login(user, function (err) {
                     if (err) {
-                        reject(err);
+                        return reject(err);
                     }
                     resolve(user);
                 });
@@ -78,14 +78,14 @@ module.exports = {
             mailer.sendWelcomeEmail(user.email, user.username);
             res.status(200).json({
                 status: 'success',
-                user: user.toJSON()
+                user: user
             });
         }).catch((err) => {
             err.json = true;
-            if (err.code === 11000)
-                next(Errors.usernameAlreadyUsed);
-            else
-                next(err);
+            if (err.code === 11000) {
+                err = Errors.usernameAlreadyUsed;
+            }
+            next(err);
         });
     },
 

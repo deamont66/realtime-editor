@@ -14,7 +14,7 @@ module.exports = {
     },
     putUser: function (req, res, next) {
         const data = matchedData(req);
-        req.user.authenticate(data.password).then((res) => {
+        req.user.validatePassword(data.password).then((res) => {
             if(!res && req.user.hasPassword()) {
                 return Promise.reject(Errors.userInvalidCredential);
             }
@@ -23,8 +23,9 @@ module.exports = {
             res.sendStatus(204);
         }).catch(function (err) {
             err.json = true;
-            if (err.code === 11000)
-                next(Errors.usernameAlreadyUsed);
+            if (err.code === 11000) {
+                err = Errors.usernameAlreadyUsed;
+            }
             next(err);
         });
     },
@@ -43,7 +44,7 @@ module.exports = {
         UserRepository.updateDefaultDocumentSettings(req.user, data.settings).then((settings) => {
             res.status(200).json({
                 status: 'success',
-                settings: settings.toJSON()
+                settings: settings
             });
         }).catch(function (err) {
             err.json = true;
