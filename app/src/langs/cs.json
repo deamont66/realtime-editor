@@ -291,5 +291,11 @@
     "server_error": "Chyba serveru",
     "fieldAlreadyUsed": "Tento účet již používá někdo jiný",
     "forgot_password_response": "Pokyny pro obnovu hesla byli zaslány na příslušnou emailovou adresu"
+  },
+  "eu_cookies": {
+    "text": "Tento web používá k poskytování služeb, personalizaci reklam a analýze návštěvnosti soubory cookie. Používáním tohoto webu s tím souhlasíte.",
+    "more_link": "https://www.google.com/intl/cs/policies/technologies/cookies/",
+    "more_title": "Více informací",
+    "close_title": "Souhlasím"
   }
 }

@@ -290,5 +290,11 @@
     "server_error": "Server error",
     "field_already_used": "Field is already used with another account",
     "forgot_password_response": "Instructions email was sent to the corresponding email address"
+  },
+  "eu_cookies": {
+    "text": "By using this site you agree to the use of cookies for analytics, personalised content and ads.",
+    "more_link": "https://www.google.com/policies/technologies/cookies/",
+    "more_title": "Learn more",
+    "close_title": "Got it"
   }
 }

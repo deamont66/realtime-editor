@@ -9,6 +9,7 @@ import Hidden from 'material-ui/Hidden';
 
 import DrawerMenu from './DrawerMenu';
 import AppBarMenu from './AppBarMenu';
+import EUCookiesSnackbar from './EUCookiesSnackbar';
 
 const drawerWidth = 240;
 
@@ -135,6 +136,7 @@ class Layout extends React.Component {
                     <div className={this.props.classes.toolbar}/>
                     {this.props.children}
                 </main>
+                <EUCookiesSnackbar/>
             </div>
         );
     }
