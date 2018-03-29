@@ -26,24 +26,26 @@ const generate = (url, title, description) => {
 
         /*-- Search Engine --*/
         `<meta name="description" content="${rawDescription}">`,
-        /*`<meta name="image" content="Image">`*/
+        `<meta name="image" content="/og-image.jpg">`,
 
         /*-- Schema.org for Google --*/
         `<meta itemProp="name" content="${rawtitle}">`,
         `<meta itemProp="description" content="${rawDescription}">`,
-        /*`<meta itemProp="image" content="Image">`*/
+        `<meta itemProp="image" content="/og-image.jpg">`,
 
         /*-- Twitter --*/
         `<meta name="twitter:card" content="summary">`,
         `<meta name="twitter:title" content="${rawtitle}">`,
         `<meta name="twitter:description" content="${rawDescription}">`,
         /*<meta name="twitter:site" content="@realtime">*/
-        /*<meta name="twitter:image:src" content="Image preview src">*/
+        `<meta name="twitter:image:src" content="/og-image.jpg">`,
 
         /*-- Open Graph general (Facebook, Pinterest & Google+) --*/
         `<meta property="og:title" content="${rawtitle}">`,
         `<meta property="og:description" content="${rawDescription}">`,
-        /*<meta name="og:image" content="Image preview"/>*/
+        `<meta property="og:image" content="/og-image.jpg">`,
+        `<meta property="og:image:width" content="279">`,
+        `<meta property="og:image:height" content="279">`,
         `<meta property="og:url" content="${rawUrl}">`,
         `<meta property="og:site_name" content="${translate['app']['name']}">`,
         `<meta property="og:locale" content="en_Us">`,
