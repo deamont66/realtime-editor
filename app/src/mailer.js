@@ -1,4 +1,6 @@
 const path = require('path');
+const fs = require('fs');
+const handlebars = require('handlebars');
 const nodeMailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars');
 
@@ -15,16 +17,19 @@ const transporter = nodeMailer.createTransport(
         }
     },
     {
-        from: '"Realtime editor" <no-reply@editor.simecekjiri.cz>'
+        from: '"Realtime Editor" <no-reply@editor.simecekjiri.cz>'
     }
 );
 
 transporter.use('compile', hbs({
     viewPath: path.join(__dirname, 'views/emails'),
-    extName: '.hbs'
+    extName: '.inline.hbs'
 }));
 
 const _sendMail = function (options) {
+    const txtSource = fs.readFileSync(path.join(__dirname, 'views/emails', options.template + '.text.hbs')).toString();
+    const template = handlebars.compile(txtSource);
+    options.text = template(options.context);
     transporter.sendMail(options, (error) => {
         if (error) {
             return debug(error);
@@ -36,24 +41,29 @@ module.exports = {
     sendWelcomeEmail: function (email, username) {
         const mailOptions = {
             to: email,
-            subject: 'Welcome to Realtime editor',
+            subject: `Welcome to Realtime Editor, ${username}!`,
             template: 'welcome',
             context: {
                 email: email,
                 username: username,
-                link: path.join(process.env.BASE_URL, '/document')
+                homepage_url: process.env.BASE_URL,
+                action_url: path.join(process.env.BASE_URL, 'document'),
+                login_url: path.join(process.env.BASE_URL, 'sign-in'),
             }
         };
         _sendMail(mailOptions);
     },
-    sendForgotPasswordEmail: function (email, username, token) {
+    sendForgotPasswordEmail: function (email, username, token, browserIndo) {
         const mailOptions = {
             to: email,
-            subject: 'Realtime editor Password Change Request',
+            subject: 'Set up a new password for Realtime Editor',
             template: 'forgotPassword',
             context: {
                 username: username,
-                link: path.join(process.env.BASE_URL, 'forgot-password', encodeURIComponent(token))
+                homepage_url: process.env.BASE_URL,
+                action_url: path.join(process.env.BASE_URL, 'forgot-password', encodeURIComponent(token)),
+                operating_system: `${browserIndo.browser.name} ${browserIndo.browser.version}`,
+                browser_name: `${browserIndo.os.name} ${browserIndo.os.version}`
             }
         };
         _sendMail(mailOptions);

@@ -1,5 +1,6 @@
 const passport = require('passport');
 const moment = require('moment');
+const parser = require('ua-parser-js');
 const {matchedData} = require('express-validator/filter');
 
 const UserRepository = require('../repositories/UserRepository');
@@ -102,7 +103,8 @@ module.exports = {
         UserRepository.getUserByUsername(req.body.username).then(user => {
             if (user.email !== req.body.email) return Promise.reject();
             return AuthRepository.issueForgotPasswordToken(user).then(token => {
-                mailer.sendForgotPasswordEmail(user.email, user.username, token);
+                const uaData = parser(req.headers['user-agent']);
+                mailer.sendForgotPasswordEmail(user.email, user.username, token, uaData);
                 return Promise.reject();
             });
         }).catch((err) => {
