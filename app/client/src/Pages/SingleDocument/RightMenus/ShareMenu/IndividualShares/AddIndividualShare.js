@@ -13,8 +13,8 @@ import Select from 'material-ui/Select';
 
 import Collapse from 'material-ui/transitions/Collapse';
 
-import DocumentRightsEnum from "../../../../../Utils/DocumentRightsEnum";
-import axios from "../../../../../Utils/Axios";
+import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
+import DocumentAPIHandler from '../../../../../APIHandlers/DocumentAPIHandler';
 
 const styles = theme => ({
     root: {
@@ -77,10 +77,7 @@ class AddIndividualShare extends React.Component {
             return;
         }
 
-        axios.put('/document/' + this.props.documentId + '/rights/invite', {
-            rights: rights,
-            to: username
-        }).then(() => {
+        DocumentAPIHandler.fetchUpdateDocumentInvite(this.props.documentId, username, rights).then(() => {
             this.props.onReload();
             this.toggleOpenState();
         }).catch(err => {

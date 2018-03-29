@@ -16,9 +16,9 @@ import Google from '../../../Components/Icons/Google';
 import Facebook from '../../../Components/Icons/Facebook';
 import Twitter from '../../../Components/Icons/Twitter';
 
-import axios from '../../../Utils/Axios';
 import UserStore from '../../../Stores/UserStore';
 import MetaTags from '../../../Components/MetaTags';
+import AuthAPIHandler from '../../../APIHandlers/AuthAPIHandler';
 
 const styles = theme => ({
     socialIcon: {
@@ -37,7 +37,7 @@ const styles = theme => ({
 class ConnectedAccounts extends React.Component {
 
     handleDelete = url => () => {
-        axios.delete(`/auth/${url}`).then(() => {
+        AuthAPIHandler.fetchDisconnectAccount(url).then(() => {
             UserStore.checkLoggedIn();
         }).catch((err) => {
             console.error(err);

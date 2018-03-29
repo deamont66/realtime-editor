@@ -8,7 +8,7 @@ import {CircularProgress} from 'material-ui/Progress';
 
 import LinkRights from './LinkRights';
 import IndividualShares from './IndividualShares';
-import axios from '../../../../Utils/Axios';
+import DocumentAPIHandler from '../../../../APIHandlers/DocumentAPIHandler';
 
 
 const styles = theme => ({
@@ -33,7 +33,7 @@ class ShareMenu extends React.Component {
     }
 
     loadRights = () => {
-        axios.get('/document/' + this.props.documentId + '/rights').then((res) => {
+        DocumentAPIHandler.fetchDocumentRights(this.props.documentId).then((res) => {
             this.setState({
                 shareLinkRights: res.data.shareLinkRights,
                 documentInvites: res.data.documentInvites

@@ -12,7 +12,7 @@ import Edit from 'material-ui-icons/Edit';
 
 import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
 import colorGenerator from '../../../../../Utils/ColorGenerator';
-import axios from '../../../../../Utils/Axios';
+import DocumentAPIHandler from '../../../../../APIHandlers/DocumentAPIHandler';
 
 
 const styles = theme => ({
@@ -31,7 +31,7 @@ const styles = theme => ({
 class IndividualShareItem extends React.Component {
 
     handleRemoveUserRights = (userId) => {
-        axios.delete('/document/' + this.props.documentId + '/rights/' + userId).then(() => {
+        DocumentAPIHandler.fetchRemoveDocumentInvite(this.props.documentId, userId).then(() => {
             this.props.onReload();
         }).catch(err => {
             console.error(err);

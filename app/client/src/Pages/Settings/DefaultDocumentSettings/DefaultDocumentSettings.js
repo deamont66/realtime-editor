@@ -11,11 +11,10 @@ import {LinearProgress} from 'material-ui/Progress'
 
 import CloseIcon from 'material-ui-icons/Close';
 
-import axios from '../../../Utils/Axios';
-
 import DocumentSettingsForm from './DocumentSettingsForm';
 import SubmitButtons from '../SubmitButtons';
 import MetaTags from '../../../Components/MetaTags';
+import UserAPIHandler from '../../../APIHandlers/UserAPIHandler';
 
 const styles = theme => ({
     close: {
@@ -54,7 +53,7 @@ class DefaultDocumentSettings extends React.Component {
     }
 
     loadUserSettings() {
-        axios.get('/user/document-settings').then((res) => {
+        UserAPIHandler.fetchDefaultDocumentSettings().then((res) => {
             this.setState({
                 settings: res.data.settings
             });
@@ -75,9 +74,8 @@ class DefaultDocumentSettings extends React.Component {
         evt.preventDefault();
 
         this.setState({loading: true});
-        axios.put('/user/document-settings', {
-            settings: this.state.settings
-        }).then((res) => {
+
+        UserAPIHandler.fetchUpdateDefaultDocumentSettings(this.state.settings).then((res) => {
             this.showMessage(this.props.t('settings.saved'));
             this.setState({
                 settings: res.data.settings,

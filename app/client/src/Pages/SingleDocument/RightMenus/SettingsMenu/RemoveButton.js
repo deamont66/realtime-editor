@@ -7,7 +7,7 @@ import withStyles from 'material-ui/styles/withStyles';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 
-import axios from '../../../../Utils/Axios';
+import DocumentAPIHandler from '../../../../APIHandlers/DocumentAPIHandler';
 
 const styles = theme => ({
     title: {
@@ -19,7 +19,7 @@ class RemoveButton extends React.Component {
 
     handleRemoveDocumentClick = () => {
         if (window.confirm(this.props.t('settings_menu.remove_question'))) {
-            axios.delete('/document/' + this.props.documentId).then(() => {
+            DocumentAPIHandler.fetchRemoveDocument(this.props.documentId).then(() => {
                 this.props.history.push('/document');
             }).catch((err) => {
                 console.error(err);

@@ -11,7 +11,7 @@ import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
 
-import axios from '../../../Utils/Axios';
+import UserAPIHandler from '../../../APIHandlers/UserAPIHandler';
 import UserStore from '../../../Stores/UserStore';
 import SubmitButtons from '../SubmitButtons';
 import PasswordStrengthEstimator, {estimateStrength} from '../../../Components/PasswordStrengthEstimator';
@@ -128,7 +128,8 @@ class AccountSettings extends React.Component {
             }
 
             this.setState({loading: true});
-            axios.put('/user', data).then(() => {
+
+            UserAPIHandler.fetchUpdateUser(data).then(() => {
                 UserStore.checkLoggedIn();
                 this.showMessage(this.props.t('settings.saved'));
                 this.setState({loading: false});

@@ -19,7 +19,7 @@ import Add from 'material-ui-icons/Add';
 
 import NavLinkMenuItem from '../../Components/NavLinkMenuItem';
 import UserStore from '../../Stores/UserStore';
-import axios from '../../Utils/Axios';
+import DocumentAPIHandler from '../../APIHandlers/DocumentAPIHandler';
 
 const styles = theme => ({
     menuButton: {
@@ -61,7 +61,7 @@ class AppBarMenu extends React.Component {
     createNewDocument = (evt) => {
         evt.preventDefault();
 
-        axios.post('/document/').then((res) => {
+        DocumentAPIHandler.fetchCreateDocument().then((res) => {
             this.props.history.push('/document/' + res.data.document);
         }).catch((err) => {
             console.log(err);

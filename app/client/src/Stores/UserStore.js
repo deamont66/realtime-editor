@@ -1,15 +1,12 @@
 import EventEmitter from 'event-emitter-es6';
-import axios from '../Utils/Axios';
+import UserAPIHandler from '../APIHandlers/UserAPIHandler';
+import AuthAPIHandler from '../APIHandlers/AuthAPIHandler';
 
 class UserStore extends EventEmitter {
 
     singIn(username, password, rememberMe = false) {
         return new Promise((resolve, reject) => {
-            axios.post('/auth/signIn', {
-                username: username,
-                password: password,
-                rememberMe: rememberMe
-            }).then((res) => {
+            AuthAPIHandler.fetchSignIn(username, password, rememberMe).then((res) => {
                 resolve(res.data.user);
                 this.emitSync('value', res.data.user);
             }).catch((res) => {
@@ -20,11 +17,7 @@ class UserStore extends EventEmitter {
 
     singUp(username, password, email) {
         return new Promise((resolve, reject) => {
-            axios.post('/auth/', {
-                username: username,
-                password: password,
-                email: email
-            }).then((res) => {
+            AuthAPIHandler.fetchSignUp(username, password, email).then((res) => {
                 resolve(res.data.user);
                 this.emitSync('value', res.data.user);
             }).catch((res) => {
@@ -35,19 +28,19 @@ class UserStore extends EventEmitter {
 
     checkLoggedIn() {
         return new Promise((resolve) => {
-            axios.get('/user/').then((res) => {
+            UserAPIHandler.fetchUserInfo().then((res) => {
+                resolve(res.data.user);
                 this.emitSync('value', res.data.user);
             }).catch(() => {
+                resolve(null);
                 this.emitSync('value', null);
-            }).then(() => {
-                resolve();
             });
         });
     }
 
     logOut () {
         return new Promise((resolve) => {
-            axios.delete('/auth/').then(() => {
+            AuthAPIHandler.fetchSignOut().then(() => {
                 this.emit('value', null);
             }).then(() => {
                 resolve();

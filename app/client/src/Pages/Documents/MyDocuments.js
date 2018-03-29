@@ -1,6 +1,5 @@
 import React from 'react';
 import {translate} from 'react-i18next';
-import axios from '../../Utils/Axios';
 
 import withStyles from 'material-ui/styles/withStyles';
 import {LinearProgress} from 'material-ui/Progress';
@@ -13,6 +12,7 @@ import Add from 'material-ui-icons/Add';
 
 import DocumentTable from './DocumentTable';
 import MetaTags from '../../Components/MetaTags';
+import DocumentAPIHandler from '../../APIHandlers/DocumentAPIHandler';
 
 const styles = theme => ({
     root: {
@@ -52,7 +52,7 @@ class MyDocuments extends React.Component {
     }
 
     loadDocuments() {
-        axios.get('/document/').then((res) => {
+        DocumentAPIHandler.fetchMyDocuments().then((res) => {
             this.setState({
                 documents: res.data
             })
@@ -64,7 +64,7 @@ class MyDocuments extends React.Component {
     createNewDocument = (evt) => {
         evt.preventDefault();
 
-        axios.post('/document/').then((res) => {
+        DocumentAPIHandler.fetchCreateDocument().then((res) => {
             this.props.history.push('/document/' + res.data.document);
         }).catch((err) => {
             console.log(err);

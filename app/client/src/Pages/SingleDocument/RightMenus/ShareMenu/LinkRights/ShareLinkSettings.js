@@ -13,7 +13,7 @@ import {FormControl, FormHelperText} from 'material-ui/Form';
 import Collapse from 'material-ui/transitions/Collapse';
 
 import DocumentRightsEnum from '../../../../../Utils/DocumentRightsEnum';
-import axios from '../../../../../Utils/Axios';
+import DocumentAPIHandler from '../../../../../APIHandlers/DocumentAPIHandler';
 
 const styles = theme => ({
     root: {
@@ -58,9 +58,7 @@ class ShareLinkSettings extends React.Component {
     handleLinkRightsSubmit = (evt) => {
         evt.preventDefault();
 
-        axios.put('/document/' + this.props.documentId + '/rights', {
-            shareLinkRights: this.state.shareLinkRights
-        }).then(() => {
+        DocumentAPIHandler.fetchUpdateDocumentLinkRights(this.props.documentId, this.state.shareLinkRights).then(() => {
             this.props.onReload();
             this.handleStatus('saved')(() => {
                 this.props.toggleSettingsOpen();

@@ -10,7 +10,7 @@ import {LinearProgress} from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 
 import MaterialLink from '../../Components/MaterialLink';
-import axios from '../../Utils/Axios';
+import AuthAPIHandler from '../../APIHandlers/AuthAPIHandler';
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -83,10 +83,7 @@ class ForgotPasswordRequestFrom extends React.Component {
 
         this.setState({loading: true});
 
-        axios.post('/auth/forgotPassword', {
-            username: this.state.username,
-            email: this.state.email,
-        }).then((res) => {
+        AuthAPIHandler.fetchRequestForgotPassword(this.state.username, this.state.email).then((res) => {
             this.setState({
                 send: true,
                 loading: false,

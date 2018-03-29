@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Redirect} from 'react-router-dom';
 import moment from 'moment';
 import withStyles from 'material-ui/styles/withStyles';
-import axios from '../../Utils/Axios';
 
 import {LinearProgress} from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
@@ -15,6 +14,7 @@ import ClientSocket from './ClientSocket';
 
 import Error404 from '../Errors/Error404';
 import MetaTags from '../../Components/MetaTags';
+import DocumentAPIHandler from '../../APIHandlers/DocumentAPIHandler';
 
 const styles = theme => ({
     root: {
@@ -93,11 +93,7 @@ class SingleDocument extends React.Component {
             return acc.isBefore(messageDate) ? acc : messageDate;
         }, moment());
 
-        axios.get(`/document/${this.documentId}/messages`, {
-            params: {
-                lastDate: lastDate.toDate()
-            }
-        }).then((res) => {
+        DocumentAPIHandler.fetchDocumentMessages(this.documentId, lastDate.toDate()).then((res) => {
             const newMessages = res.data.messages;
             if (newMessages.length === 0) {
                 emptyCallback()

@@ -10,8 +10,8 @@ import {LinearProgress, CircularProgress} from 'material-ui/Progress';
 import Button from 'material-ui/Button';
 
 import MaterialLink from '../../Components/MaterialLink';
-import axios from '../../Utils/Axios';
 import PasswordStrengthEstimator, {estimateStrength} from '../../Components/PasswordStrengthEstimator';
+import AuthAPIHandler from '../../APIHandlers/AuthAPIHandler';
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -63,7 +63,7 @@ class ForgotPasswordChangeForm extends React.Component {
     }
 
     loadValidity = (token) => {
-        axios.get('/auth/forgotPassword/' + token).then(() => {
+        AuthAPIHandler.fetchValidateForgotPasswordToken(token).then(() => {
             this.setState({valid: true});
         }).catch(() => {
             this.setState({valid: false});
@@ -105,9 +105,7 @@ class ForgotPasswordChangeForm extends React.Component {
 
             this.setState({loading: true});
 
-            axios.put('/auth/forgotPassword/' + this.props.match.params.token, {
-                newPassword: this.state.newPassword
-            }).then(() => {
+            AuthAPIHandler.fetchChangeForgotPassword(this.props.match.params.token, this.state.newPassword).then(() => {
                 this.setState({send: true, loading: false, message: this.props.t('forgotPasswordChange.success')});
             }).catch((err) => {
                 this.setState({error: 'newPassword2', loading: false, message: this.props.t(err.response.data.message)});

@@ -1,6 +1,5 @@
 import React from 'react';
 import {translate} from 'react-i18next';
-import axios from "../../Utils/Axios";
 
 import withStyles from 'material-ui/styles/withStyles';
 import {LinearProgress} from 'material-ui/Progress';
@@ -9,6 +8,7 @@ import Typography from 'material-ui/Typography';
 
 import DocumentTable from './DocumentTable';
 import MetaTags from '../../Components/MetaTags';
+import DocumentAPIHandler from '../../APIHandlers/DocumentAPIHandler';
 
 const styles = theme => ({
     root: {
@@ -44,7 +44,7 @@ class LastDocuments extends React.Component {
     }
 
     loadDocuments() {
-        axios.get('/document/last').then((res) => {
+        DocumentAPIHandler.fetchLastDocuments().then((res) => {
             this.setState({
                 documents: res.data
             });
