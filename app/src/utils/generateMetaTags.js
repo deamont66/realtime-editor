@@ -41,15 +41,15 @@ const generate = (url, title, description) => {
         /*<meta name="twitter:image:src" content="Image preview src">*/
 
         /*-- Open Graph general (Facebook, Pinterest & Google+) --*/
-        `<meta name="og:title" content="${rawtitle}">`,
-        `<meta name="og:description" content="${rawDescription}">`,
+        `<meta property="og:title" content="${rawtitle}">`,
+        `<meta property="og:description" content="${rawDescription}">`,
         /*<meta name="og:image" content="Image preview"/>*/
-        `<meta name="og:url" content="${rawUrl}">`,
-        `<meta name="og:site_name" content="${translate['app']['name']}">`,
-        `<meta name="og:locale" content="en_Us">`,
-        `<meta name="fb:admins" content="100000628442315">`,
-        `<meta name="fb:app_id" content="2043973792282808">`,
-        `<meta name="og:type" content="website">`
+        `<meta property="og:url" content="${rawUrl}">`,
+        `<meta property="og:site_name" content="${translate['app']['name']}">`,
+        `<meta property="og:locale" content="en_Us">`,
+        `<meta property="fb:admins" content="100000628442315">`,
+        `<meta property="fb:app_id" content="2043973792282808">`,
+        `<meta property="og:type" content="website">`
     ].join('');
 };
 

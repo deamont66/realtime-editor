@@ -3,6 +3,10 @@ import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
+/**
+ * Defines only changing meta tags.
+ * @see {@link /app/src/utils/generateMetaTags|All meta tags generated on server}
+ */
 class MetaTags extends React.Component {
 
     render() {
@@ -29,8 +33,8 @@ class MetaTags extends React.Component {
                 {/*<meta name="twitter:image:src" content="Image preview src"/>*/}
 
                 {/*-- Open Graph general (Facebook, Pinterest & Google+) --*/}
-                {this.props.title && <meta name="og:title" content={this.props.title}/>}
-                {this.props.description && <meta name="og:description" content={this.props.description}/>}
+                {this.props.title && <meta property="og:title" content={this.props.title}/>}
+                {this.props.description && <meta property="og:description" content={this.props.description}/>}
                 {/*<meta name="og:image" content="Image preview"/>*/}
                 <meta name="og:url" content={window.location.href}/>
             </Helmet>
