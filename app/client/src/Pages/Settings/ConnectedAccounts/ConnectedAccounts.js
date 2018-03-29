@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
+import queryString from 'query-string';
 import withStyles from 'material-ui/styles/withStyles';
 
 import Typography from 'material-ui/Typography';
@@ -8,8 +9,11 @@ import Tooltip from 'material-ui/Tooltip';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Button from 'material-ui/Button';
+import Snackbar from 'material-ui/Snackbar';
+import IconButton from 'material-ui/IconButton';
 
 import Done from 'material-ui-icons/Done'
+import Close from 'material-ui-icons/Close'
 
 import CTU from '../../../Components/Icons/CTU';
 import Google from '../../../Components/Icons/Google';
@@ -31,10 +35,24 @@ const styles = theme => ({
         verticalAlign: 'middle'
     },
     button: {
-    }
+    },
+    close: {
+        width: theme.spacing.unit * 4,
+        height: theme.spacing.unit * 4,
+    },
 });
 
 class ConnectedAccounts extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        const params = queryString.parse(props.location.search);
+
+        this.state = {
+            error: params.error || null
+        };
+    }
 
     handleDelete = url => () => {
         AuthAPIHandler.fetchDisconnectAccount(url).then(() => {
@@ -183,6 +201,28 @@ class ConnectedAccounts extends React.Component {
                         </Tooltip>
                     )}
                 </Typography>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.error !== null}
+                    SnackbarContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">{t(this.state.error)}</span>}
+                    action={[
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            color="inherit"
+                            className={classes.close}
+                            onClick={() => this.setState({error: null})}
+                        >
+                            <Close/>
+                        </IconButton>,
+                    ]}
+                />
             </div>
         );
     }

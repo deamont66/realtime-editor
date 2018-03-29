@@ -288,7 +288,7 @@
     "invalid_parameters": "Invalid parameters",
     "insufficient_permission": "Insufficient permission",
     "server_error": "Server error",
-    "fieldAlreadyUsed": "Field is already used with another account",
+    "field_already_used": "Field is already used with another account",
     "forgot_password_response": "Instructions email was sent to the corresponding email address"
   }
 }

@@ -28,14 +28,13 @@ const handleRememberMeSuccess = (req, res, user, onSuccess, onError) => {
 };
 
 const handleAuthentication = (req, res, next, redirect = true) => (err, user) => {
-    const onError = (err) => (redirect) ? res.redirect('/sign-in') : next(err);
+    const onError = (err) => (redirect) ? res.redirect(`/${(req.user) ? 'settings/connected' : 'sign-in'}?error=${err.message}`) : next(err);
     const onSuccess = (user) => (redirect) ? res.redirect(req.session.redirectTo) : res.status(200).json({
         status: 'success',
         user: user
     });
 
     if (err || !user) {
-        debug(err);
         return onError(err || Errors.userInvalidCredential);
     }
     req.login(user, function (err) {
