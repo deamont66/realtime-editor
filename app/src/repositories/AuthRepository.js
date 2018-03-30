@@ -61,7 +61,7 @@ const getOrCreateUserByField = (field, value, username, email) => {
 
         return UserRepository.getUniqueUsername(username).then((uniqueUsername) => {
             return UserRepository.createUser({
-                username: uniqueUsername, email, ['field']: value
+                username: uniqueUsername, email, [field]: value
             });
         }).then((user) => {
             mailer.sendWelcomeEmail(user.email, user.username);

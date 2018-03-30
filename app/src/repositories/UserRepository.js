@@ -63,13 +63,13 @@ const createUser = (user) => {
         });
 };
 
-const getUniqueUsername = (proposedUsername, tryCount = 0) => {
+const getUniqueUsername = (username, tryCount = 0) => {
+    const proposedUsername = username + (tryCount === 0 ? '' : tryCount);
     return User
         .findOne({username: proposedUsername})
         .then(function (user) {
             if (user) {
-                proposedUsername += (tryCount + 1);
-                return getUniqueUsername(proposedUsername, (tryCount + 1)); // <== return statement here
+                return getUniqueUsername(username, (tryCount + 1)); // <== return statement here
             }
             return proposedUsername;
         });

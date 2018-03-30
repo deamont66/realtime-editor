@@ -63,7 +63,7 @@ class ConnectedAccounts extends React.Component {
     };
 
     handleLast = url => () => {
-        if(this.props.user.has_password || !window.confirm(this.props.t('connected_settings.no_password_warning'))) {
+        if(this.props.user.has_password || window.confirm(this.props.t('connected_settings.no_password_warning'))) {
             this.handleDelete(url)();
         }
     };
