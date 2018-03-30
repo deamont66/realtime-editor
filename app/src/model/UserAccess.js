@@ -7,4 +7,6 @@ const userAccessSchema = new Schema({
     accessTime: {type: Date, required: true, default: () => Date.now()}
 });
 
+userAccessSchema.index({ user: 1, document: 1 });
+
 module.exports = mongoose.model('UserAccess', userAccessSchema);

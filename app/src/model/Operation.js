@@ -9,4 +9,6 @@ const operationSchema = new Schema({
     created: {type: Date, required: true, default: () => Date.now()},
 });
 
+operationSchema.index({ revision: 1, document: 1 });
+
 module.exports = mongoose.model('Operation', operationSchema);

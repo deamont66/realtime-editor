@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const documentSchema = new Schema({
     title: {type: String, required: true, default: 'Unnamed document'},
     settings: {type: mongoose.Schema.Types.ObjectId, ref: 'DocumentSettings', required: true},
-    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true},
     shareLinkRights: {type: Number, min: 0, max: DocumentRightsEnum.length - 1, required: true, default: 0},
     lastAckContent: {type: String, default: ''},
     lastChange: {type: Date, required: true, default: () => Date.now()},

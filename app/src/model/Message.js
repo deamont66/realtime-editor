@@ -8,4 +8,6 @@ const messageSchema = new Schema({
     document: {type: mongoose.Schema.Types.ObjectId, ref: 'Document', required: true},
 });
 
+messageSchema.index({ date: 1, document: 1 });
+
 module.exports = mongoose.model('Message', messageSchema);
