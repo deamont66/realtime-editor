@@ -37,7 +37,7 @@ const handleAuthentication = (req, res, next, redirect = true) => (err, user) =>
     if (err || !user) {
         return onError(err || Errors.userInvalidCredential);
     }
-    req.login(user, function (err) {
+    req.login(user, (err) => {
         if (err) {
             debug(err);
             return onError(err);
@@ -65,9 +65,9 @@ module.exports = {
 
     postLocalSignUp: (req, res, next) => {
         const userData = matchedData(req);
-        UserRepository.createUser(userData).then(function (user) {
+        UserRepository.createUser(userData).then((user) => {
             return new Promise((resolve, reject) => {
-                req.login(user, function (err) {
+                req.login(user, (err) => {
                     if (err) {
                         return reject(err);
                     }

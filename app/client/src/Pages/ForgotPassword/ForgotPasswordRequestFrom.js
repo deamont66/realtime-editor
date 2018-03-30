@@ -8,6 +8,10 @@ import {FormControl, FormHelperText} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import {LinearProgress} from 'material-ui/Progress';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import Snackbar from 'material-ui/Snackbar';
+
+import Close from 'material-ui-icons/Close';
 
 import MaterialLink from '../../Components/MaterialLink';
 import AuthAPIHandler from '../../APIHandlers/AuthAPIHandler';
@@ -32,7 +36,11 @@ const styles = theme => ({
     },
     signIn: {
         fontSize: theme.typography.pxToRem(16)
-    }
+    },
+    close: {
+        width: theme.spacing.unit * 4,
+        height: theme.spacing.unit * 4,
+    },
 });
 
 class ForgotPasswordRequestFrom extends React.Component {
@@ -47,7 +55,9 @@ class ForgotPasswordRequestFrom extends React.Component {
             message: null,
             error: null,
             loading: false,
-            send: false
+            send: false,
+
+            snackbarMessage: null
         }
     }
 
@@ -87,7 +97,7 @@ class ForgotPasswordRequestFrom extends React.Component {
             this.setState({
                 send: true,
                 loading: false,
-                message: this.props.t(res.data.message)
+                snackbarMessage: this.props.t(res.data.message)
             })
         }).catch((err) => {
             console.error(err);
@@ -141,6 +151,25 @@ class ForgotPasswordRequestFrom extends React.Component {
                         </Typography>
                     </Grid>
                 </Grid>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.snackbarMessage !== null}
+                    autoHideDuration={6000}
+                    onClose={() => this.setState({snackbarMessage: null})}
+                    SnackbarContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">{t(this.state.snackbarMessage)}</span>}
+                    action={[
+                        <IconButton key="close" aria-label="Close" color="inherit" className={classes.close}
+                                    onClick={() => this.setState({snackbarMessage: null})}>
+                            <Close/>
+                        </IconButton>,
+                    ]}
+                />
             </form>
         );
     }

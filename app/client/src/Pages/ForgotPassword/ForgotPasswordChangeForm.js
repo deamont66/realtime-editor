@@ -8,6 +8,10 @@ import {FormControl, FormHelperText} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
 import {LinearProgress, CircularProgress} from 'material-ui/Progress';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import Snackbar from 'material-ui/Snackbar';
+
+import Close from 'material-ui-icons/Close';
 
 import MaterialLink from '../../Components/MaterialLink';
 import PasswordStrengthEstimator, {estimateStrength} from '../../Components/PasswordStrengthEstimator';
@@ -33,7 +37,11 @@ const styles = theme => ({
     },
     signIp: {
         fontSize: theme.typography.pxToRem(16)
-    }
+    },
+    close: {
+        width: theme.spacing.unit * 4,
+        height: theme.spacing.unit * 4,
+    },
 });
 
 class ForgotPasswordChangeForm extends React.Component {
@@ -48,7 +56,9 @@ class ForgotPasswordChangeForm extends React.Component {
             valid: null,
             error: null,
             message: null,
-            send: false
+            send: false,
+
+            snackbarMessage: null
         }
     }
 
@@ -76,7 +86,7 @@ class ForgotPasswordChangeForm extends React.Component {
 
     handleSubmit = evt => {
         evt.preventDefault();
-        if(this.state.send) return;
+        if (this.state.send) return;
 
         let message = null;
         let error = null;
@@ -106,9 +116,17 @@ class ForgotPasswordChangeForm extends React.Component {
             this.setState({loading: true});
 
             AuthAPIHandler.fetchChangeForgotPassword(this.props.match.params.token, this.state.newPassword).then(() => {
-                this.setState({send: true, loading: false, message: this.props.t('forgotPasswordChange.success')});
+                this.setState({
+                    send: true,
+                    loading: false,
+                    snackbarMessage: this.props.t('forgotPasswordChange.success')
+                });
             }).catch((err) => {
-                this.setState({error: 'newPassword2', loading: false, message: this.props.t(err.response.data.message)});
+                this.setState({
+                    error: 'newPassword2',
+                    loading: false,
+                    message: this.props.t(err.response.data.message)
+                });
             });
         });
     };
@@ -179,7 +197,30 @@ class ForgotPasswordChangeForm extends React.Component {
                             to="/sign-in">{t('forgotPasswordRequest.sign_in.link_text')}</MaterialLink>
                         </Typography>
                     </Grid>
+
                 </Grid>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.snackbarMessage !== null}
+                    autoHideDuration={6000}
+                    onClose={() => this.setState({snackbarMessage: null})}
+                    SnackbarContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">{t(this.state.snackbarMessage)}</span>}
+                    action={[
+                        <Button key="sign_in" color="secondary" size="small" href={'/sign-in'}>
+                            {t('forgotPasswordRequest.sign_in.link_text')}
+                        </Button>,
+                        <IconButton key="close" aria-label="Close" color="inherit" className={classes.close}
+                                    onClick={() => this.setState({snackbarMessage: null})}>
+                            <Close/>
+                        </IconButton>,
+                    ]}
+                />
             </form>
         );
     }
