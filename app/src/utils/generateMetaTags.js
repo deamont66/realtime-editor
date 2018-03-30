@@ -26,12 +26,12 @@ const generate = (url, title, description) => {
 
         /*-- Search Engine --*/
         `<meta name="description" content="${rawDescription}">`,
-        `<meta name="image" content="/og-image.jpg">`,
+        `<meta name="image" content="${process.env.BASE_URL}/og-image.jpg">`,
 
         /*-- Schema.org for Google --*/
         `<meta itemProp="name" content="${rawtitle}">`,
         `<meta itemProp="description" content="${rawDescription}">`,
-        `<meta itemProp="image" content="/og-image.jpg">`,
+        `<meta itemProp="image" content="${process.env.BASE_URL}/og-image.jpg">`,
 
         /*-- Twitter --*/
         `<meta name="twitter:card" content="summary">`,
@@ -43,7 +43,7 @@ const generate = (url, title, description) => {
         /*-- Open Graph general (Facebook, Pinterest & Google+) --*/
         `<meta property="og:title" content="${rawtitle}">`,
         `<meta property="og:description" content="${rawDescription}">`,
-        `<meta property="og:image" content="/og-image.jpg">`,
+        `<meta property="og:image" content="${process.env.BASE_URL}/og-image.jpg">`,
         `<meta property="og:image:width" content="279">`,
         `<meta property="og:image:height" content="279">`,
         `<meta property="og:url" content="${rawUrl}">`,
