@@ -2,7 +2,7 @@ const translate = require('../langs/en');
 
 const fastEscape = (text) => {
     return text.replace(/&/g, '&amp;').
-    replace(/</g, '&lt;').  // it's not neccessary to escape >
+    replace(/</g, '&lt;').  // it's not necessary to escape >
     replace(/"/g, '&quot;').
     replace(/'/g, '&#039;');
 };
