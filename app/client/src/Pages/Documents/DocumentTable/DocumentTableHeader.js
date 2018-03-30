@@ -37,7 +37,7 @@ class DocumentTableHeader extends React.Component {
                                     style={{whiteSpace: 'nowrap'}}
                                 >
                                     <Tooltip
-                                        title="Sort"
+                                        title={t('documentTable.sort_title')}
                                         placement={column.numeric ? 'bottom-end' : 'bottom-start'}
                                         enterDelay={300}
                                     >

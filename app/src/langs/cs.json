@@ -102,6 +102,7 @@
   },
   "documentTable": {
     "no_documents": "Žádné dokumenty",
+    "sort_title": "Seřadit",
     "prev_label": "Předchozí strana",
     "next_label": "Následující strana",
     "displayedRows": "{{from}}-{{to}} z {{count}}",
