@@ -1,6 +1,8 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
+import {Client} from 'ot';
+
 
 import withStyles from 'material-ui/styles/withStyles';
 
@@ -48,7 +50,7 @@ class DocumentStatus extends React.Component {
         let state = STATES.disconnected;
         let icon = <ErrorOutline color={"error"} className={classes.icon}/>;
         if (!this.props.disconnected) {
-            if (this.props.state === 'Synchronized') {
+            if (this.props.state === null || this.props.state instanceof Client.Synchronized) {
                 state = STATES.synchronized;
                 icon = <CloudDone className={classes.icon}/>;
             } else {
@@ -69,7 +71,7 @@ class DocumentStatus extends React.Component {
 
 DocumentStatus.propTypes = {
     disconnected: PropTypes.bool.isRequired,
-    state: PropTypes.string.isRequired,
+    state: PropTypes.object,
 };
 
 export default translate()(withStyles(styles)(DocumentStatus));

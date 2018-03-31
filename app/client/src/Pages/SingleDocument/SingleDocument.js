@@ -35,7 +35,7 @@ class SingleDocument extends React.Component {
         this.state = {
             connected: false,
             disconnected: false,
-            clientState: 'Synchronized',
+            clientState: null,
             clients: [],
             error: null,
 

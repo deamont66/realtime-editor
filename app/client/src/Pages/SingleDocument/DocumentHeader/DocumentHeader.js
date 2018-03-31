@@ -51,7 +51,7 @@ class DocumentHeader extends React.Component {
 
 DocumentHeader.propTypes = {
     disconnected: PropTypes.bool.isRequired,
-    clientState: PropTypes.string.isRequired,
+    clientState: PropTypes.object,
 
     title: PropTypes.string.isRequired,
     onSettingsChange: PropTypes.func.isRequired,

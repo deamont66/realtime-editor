@@ -6,6 +6,7 @@
  */
 
 import {TextOperation, Selection} from 'ot';
+import AbstractEditorAdapter from './AbstractEditorAdapter';
 
 function cmpPos(a, b) {
     if (a.line < b.line) {
@@ -40,14 +41,16 @@ function codemirrorDocLength(doc) {
         doc.getLine(doc.lastLine()).length;
 }
 
-class CodeMirrorAdapter {
+class CodeMirrorEditorAdapter extends AbstractEditorAdapter {
 
     /**
-     * Creates CodeMirrorAdapter around given CodeMirror instance.
+     * Creates CodeMirrorEditorAdapter around given CodeMirror instance.
      *
      * @param {CodeMirror} cm
      */
     constructor(cm) {
+        super();
+
         this.cm = cm;
         this.ignoreNextChange = false;
         this.changeInProgress = false;
@@ -63,6 +66,13 @@ class CodeMirrorAdapter {
         cm.on('cursorActivity', this.onFocus);
         cm.on('focus', this.onFocus);
         cm.on('blur', this.onBlur);
+
+        this.cm.undo = () => {
+            this.emit('undo');
+        };
+        this.cm.redo = () => {
+            this.emit('redo');
+        };
     }
 
     detach() {
@@ -71,6 +81,8 @@ class CodeMirrorAdapter {
         this.cm.off('cursorActivity', this.onFocus);
         this.cm.off('focus', this.onFocus);
         this.cm.off('blur', this.onBlur);
+        this.cm.undo = () => {};
+        this.cm.redo = () => {};
     }
 
     // Converts a CodeMirror change array (as obtained from the 'changes' event
@@ -159,10 +171,6 @@ class CodeMirrorAdapter {
         return [operation, inverse];
     }
 
-    // Singular form for backwards compatibility.
-    static operationFromCodeMirrorChange =
-        CodeMirrorAdapter.operationFromCodeMirrorChanges;
-
     // Apply an operation to a CodeMirror instance.
     static applyOperationToCodeMirror(operation, cm) {
         cm.operation(function () {
@@ -184,10 +192,6 @@ class CodeMirrorAdapter {
         });
     }
 
-    registerCallbacks(cb) {
-        this.callbacks = cb;
-    }
-
     onChange() {
         // By default, CodeMirror's event order is the following:
         // 1. 'change', 2. 'cursorActivity', 3. 'changes'.
@@ -200,11 +204,11 @@ class CodeMirrorAdapter {
 
     onChanges(_, changes) {
         if (!this.ignoreNextChange) {
-            const pair = CodeMirrorAdapter.operationFromCodeMirrorChanges(changes, this.cm);
-            this.trigger('change', pair[0], pair[1]);
+            const pair = CodeMirrorEditorAdapter.operationFromCodeMirrorChanges(changes, this.cm);
+            this.emit('change', pair[0], pair[1]);
         }
         if (this.selectionChanged) {
-            this.trigger('selectionChange');
+            this.emit('selectionChange');
         }
         this.changeInProgress = false;
         this.ignoreNextChange = false;
@@ -215,13 +219,13 @@ class CodeMirrorAdapter {
             this.selectionChanged = true;
         } else {
             if (!this.cm.options.readOnly)
-                this.trigger('selectionChange');
+                this.emit('selectionChange');
         }
     }
 
     onBlur() {
         if (!this.cm.somethingSelected() && !this.cm.options.readOnly) {
-            this.trigger('blur');
+            this.emit('blur');
         }
     }
 
@@ -311,26 +315,10 @@ class CodeMirrorAdapter {
         };
     }
 
-    trigger(event) {
-        const args = Array.prototype.slice.call(arguments, 1);
-        const action = this.callbacks && this.callbacks[event];
-        if (action) {
-            action.apply(this, args);
-        }
-    }
-
     applyOperation(operation) {
         this.ignoreNextChange = true;
-        CodeMirrorAdapter.applyOperationToCodeMirror(operation, this.cm);
-    }
-
-    registerUndo(undoFn) {
-        this.cm.undo = undoFn;
-    }
-
-    registerRedo(redoFn) {
-        this.cm.redo = redoFn;
+        CodeMirrorEditorAdapter.applyOperationToCodeMirror(operation, this.cm);
     }
 }
 
-export default CodeMirrorAdapter;
+export default CodeMirrorEditorAdapter;

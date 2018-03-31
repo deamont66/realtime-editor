@@ -1,19 +1,20 @@
 import io from 'socket.io-client';
-
-import {SocketIOAdapter, EditorClient, CodeMirrorAdapter} from '../../OperationalTransformation';
+import {TextOperation} from 'ot';
+import {SocketIOAdapter, EditorClient, CodeMirrorEditorAdapter} from '../../OperationalTransformation';
 
 import createColor from '../../Utils/ColorGenerator';
 
 class ClientSocket {
-    editorClient = null;
 
     constructor(documentId, onStateChange) {
         this.documentId = documentId;
         this.onStateChange = onStateChange;
+
+        this.editorClient = null;
     }
 
     connect() {
-        if(this.socket) this.socket.close();
+        if (this.socket) this.socket.close();
         this.socket = io('/documents', {
             path: '/api/socket.io',
             query: 'documentId=' + this.documentId
@@ -25,17 +26,12 @@ class ClientSocket {
                 disconnected: false
             });
 
-            this.socket.emit('join', (obj) => {
-                this.init(obj.value, obj.revision, obj.clients, this.editorClient ? this.editorClient.serverAdapter : new SocketIOAdapter(this.socket));
-                this.onSettings(obj.settings);
-
-                this.onStateChange({
-                    messages: [],
-                    allowedOperations: obj.operations
-                }, () => {
-                    obj.messages.forEach((message) => this.addChatMessage(message));
-                });
-            });
+            const isReconnect = !!this.editorClient;
+            if (isReconnect) {
+                this.socket.emit('rejoin', this.editorClient.revision, this.onConnect(isReconnect).bind(this));
+            } else {
+                this.socket.emit('join', this.onConnect(isReconnect).bind(this));
+            }
         });
 
         this.socket.on('disconnect_error', error => {
@@ -60,6 +56,24 @@ class ClientSocket {
         });
     }
 
+    onConnect = isReconnect => (obj) => {
+        console.log(isReconnect, obj);
+        if (!isReconnect) {
+            this.init(obj.value, obj.revision, obj.clients);
+        } else {
+            this.reconnect(obj.documentOperations, obj.clients);
+        }
+
+        this.onSettings(obj.settings);
+
+        this.onStateChange({
+            messages: [],
+            allowedOperations: obj.operations
+        }, () => {
+            obj.messages.forEach((message) => this.addChatMessage(message));
+        });
+    };
+
     getSocket = () => {
         return this.socket;
     };
@@ -72,28 +86,37 @@ class ClientSocket {
         this.socket.close();
     };
 
-    init = (str, revision, clients, serverAdapter) => {
-        if (this.editorClient) {
-            this.editorClient.editorAdapter.detach();
+    init = (str, revision, clients) => {
+        if (!this.editorClient) {
+            this.editorClient = new EditorClient(
+                revision, clients, new SocketIOAdapter(this.socket), new CodeMirrorEditorAdapter(this.editor)
+            );
+            this.editorClient.emitter.on('stateChange', (state) => {
+                this.onStateChange({
+                    clientState: state
+                });
+            });
+            this.editorClient.emitter.on('clientsChanged', (clients) => {
+                this.onStateChange({
+                    clients: Object.keys(clients).map((clientId) => {
+                        return Object.assign({
+                            id: clientId
+                        }, clients[clientId]);
+                    })
+                });
+            });
         }
-        this.editor.setValue(str);
-        this.editorClient = new EditorClient(
-            revision, clients, serverAdapter, new CodeMirrorAdapter(this.editor)
-        );
-        this.editorClient.emitter.on('stateChange', (state) => {
-            this.onStateChange({
-                clientState: state
-            });
+        if (str) {
+            this.editorClient.editorAdapter.ignoreNextChange = true;
+            this.editor.setValue(str);
+        }
+    };
+
+    reconnect = (documentOperations, clients) => {
+        documentOperations.forEach((operation) => {
+            this.editorClient.applyServer(TextOperation.fromJSON(operation));
         });
-        this.editorClient.emitter.on('clientsChanged', (clients) => {
-            this.onStateChange({
-                clients: Object.keys(clients).map((clientId) => {
-                    return Object.assign({
-                        id: clientId
-                    }, clients[clientId]);
-                })
-            });
-        });
+        this.editorClient.setClients(clients);
     };
 
     onSettings = (settings) => {

@@ -6,27 +6,28 @@
  */
 
 import {Client, Selection, TextOperation} from 'ot';
+import EventEmitter from 'event-emitter-es6';
+
 import WrappedOperation from './WrappedOperation';
 import UndoManager from './UndoManager';
 import createColor from '../Utils/ColorGenerator';
-import EventEmitter from 'event-emitter-es6';
 
-class SelfMeta {
+class SelfSelection {
     constructor(selectionBefore, selectionAfter) {
         this.selectionBefore = selectionBefore;
         this.selectionAfter = selectionAfter;
     }
 
     invert() {
-        return new SelfMeta(this.selectionAfter, this.selectionBefore);
+        return new SelfSelection(this.selectionAfter, this.selectionBefore);
     }
 
     compose(other) {
-        return new SelfMeta(this.selectionBefore, other.selectionAfter);
+        return new SelfSelection(this.selectionBefore, other.selectionAfter);
     }
 
     transform(operation) {
-        return new SelfMeta(
+        return new SelfSelection(
             this.selectionBefore.transform(operation),
             this.selectionAfter.transform(operation)
         );
@@ -83,6 +84,13 @@ class OtherClient {
 
 class EditorClient extends Client {
 
+    /**
+     *
+     * @param {Number} revision
+     * @param {Object} clients
+     * @param {AbstractServerAdapter} serverAdapter
+     * @param {AbstractEditorAdapter} editorAdapter
+     */
     constructor(revision, clients, serverAdapter, editorAdapter) {
         super(revision);
         this.serverAdapter = serverAdapter;
@@ -93,94 +101,35 @@ class EditorClient extends Client {
 
         this.initializeClients(clients);
 
-        this.editorAdapter.registerCallbacks({
-            change: (operation, inverse) => {
-                this.onChange(operation, inverse);
-            },
-            selectionChange: () => {
-                this.onSelectionChange();
-            },
-            blur: () => {
-                this.onBlur();
-            }
-        });
-        this.editorAdapter.registerUndo(() => {
-            this.undo();
-        });
-        this.editorAdapter.registerRedo(() => {
-            this.redo();
-        });
+        this.onChange = this.onChange.bind(this);
+        this.onSelectionChange = this.onSelectionChange.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.undo = this.undo.bind(this);
+        this.redo = this.redo.bind(this);
 
-        this.serverAdapter.registerCallbacks({
-            client_left: (clientId) => {
-                this.onClientLeft(clientId);
-                this.emitter.emit('clientsChanged', this.clients);
-            },
-            set_name: (clientId, name) => {
-                this.getClientObject(clientId).setName(name);
-                this.emitter.emit('clientsChanged', this.clients);
-            },
-            ack: () => {
-                this.serverAck();
-            },
-            operation: (operation) => {
-                this.applyServer(TextOperation.fromJSON(operation));
-            },
-            selection: (clientId, selection) => {
-                if (selection) {
-                    this.getClientObject(clientId).updateSelection(
-                        this.transformSelection(Selection.fromJSON(selection))
-                    );
-                } else {
-                    this.getClientObject(clientId).removeSelection();
-                }
-            },
-            clients: (clients) => {
-                let clientId;
-                for (clientId in this.clients) {
-                    if (this.clients.hasOwnProperty(clientId) && !clients.hasOwnProperty(clientId)) {
-                        this.onClientLeft(clientId);
-                    }
-                }
+        this.editorAdapter.on('change', this.onChange);
+        this.editorAdapter.on('selectionChange', this.onSelectionChange);
+        this.editorAdapter.on('blur', this.onBlur);
+        this.editorAdapter.on('undo', this.undo);
+        this.editorAdapter.on('redo', this.redo);
 
-                for (clientId in clients) {
-                    if (clients.hasOwnProperty(clientId)) {
-                        const clientObject = this.getClientObject(clientId);
 
-                        if (clients[clientId].name) {
-                            clientObject.setName(clients[clientId].name);
-                        }
+        this.onClientLeft = this.onClientLeft.bind(this);
+        this.setClientName = this.setClientName.bind(this);
+        this.serverAck = this.serverAck.bind(this);
+        this.onReceivedOperation = this.onReceivedOperation.bind(this);
+        this.onReceivedSelection = this.onReceivedSelection.bind(this);
 
-                        const selection = clients[clientId].selection;
-                        if (selection) {
-                            this.clients[clientId].updateSelection(
-                                this.transformSelection(Selection.fromJSON(selection))
-                            );
-                        } else {
-                            this.clients[clientId].removeSelection();
-                        }
-                    }
-                }
-                this.emitter.emit('clientsChanged', this.clients);
-            },
-            reconnect: () => {
-                this.serverReconnect();
-            }
-        });
+        this.serverAdapter.on('client_left', this.onClientLeft);
+        this.serverAdapter.on('set_name', this.setClientName);
+        this.serverAdapter.on('ack', this.serverAck);
+        this.serverAdapter.on('operation', this.onReceivedOperation);
+        this.serverAdapter.on('selection', this.onReceivedSelection);
     }
 
     setState(state) {
         super.setState(state);
-
-        // This needs to be done because classes are renamed by webpack during build process.
-        let stateName = 'AwaitingWithBuffer';
-        if (state instanceof Client.Synchronized) {
-            stateName = 'Synchronized';
-        } else if (state instanceof Client.AwaitingConfirm) {
-            stateName = 'AwaitingConfirm';
-        }
-
-        this.emitter.emit('stateChange', stateName);
+        this.emitter.emit('stateChange', state);
     }
 
     addClient(clientId, clientObj) {
@@ -190,6 +139,41 @@ class EditorClient extends Client {
             clientObj.name,
             clientObj.selection ? Selection.fromJSON(clientObj.selection) : null
         );
+    }
+
+    setClients(clients) {
+        let clientId;
+        for (clientId in this.clients) {
+            if (this.clients.hasOwnProperty(clientId) && !clients.hasOwnProperty(clientId)) {
+                this.onClientLeft(clientId);
+            }
+        }
+
+        for (clientId in clients) {
+            if (clients.hasOwnProperty(clientId)) {
+                const clientObject = this.getClientObject(clientId);
+
+                if (clients[clientId].name) {
+                    clientObject.setName(clients[clientId].name);
+                }
+
+                const selection = clients[clientId].selection;
+                if (selection) {
+                    this.clients[clientId].updateSelection(
+                        this.transformSelection(Selection.fromJSON(selection))
+                    );
+                } else {
+                    this.clients[clientId].removeSelection();
+                }
+            }
+        }
+        this.emitter.emit('clientsChanged', this.clients);
+
+    }
+
+    setClientName(clientId, name) {
+        this.getClientObject(clientId).setName(name);
+        this.emitter.emit('clientsChanged', this.clients);
     }
 
     initializeClients(clients) {
@@ -214,13 +198,27 @@ class EditorClient extends Client {
     }
 
     onClientLeft(clientId) {
-        // console.log("User disconnected: " + clientId);
         const client = this.clients[clientId];
         if (!client) {
             return;
         }
         client.remove();
         delete this.clients[clientId];
+        this.emitter.emit('clientsChanged', this.clients);
+    }
+
+    onReceivedOperation(operation) {
+        this.applyServer(TextOperation.fromJSON(operation));
+    }
+
+    onReceivedSelection(clientId, selection) {
+        if (selection) {
+            this.getClientObject(clientId).updateSelection(
+                this.transformSelection(Selection.fromJSON(selection))
+            );
+        } else {
+            this.getClientObject(clientId).removeSelection();
+        }
     }
 
     applyUnredo(operation) {
@@ -232,34 +230,30 @@ class EditorClient extends Client {
     }
 
     undo() {
-        const self = this;
         if (!this.undoManager.canUndo()) {
             return;
         }
-        this.undoManager.performUndo(function (o) {
-            self.applyUnredo(o);
+        this.undoManager.performUndo((o) => {
+            this.applyUnredo(o);
         });
     }
 
     redo() {
-        const self = this;
         if (!this.undoManager.canRedo()) {
             return;
         }
-        this.undoManager.performRedo(function (o) {
-            self.applyUnredo(o);
+        this.undoManager.performRedo((o) => {
+            this.applyUnredo(o);
         });
     }
 
     onChange(textOperation, inverse) {
         const selectionBefore = this.selection;
         this.updateSelection();
-        // const meta = new SelfMeta(selectionBefore, this.selection);
-        // const operation = new WrappedOperation(textOperation, meta);
 
         const compose = this.undoManager.undoStack.length > 0 &&
             inverse.shouldBeComposedWithInverted(this.undoManager.undoStack[this.undoManager.undoStack.length - 1].wrapped);
-        const inverseMeta = new SelfMeta(this.selection, selectionBefore);
+        const inverseMeta = new SelfSelection(this.selection, selectionBefore);
         this.undoManager.add(new WrappedOperation(inverse, inverseMeta), compose);
         this.applyClient(textOperation);
     }
@@ -289,10 +283,19 @@ class EditorClient extends Client {
         this.serverAdapter.sendSelection(selection);
     }
 
+    /**
+     * Called by Client to send new operation to serverAdapter.
+     * @param revision
+     * @param operation
+     */
     sendOperation(revision, operation) {
         this.serverAdapter.sendOperation(revision, operation.toJSON(), this.selection);
     }
 
+    /**
+     * Called by Client parent to apply operation to editorAdapter.
+     * @param {TextOperation} operation
+     */
     applyOperation(operation) {
         this.editorAdapter.applyOperation(operation);
         this.updateSelection();

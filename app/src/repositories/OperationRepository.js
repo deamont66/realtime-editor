@@ -19,6 +19,17 @@ const getLastOperationsByDocument = (documentId, last = 50) => {
     });
 };
 
+const getMissingOperationsByRevisionAndDocument = (documentId, revisionNumber) => {
+    return Operation.find({
+        document: documentId,
+        revision: {$gt: revisionNumber}
+    }).sort('revision').exec().then((dbOperations) => {
+        return dbOperations.map((dbOperation) => {
+            return TextOperation.fromJSON(JSON.parse(dbOperation.operations));
+        });
+    });
+};
+
 /**
  * Creates and stores new Operation.
  *
@@ -38,5 +49,6 @@ const saveOperation = (document, author, revision, operation) => {
 
 module.exports = {
     getLastOperationsByDocument: getLastOperationsByDocument,
+    getMissingOperationsByRevisionAndDocument: getMissingOperationsByRevisionAndDocument,
     saveOperation: saveOperation
 };

@@ -22,6 +22,10 @@ class RoomList {
                     debug('Joining:', documentId, socket.request.user._id);
                     server.addClient(socket, cb);
                 });
+                socket.on('rejoin', (nextRevision, cb) => {
+                   debug(`Rejoing (rev.${nextRevision}): `, documentId, socket.request.user._id);
+                   server.addClient(socket, cb, nextRevision);
+                });
             }).catch(() => {
                 debug('Disconnected: Document not found');
                 socket.disconnect(true);

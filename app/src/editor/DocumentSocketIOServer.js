@@ -67,45 +67,42 @@ class DocumentSocketIOServer extends DocumentServer {
         this.users = {};
     }
 
+    initSocket(socket) {
+        socket.join(this.documentId);
+
+        this.getClient(socket).name = socket.request.user.username || `Anonymous ${getAnimalNameFromSeed(socket.handshake.sessionID)}`;
+
+        socket.on('operation', (revision, operation, selection) => {
+            this.onOperation(socket, revision, operation, selection);
+        });
+
+        socket.on('selection', (selection) => {
+            this.onSelection(socket, selection);
+        });
+
+        socket.on('settings', (settings) => {
+            this.onSettings(socket, settings);
+        });
+
+        socket.on('chat_message', (message, callback) => {
+            this.onMessage(socket, message, callback);
+        });
+
+        socket.on('disconnect', () => {
+            this.onDisconnect(socket);
+        });
+    }
+
     /**
      * Registers socket to the DocumentServer
      *
      * @param {Socket} socket - socket.io socket instance
      * @param {function} responseCallback - join/rejoin response callback
+     * @param {Number|Boolean} nextRevision - in case of reconnection next expected revision number
      */
-    addClient(socket, responseCallback) {
+    addClient(socket, responseCallback, nextRevision = false) {
         DocumentRepository.getDocumentById(this.documentId).then(document => {
-            socket.join(this.documentId);
-
-            this.getClient(socket).name = socket.request.user.username || `Anonymous ${getAnimalNameFromSeed(socket.handshake.sessionID)}`;
-
-            socket.on('operation', (revision, operation, selection) => {
-                this.onOperation(socket, revision, operation, selection);
-            });
-
-            socket.on('selection', (selection) => {
-                this.onSelection(socket, selection);
-            });
-
-            socket.on('settings', (settings) => {
-                this.onSettings(socket, settings);
-            });
-
-            socket.on('chat_message', (message, callback) => {
-                this.onMessage(socket, message, callback);
-            });
-
-            socket.on('disconnect', () => {
-                this.onDisconnect(socket);
-            });
-
-            socket.to(this.documentId).emit('set_name', socket.id, this.getClient(socket).name);
-
-            if (socket.request.user.logged_in) {
-                DocumentRepository.updateUserAccess(document, socket.request.user).catch((err) => {
-                    debug(err);
-                });
-            }
+            this.initSocket(socket);
 
             Promise.all([
                 DocumentVoter.getAllowedOperations(socket.request.user, document),
@@ -117,19 +114,41 @@ class DocumentSocketIOServer extends DocumentServer {
                     socket.disconnect(true);
                     return;
                 }
-                responseCallback({
-                    value: this.value,
-                    revision: this.getRevision(),
-                    clients: this.users,
-                    settings: Object.assign({title: document.title}, document.settings.toJSON()),
-                    operations: operations,
-                    messages: operations.includes('chat') ? messages : [],
-                });
+
+                if (nextRevision === false) {
+                    this.joinClient(document, operations, messages, responseCallback);
+                } else {
+                    this.rejoinClient(document, operations, messages, nextRevision, responseCallback);
+                }
             });
         }).catch(() => {
             debug('Disconnected: Not found');
             socket.emit('disconnect_error', 404);
             socket.disconnect(true);
+        });
+    }
+
+
+    joinClient(document, operations, messages, responseCallback) {
+        responseCallback({
+            value: this.value,
+            revision: this.getRevision(),
+            clients: this.users,
+            settings: Object.assign({title: document.title}, document.settings.toJSON()),
+            operations: operations,
+            messages: operations.includes('chat') ? messages : [],
+        });
+    }
+
+    rejoinClient(document, operations, messages, revision, responseCallback) {
+        OperationRepository.getMissingOperationsByRevisionAndDocument(document, revision).then((documentOperations) => {
+            responseCallback({
+                documentOperations: documentOperations,
+                clients: this.users,
+                settings: Object.assign({title: document.title}, document.settings.toJSON()),
+                operations: operations,
+                messages: operations.includes('chat') ? messages : [],
+            });
         });
     }
 
@@ -240,7 +259,7 @@ class DocumentSocketIOServer extends DocumentServer {
         if (!Object.keys(socket.server.sockets.adapter.rooms).includes(this.documentId)) {
             this.emit('empty-room');
         }
-
+        console.log('Disconnected: ', socket.id);
         delete this.users[socket.id];
         socket.to(this.documentId).emit('client_left', socket.id);
     }

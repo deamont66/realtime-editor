@@ -12,9 +12,9 @@ const REDOING_STATE = 'redoing';
 /**
  * Transforms given stack according to new operation.
  *
- * @param {Operation[]} stack
- * @param {Operation} operation
- * @returns {Operation[]} transformedStack
+ * @param {Operation[]|[]} stack
+ * @param {Operation|*} operation
+ * @returns {Operation[]|[]} transformedStack
  */
 const transformStack = (stack, operation) => {
     const newStack = [];
@@ -47,7 +47,7 @@ class UndoManager {
     /**
      * Adds operation to stack depending on state.
      *
-     * @param {Operation} operation
+     * @param {Operation|*} operation
      * @param {Boolean} compose
      */
     add(operation, compose) {
@@ -81,7 +81,7 @@ class UndoManager {
     /**
      * Transforms both stack based on passed operation.
      *
-     * @param {Operation} operation
+     * @param {Operation|*} operation
      */
     transform(operation) {
         this.undoStack = transformStack(this.undoStack, operation);
