@@ -13,6 +13,7 @@ import SingleDocument from './SingleDocument';
 import {MyDocuments, SharedDocuments, LastDocuments} from './Documents';
 import Settings from './Settings';
 import ForgotPassword from './ForgotPassword';
+import About from './About';
 
 class Router extends React.Component {
 
@@ -23,6 +24,10 @@ class Router extends React.Component {
                 <Layout user={this.props.user} onDarkThemeToggle={this.props.onDarkThemeToggle}>
                     <MetaTags description={t('app.description')}/>
                     <Switch>
+                        <Route exact path={'/about'} render={(props) => (
+                            <About {...props}/>
+                        )}/>
+
                         <Route exact path={'/sign-up'} render={(props) => (
                             this.props.user === null ? <SignUp {...props}/> : <Redirect to={'/'}/>)}/>
 

@@ -3,6 +3,7 @@
     "name": "Realtime editor",
     "description": "Collaborative real-time editor",
     "titles": {
+      "about": "About Realtime Editor",
       "sign_up": "Sign Up",
       "sign_in": "Sign In",
       "forgot_password": "Forgot password",
@@ -45,6 +46,11 @@
       "primary": "Language",
       "aria_label": "Select interface language"
     }
+  },
+  "about": {
+    "headline": "About Realtime Editor",
+    "text": "Created by Jiří Šimeček as practical part of bachelor's thesis in 2018 at Czech Technical University.",
+    "licences_header": "Third party licences"
   },
   "signUp": {
     "headline": "Create new account",
