@@ -109,6 +109,7 @@
     "rowsPerPageLabel": "Rows per page:",
     "neverAccessed": "Never",
     "notShared": "--",
+    "unnamedDocument": "Unnamed document",
     "header": {
       "title": "Title",
       "lastAccessed": "Last accessed",

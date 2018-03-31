@@ -74,7 +74,7 @@ class DocumentTable extends React.Component {
                             return (
                                 <TableRow key={document._id}>
                                     <TableCell><MaterialLink
-                                        to={'/document/' + document._id}>{document.title}</MaterialLink></TableCell>
+                                        to={'/document/' + document._id}>{document.title || t('documentTable.unnamedDocument')}</MaterialLink></TableCell>
                                     <TableCell>
                                         <Tooltip id="tooltip-icon"
                                                  title={(document.lastAccessed) ? moment(document.lastAccessed).format('llll') : t('documentTable.neverAccessed')}>

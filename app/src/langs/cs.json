@@ -109,6 +109,7 @@
     "rowsPerPageLabel": "Počet řádků na stranu:",
     "neverAccessed": "Nikdy",
     "notShared": "--",
+    "unnamedDocument": "Nepojmenovaný dokument",
     "header": {
       "title": "Název",
       "lastAccessed": "Navštíveno",

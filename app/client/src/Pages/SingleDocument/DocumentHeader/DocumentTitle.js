@@ -110,14 +110,14 @@ class DocumentTitle extends React.Component {
     render() {
         const {classes, t} = this.props;
 
-        const inputWidth = Math.min(Math.max(50, this.getTextWidth(this.state.newTitle || t('document_title.placeholder'), '24px') + 5), window.innerWidth - 120);
+        const inputWidth = Math.min(Math.max(50, this.getTextWidth(this.state.newTitle || t('documentTable.unnamedDocument'), '24px') + 5), window.innerWidth - 120);
 
         return (
             <div style={{display: 'inline-block'}}>
                 <Input value={this.state.newTitle}
                        style={{width: inputWidth}}
                        className={classes.input} margin={'none'}
-                       placeholder={t('document_title.placeholder')}
+                       placeholder={t('documentTable.unnamedDocument')}
                        onChange={this.handleTitleChange}
                        disableUnderline={this.props.readOnly}
                 />
