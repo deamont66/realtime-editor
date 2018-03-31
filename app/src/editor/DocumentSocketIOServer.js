@@ -218,7 +218,7 @@ class DocumentSocketIOServer extends DocumentServer {
     onDocumentChange(socket, document, operation) {
         const revision = this.getRevision();
         DocumentRepository.updateLastContent(document, this.value);
-        OperationRepository.saveOperation(document, socket.request.user, revision, operation);
+        OperationRepository.saveOperation(document, socket.request.user.logged_in ? socket.request.user : null, revision, operation);
     }
 
     /**
