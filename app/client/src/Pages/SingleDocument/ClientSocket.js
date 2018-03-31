@@ -57,7 +57,6 @@ class ClientSocket {
     }
 
     onConnect = isReconnect => (obj) => {
-        console.log(isReconnect, obj);
         if (!isReconnect) {
             this.init(obj.value, obj.revision, obj.clients);
         } else {
