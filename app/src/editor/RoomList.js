@@ -28,8 +28,8 @@ class RoomList {
                 });
             }).catch(() => {
                 debug('Disconnected: Document not found');
-                socket.disconnect(true);
                 socket.emit('disconnect_error', 404);
+                socket.disconnect(true);
             });
         });
     }
