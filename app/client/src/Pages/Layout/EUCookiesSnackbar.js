@@ -46,10 +46,8 @@ class EUCookiesSnackbar extends React.Component {
                 }}
                 message={<span id="message-id">{t('eu_cookies.text')}</span>}
                 action={[
-                    <Tooltip title={t('eu_cookies.more_title')}>
+                    <Tooltip key="more" title={t('eu_cookies.more_title')}>
                         <IconButton
-                            key="more"
-                            title={t('eu_cookies.more_title')}
                             color="inherit"
                             className={classes.close}
                             href={t('eu_cookies.more_link')}
@@ -58,9 +56,8 @@ class EUCookiesSnackbar extends React.Component {
                             <Book/>
                         </IconButton>
                     </Tooltip>,
-                    <Tooltip title={t('eu_cookies.close_title')}>
+                    <Tooltip key="close" title={t('eu_cookies.close_title')}>
                         <IconButton
-                            key="close"
                             color="inherit"
                             className={classes.close}
                             onClick={this.handleClose}
