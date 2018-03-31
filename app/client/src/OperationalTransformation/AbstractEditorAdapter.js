@@ -16,8 +16,8 @@ class AbstractEditorAdapter extends EventEmitter {
 
     constructor() {
         super();
-
-        if (new.target === AbstractEditorAdapter) {
+        // could be new.target but create-react-scripts doesn't like it yet
+        if ((this instanceof AbstractEditorAdapter ? this.constructor : void 0) === AbstractEditorAdapter) {
             throw new TypeError("Cannot construct AbstractEditorAdapter instances directly");
         }
     }

@@ -15,8 +15,8 @@ class AbstractServerAdapter extends EventEmitter {
 
     constructor() {
         super();
-
-        if (new.target === AbstractServerAdapter) {
+        // could be new.target but create-react-scripts doesn't like it yet
+        if ((this instanceof AbstractServerAdapter ? this.constructor : void 0) === AbstractServerAdapter) {
             throw new TypeError("Cannot construct AbstractServerAdapter instances directly");
         }
     }
