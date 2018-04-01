@@ -128,7 +128,7 @@ const updateLastContent = (document, value) => {
  * Updates DocumentSettings for document.
  *
  * @param {Document} document
- * @param {DocumentSettings} settings
+ * @param {Object} settings
  */
 const updateSettings = (document, settings) => {
     document.title = settings.title;

@@ -67,6 +67,10 @@ class DocumentSocketIOServer extends DocumentServer {
         this.users = {};
     }
 
+    /**
+     * Registers document message listeners on socket.
+     * @param socket
+     */
     initSocket(socket) {
         socket.join(this.documentId);
 
@@ -120,7 +124,7 @@ class DocumentSocketIOServer extends DocumentServer {
                         debug(err);
                     });
                 }
-                
+
                 socket.to(this.documentId).emit('set_name', socket.id, this.getClient(socket).name);
                 if (nextRevision === false) {
                     this.joinClient(document, operations, messages, responseCallback);
@@ -135,26 +139,42 @@ class DocumentSocketIOServer extends DocumentServer {
         });
     }
 
-
-    joinClient(document, operations, messages, responseCallback) {
+    /**
+     * Calls responseCallback with join related data.
+     *
+     * @param {Document[]} document
+     * @param {String[]} allowedOperations
+     * @param {Message[]} messages
+     * @param {function} responseCallback
+     */
+    joinClient(document, allowedOperations, messages, responseCallback) {
         responseCallback({
             value: this.value,
             revision: this.getRevision(),
             clients: this.users,
             settings: Object.assign({title: document.title}, document.settings.toJSON()),
-            operations: operations,
-            messages: operations.includes('chat') ? messages : [],
+            operations: allowedOperations,
+            messages: allowedOperations.includes('chat') ? messages : [],
         });
     }
 
-    rejoinClient(document, operations, messages, revision, responseCallback) {
+    /**
+     * Calls responseCallback with rejoin related data.
+     *
+     * @param {Document[]} document
+     * @param {String[]} allowedOperations
+     * @param {Message[]} messages
+     * @param {Number} revision
+     * @param {function} responseCallback
+     */
+    rejoinClient(document, allowedOperations, messages, revision, responseCallback) {
         OperationRepository.getMissingOperationsByRevisionAndDocument(document, revision).then((documentOperations) => {
             responseCallback({
                 documentOperations: documentOperations,
                 clients: this.users,
                 settings: Object.assign({title: document.title}, document.settings.toJSON()),
-                operations: operations,
-                messages: operations.includes('chat') ? messages : [],
+                operations: allowedOperations,
+                messages: allowedOperations.includes('chat') ? messages : [],
             });
         });
     }
@@ -222,6 +242,13 @@ class DocumentSocketIOServer extends DocumentServer {
         });
     }
 
+    /**
+     * Handles incoming chat message from client.
+     *
+     * @param {Socket} socket
+     * @param {String} message
+     * @param {function} callback
+     */
     onMessage(socket, message, callback) {
         this.getDocumentAndValidateRights('chat', socket).then((document) => {
             MessageRepository.createMessage(document, socket.request.user, message).then((messageObj) => {
@@ -271,6 +298,13 @@ class DocumentSocketIOServer extends DocumentServer {
         socket.to(this.documentId).emit('client_left', socket.id);
     }
 
+    /**
+     * Gets current document from DB and checks rights of current user.
+     *
+     * @param {String} right
+     * @param {Socket} socket
+     * @return {Promise<Document>} - or rejects with 403/404 error
+     */
     getDocumentAndValidateRights(right, socket) {
         let found = false;
         return DocumentRepository.getDocumentById(this.documentId).then((document) => {

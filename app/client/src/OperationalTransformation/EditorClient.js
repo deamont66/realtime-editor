@@ -168,7 +168,6 @@ class EditorClient extends Client {
             }
         }
         this.emitter.emit('clientsChanged', this.clients);
-
     }
 
     setClientName(clientId, name) {
