@@ -115,6 +115,13 @@ class DocumentSocketIOServer extends DocumentServer {
                     return;
                 }
 
+                if (socket.request.user.logged_in) {
+                    DocumentRepository.updateUserAccess(document, socket.request.user).catch((err) => {
+                        debug(err);
+                    });
+                }
+                
+                socket.to(this.documentId).emit('set_name', socket.id, this.getClient(socket).name);
                 if (nextRevision === false) {
                     this.joinClient(document, operations, messages, responseCallback);
                 } else {
