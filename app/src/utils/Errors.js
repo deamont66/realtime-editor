@@ -15,13 +15,13 @@ module.exports = {
         json: true,
         message: 'error.user_not_logged_in',
         code: 4002,
-        status: 200 // should be 422, but React user pooling spams Chrome console with errors
+        status: 401
     },
     userInvalidCredential: {
         json: true,
         message: 'password.validation.invalid_credentials',
         code: 4003,
-        status: 422
+        status: 401
     },
     usernameAlreadyUsed: {
         json: true,
