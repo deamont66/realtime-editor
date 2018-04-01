@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Realtime editor",
+    "name": "Real-time editor",
     "description": "Kolaborativní editor v reálném čase",
     "titles": {
       "about": "O Real-time Editoru",
@@ -16,7 +16,7 @@
     }
   },
   "appBar": {
-    "title": "Realtime Editor",
+    "title": "Real-time Editor",
     "create_button": "Vytvořit nový dokument",
     "logged_in_as": "Přihlášen jako {{username}}",
     "settings_button": "Nastavení",

@@ -1,9 +1,9 @@
 {
   "app": {
-    "name": "Realtime editor",
+    "name": "Real-time editor",
     "description": "Collaborative real-time editor",
     "titles": {
-      "about": "About Realtime Editor",
+      "about": "About Real-time Editor",
       "sign_up": "Sign Up",
       "sign_in": "Sign In",
       "forgot_password": "Forgot password",
@@ -16,7 +16,7 @@
     }
   },
   "appBar": {
-    "title": "Realtime Editor",
+    "title": "Real-time Editor",
     "create_button": "Create new document",
     "logged_in_as": "Logged in as {{username}}",
     "settings_button": "Settings",
@@ -48,7 +48,7 @@
     }
   },
   "about": {
-    "headline": "About Realtime Editor",
+    "headline": "About Real-time Editor",
     "text": "Created by Jiří Šimeček as practical part of bachelor's thesis in 2018 at Czech Technical University.",
     "licences_header": "Third party licences",
     "licence_button_text": "Show full licence"
