@@ -16,7 +16,9 @@ module.exports = function (session) {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'hbs');
 
-    app.use(logger('dev'));
+    console.log(process.env.APP_ENV);
+    app.use(process.env.APP_ENV === 'development' ?
+        logger('dev') : logger(':date[web] :remote-addr ":method :url HTTP/:http-version" :status :res[content-length] :user-agent'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: false}));
     app.use(cookieParser());
@@ -38,7 +40,7 @@ module.exports = function (session) {
                 message: err.message,
                 error: true
             };
-            if(err.code) {
+            if (err.code) {
                 response.code = err.code;
             }
 
