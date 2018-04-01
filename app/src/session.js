@@ -18,8 +18,10 @@ const sessionSettings = {
     cookie: {}
 };
 
+// serve secure cookies
 if (process.env.APP_ENV === 'production') {
-    sessionSettings.cookie.secure = true; // serve secure cookies
+    sessionSettings.cookie.proxy = true;
+    sessionSettings.cookie.secure = true;
 }
 
 module.exports = {
