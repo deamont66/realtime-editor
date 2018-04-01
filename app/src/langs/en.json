@@ -50,7 +50,8 @@
   "about": {
     "headline": "About Realtime Editor",
     "text": "Created by Jiří Šimeček as practical part of bachelor's thesis in 2018 at Czech Technical University.",
-    "licences_header": "Third party licences"
+    "licences_header": "Third party licences",
+    "licence_button_text": "Show full licence"
   },
   "signUp": {
     "headline": "Create new account",
@@ -155,7 +156,6 @@
     "paragraph": "This settings is used as default for newly created documents. Already existing documents and their current settings will not be changed."
   },
   "document_title": {
-    "placeholder": "Document title",
     "save_button": "Save title"
   },
   "document_status": {

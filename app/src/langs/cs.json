@@ -3,6 +3,7 @@
     "name": "Realtime editor",
     "description": "Kolaborativní editor v reálném čase",
     "titles": {
+      "about": "O Real-time Editoru",
       "sign_up": "Registrace",
       "sign_in": "Přihlášení",
       "forgot_password": "Zapomenuté heslo",
@@ -45,6 +46,12 @@
       "primary": "Jazyk",
       "aria_label": "Vyberte jazyk rozhraní"
     }
+  },
+  "about": {
+    "headline": "O Real-time Editoru",
+    "text": "Vytvořil Jiří Šimeček jako praktickou část své bakalářské práce v roce 2018 na ČVUT.",
+    "licences_header": "Licence třetích stran",
+    "licence_button_text": "ZObrazit celou licenci"
   },
   "signUp": {
     "headline": "Vytvořit nový účet",
@@ -149,7 +156,6 @@
     "paragraph": "Toto nastavení je použito jako výchozí nastavení nově vytvořených dokumentů. Již existující dokumenty a jejich aktuální nastavení nebude změněno."
   },
   "document_title": {
-    "placeholder": "Název dokumentu",
     "save_button": "Uložit název"
   },
   "document_status": {

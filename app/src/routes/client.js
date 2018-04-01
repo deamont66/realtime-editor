@@ -24,6 +24,11 @@ const renderWithMeta = (req, res, next) => {
 
 const router = require('express').Router();
 
+router.all('/about', (req, res, next) => {
+    res.locals.title = translate['app']['titles']['about'];
+    renderWithMeta(req, res, next);
+});
+
 router.all('/sign-in', (req, res, next) => {
     res.locals.title = translate['app']['titles']['sign_in'];
     renderWithMeta(req, res, next);
