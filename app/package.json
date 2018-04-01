@@ -25,7 +25,6 @@
     "express-validator": "^5.0.3",
     "handlebars": "^4.0.11",
     "hbs": "~4.0.1",
-    "mixin": "^0.2.0",
     "moment": "^2.18.1",
     "mongoose": "^4.13.3",
     "morgan": "~1.8.1",
@@ -41,9 +40,6 @@
     "passport-remember-me": "^0.0.1",
     "passport-twitter": "^1.0.4",
     "passport.socketio": "^3.7.0",
-    "pg-promise": "^5.9.7",
-    "promise": "^8.0.1",
-    "serve-favicon": "~2.4.2",
     "socket.io": "^2.0.4",
     "ua-parser-js": "^0.7.17"
   },

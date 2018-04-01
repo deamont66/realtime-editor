@@ -1,4 +1,3 @@
-const Promise = require('promise');
 const Errors = require('../utils/Errors');
 const DocumentRepository = require('../repositories/DocumentRepository');
 
