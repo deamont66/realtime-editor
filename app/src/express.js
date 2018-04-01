@@ -11,6 +11,7 @@ module.exports = function (session) {
     const app = express();
 
     app.use(session);
+    app.set('trust proxy', 1);
 
     // view engine setup
     app.set('views', path.join(__dirname, 'views'));
