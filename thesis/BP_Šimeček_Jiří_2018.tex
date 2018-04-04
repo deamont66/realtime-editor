@@ -2,6 +2,11 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
+% arara: xelatex: {shell: true}
+% arara: biber
+% arara: xelatex: {shell: true}
+% arara: xelatex: {shell: true}
+
 % options:
 % thesis=B bachelor's thesis
 % thesis=M master's thesis
@@ -17,13 +22,10 @@
 \usepackage{csquotes} % czech quotes
 \usepackage{xevlna} % automatické nezalomitelné mezery
 \usepackage{metalogo} % xelatex logo nad more
-
-\setmainlanguage{czech}
-
+\usepackage{minted} % zvýraznění kódu pomocí python Pygments
 \usepackage{graphicx} %graphics files inclusion
 % \usepackage{amsmath} %advanced maths
 % \usepackage{amssymb} %additional math symbols
-
 \usepackage{dirtree} %directory tree visualisation
 
 % % list of acronyms
@@ -31,8 +33,16 @@
 % \iflanguage{czech}{\renewcommand*{\acronymname}{Seznam pou{\v z}it{\' y}ch zkratek}}{}
 % \makeglossaries
 
+\usepackage[style=iso-numeric]{biblatex}
+\addbibresource{partials/analyza/technologie.bib}
+
 \newcommand{\tg}{\mathop{\mathrm{tg}}} %cesky tangens
 \newcommand{\cotg}{\mathop{\mathrm{cotg}}} %cesky cotangens
+
+\setmainlanguage{czech}
+
+\renewcommand{\listingscaption}{Výpis kódu}
+\renewcommand{\listoflistingscaption}{Seznam výpisů kódu}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % ODTUD DAL VSE ZMENTE
@@ -68,7 +78,7 @@
     \input{partials/cil}
 
     \chapter{Analýza}
-    \input{partials/analyza}
+    \input{partials/analyza/index}
 
     \chapter{Návrh}
     \input{partials/navrh}
@@ -84,8 +94,9 @@
         \input{partials/conclusion}
     \end{conclusion}
 
-    \bibliographystyle{csn690}
-    \bibliography{template/ref}
+    % \bibliographystyle{csn690}
+    % \bibliography{template/ref}
+    \printbibliography
 
     \appendix
 
