@@ -1,19 +1,41 @@
 import io from 'socket.io-client';
+import EventEmitter from 'event-emitter-es6';
 import {TextOperation} from 'ot';
-import {SocketIOAdapter, EditorClient, CodeMirrorEditorAdapter} from '../../OperationalTransformation';
+
+import {SocketIOServerAdapter, EditorClient, CodeMirrorEditorAdapter} from '../../OperationalTransformation';
 
 import createColor from '../../Utils/ColorGenerator';
 
-class ClientSocket {
+/**
+ * Event types:
+ *
+ * connect - fired on document room (re)join with object response data
+ * disconnect - fired on socket disconnected
+ * error - fired on disconnect_error message from server
+ * state - fired on client state change
+ * clients - fired on clients change
+ * settings - fired on settings change
+ * message - fired on incoming new message
+ */
+class ClientSocket extends EventEmitter {
 
-    constructor(documentId, onStateChange) {
+    constructor(documentId) {
+        super();
         this.documentId = documentId;
-        this.onStateChange = onStateChange;
 
         this.editorClient = null;
+        this.socket = null;
     }
 
+    close = () => {
+        if (this.socket) this.socket.close();
+    };
+
     connect() {
+        if(!this.editor) {
+            throw new TypeError('Called connect without setting CodeMirror editor instance by setEditor first.');
+        }
+
         if (this.socket) this.socket.close();
         this.socket = io('/documents', {
             path: '/api/socket.io',
@@ -21,11 +43,6 @@ class ClientSocket {
         });
 
         this.socket.on('connect', () => {
-            this.onStateChange({
-                connected: true,
-                disconnected: false
-            });
-
             const isReconnect = !!this.editorClient;
             if (isReconnect) {
                 this.socket.emit('rejoin', this.editorClient.revision, this.onConnect(isReconnect).bind(this));
@@ -35,16 +52,12 @@ class ClientSocket {
         });
 
         this.socket.on('disconnect_error', error => {
-            console.log(error);
-            this.onStateChange({
-                error: error
-            })
+            console.error(error);
+            this.emit('error', error);
         });
 
         this.socket.on('disconnect', () => {
-            this.onStateChange({
-                disconnected: true
-            })
+            this.emit('disconnect');
         });
 
         this.socket.on('settings', (settings) => {
@@ -52,9 +65,17 @@ class ClientSocket {
         });
 
         this.socket.on('chat_message', (messageObj) => {
-            this.addChatMessage(messageObj);
+            this.onChatMessage(messageObj);
         });
     }
+
+    setEditor = (editor) => {
+        this.editor = editor;
+    };
+
+    getSocket = () => {
+        return this.socket;
+    };
 
     onConnect = isReconnect => (obj) => {
         if (!isReconnect) {
@@ -63,46 +84,22 @@ class ClientSocket {
             this.reconnect(obj.documentOperations, obj.clients);
         }
 
-        this.onSettings(obj.settings);
-
-        this.onStateChange({
-            messages: [],
-            allowedOperations: obj.operations
-        }, () => {
-            obj.messages.forEach((message) => this.addChatMessage(message));
-        });
-    };
-
-    getSocket = () => {
-        return this.socket;
-    };
-
-    setEditor = (editor) => {
-        this.editor = editor;
-    };
-
-    close = () => {
-        this.socket.close();
+        this.emit('connect', obj);
     };
 
     init = (str, revision, clients) => {
         if (!this.editorClient) {
             this.editorClient = new EditorClient(
-                revision, clients, new SocketIOAdapter(this.socket), new CodeMirrorEditorAdapter(this.editor)
+                revision, clients, new SocketIOServerAdapter(this.socket), new CodeMirrorEditorAdapter(this.editor)
             );
             this.editorClient.emitter.on('stateChange', (state) => {
-                this.onStateChange({
-                    clientState: state
-                });
+                this.emit('state', state);
             });
             this.editorClient.emitter.on('clientsChanged', (clients) => {
-                this.onStateChange({
-                    clients: Object.keys(clients).map((clientId) => {
-                        return Object.assign({
-                            id: clientId
-                        }, clients[clientId]);
-                    })
+                const clientsWithId = Object.keys(clients).map((clientId) => {
+                    return Object.assign({id: clientId}, clients[clientId]);
                 });
+                this.emit('clients', clientsWithId);
             });
         }
         if (str) {
@@ -119,30 +116,21 @@ class ClientSocket {
     };
 
     onSettings = (settings) => {
-        this.onStateChange({
-            settings: settings
-        });
+        this.emit('settings', settings);
     };
 
-    handleSettingsChange = (settings) => {
-        this.onStateChange((oldState) => {
-            this.socket.emit('settings', Object.assign({}, oldState.settings, settings));
-            return {};
-        });
-    };
-
-    addChatMessage = (messageObj) => {
+    onChatMessage = (messageObj) => {
         messageObj.user.color = createColor(messageObj.user.username);
-        this.onStateChange((oldState) => {
-            return {
-                messages: [...oldState.messages, messageObj]
-            };
-        });
+        this.emit('message', messageObj);
     };
 
-    handleMessageSubmit = (message, callback) => {
+    sendSettings = (settings) => {
+        this.socket.emit('settings', settings);
+    };
+
+    sendMessage = (message, callback) => {
         this.socket.emit('chat_message', message, (messageObj) => {
-            this.addChatMessage(messageObj);
+            this.onChatMessage(messageObj);
             callback();
         });
     };

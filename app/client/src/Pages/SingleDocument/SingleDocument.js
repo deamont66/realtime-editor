@@ -4,7 +4,6 @@ import {Redirect} from 'react-router-dom';
 import moment from 'moment';
 import withStyles from 'material-ui/styles/withStyles';
 
-import {LinearProgress} from 'material-ui/Progress';
 import Grid from 'material-ui/Grid';
 
 import Editor from './Editor';
@@ -58,11 +57,15 @@ class SingleDocument extends React.Component {
         };
 
         this.documentId = this.props.match.params.documentId;
-    }
+        this.clientSocket = new ClientSocket(this.documentId);
 
-    componentDidMount() {
-        this.clientSocket = new ClientSocket(this.documentId, this.handleStateChange);
-        this.clientSocket.connect();
+        this.clientSocket.on('connect', this.handleConnect);
+        this.clientSocket.on('disconnect', this.handleFieldChange('disconnect').bind(this, false));
+        this.clientSocket.on('error', this.handleFieldChange('error'));
+        this.clientSocket.on('state', this.handleFieldChange('clientState'));
+        this.clientSocket.on('clients', this.handleFieldChange('clients'));
+        this.clientSocket.on('settings', this.handleFieldChange('settings'));
+        this.clientSocket.on('message', this.handleMessage);
     }
 
     componentWillUnmount() {
@@ -75,8 +78,22 @@ class SingleDocument extends React.Component {
         }
     }
 
-    handleStateChange = (newState, callback) => {
-        this.setState(newState, callback);
+    handleFieldChange = field => newData => {
+        this.setState({
+            [field]: newData
+        });
+    };
+
+    handleConnect = (joinObject) => {
+        this.setState({
+            connected: true,
+            disconnected: false,
+            messages: [],
+            settings: joinObject.settings,
+            allowedOperations: joinObject.operations
+        }, () => {
+            joinObject.messages.forEach((message) => this.clientSocket.onChatMessage(message));
+        });
     };
 
     handleMenuChange = (menu) => {
@@ -84,6 +101,18 @@ class SingleDocument extends React.Component {
             return {
                 menu: (oldState.menu === menu) ? null : menu
             }
+        });
+    };
+
+    handleSettingsChange = (settings) => {
+        this.clientSocket.sendSettings(Object.assign({}, this.state.settings, settings));
+    };
+
+    handleMessage = (messageObj) => {
+        this.setState((oldState) => {
+            return {
+                messages: [...oldState.messages, messageObj]
+            };
         });
     };
 
@@ -98,7 +127,7 @@ class SingleDocument extends React.Component {
             if (newMessages.length === 0) {
                 emptyCallback()
             } else {
-                newMessages.forEach((message) => this.clientSocket.addChatMessage(message));
+                newMessages.forEach((message) => this.clientSocket.onChatMessage(message));
             }
         }).catch(() => {
             console.error('error');
@@ -108,10 +137,6 @@ class SingleDocument extends React.Component {
 
     render() {
         const {classes} = this.props;
-
-        if (!this.state.connected) {
-            return <LinearProgress/>;
-        }
 
         if (this.state.error !== null) {
             if (this.state.error === 401) {
@@ -125,7 +150,7 @@ class SingleDocument extends React.Component {
                 <MetaTags title={this.state.settings.title}/>
                 <DocumentHeader disconnected={this.state.disconnected} clientState={this.state.clientState}
                                 title={this.state.settings.title} allowedOperations={this.state.allowedOperations}
-                                onSettingsChange={this.clientSocket.handleSettingsChange}
+                                onSettingsChange={this.handleSettingsChange}
                                 toggleMenu={this.handleMenuChange}
                                 clients={this.state.clients}
                 />
@@ -133,7 +158,10 @@ class SingleDocument extends React.Component {
                 <Grid spacing={0} container wrap="wrap-reverse" className={classes.editorBody}>
                     <Editor settings={this.state.settings}
                             visible={this.state.connected !== false}
-                            onEditorDidMount={this.clientSocket.setEditor}
+                            onEditorDidMount={(editor) => {
+                                this.clientSocket.setEditor(editor);
+                                this.clientSocket.connect();
+                            }}
                             readOnly={!this.state.allowedOperations.includes('write')}
                     />
 
@@ -145,8 +173,8 @@ class SingleDocument extends React.Component {
                                 allowedOperations={this.state.allowedOperations}
                                 menu={this.state.menu}
                                 toggleMenu={this.handleMenuChange}
-                                onSettingsChange={this.clientSocket.handleSettingsChange}
-                                onMessageSubmit={this.clientSocket.handleMessageSubmit}
+                                onSettingsChange={this.handleSettingsChange}
+                                onMessageSubmit={this.clientSocket.sendMessage}
                                 onLoadMoreChatMessage={this.handleLoadMoreChatMessage}
                     />}
                 </Grid>
