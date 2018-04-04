@@ -1,7 +1,7 @@
 import CodeMirrorEditorAdapter from './CodeMirrorEditorAdapter';
 import EditorClient from './EditorClient';
-import SocketIOAdapter from './SocketIOAdapter';
+import SocketIOServerAdapter from './SocketIOServerAdapter';
 import UndoManager from './UndoManager';
 import WrappedOperation from './WrappedOperation';
 
-export {CodeMirrorEditorAdapter, EditorClient, SocketIOAdapter, UndoManager, WrappedOperation};
+export {CodeMirrorEditorAdapter, EditorClient, SocketIOServerAdapter, UndoManager, WrappedOperation};

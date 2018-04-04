@@ -5,7 +5,7 @@ const DocumentSettings = require('../model/DocumentSettings');
 
 const debug = require('debug')('editor:authController');
 
-const generateRandomToken = ({ stringBase = 'base64', byteLength = 48 } = {}) =>{
+const _generateRandomToken = ({ stringBase = 'base64', byteLength = 48 } = {}) =>{
     return new Promise((resolve, reject) => {
         crypto.randomBytes(byteLength, (err, buffer) => {
             if (err) {
@@ -63,6 +63,13 @@ const createUser = (user) => {
         });
 };
 
+/**
+ * Returns unique username. In case of username being used number sequence is appended.
+ *
+ * @param {String} username Username to be uniqued
+ * @param {Number} tryCount Number to be appended to username  (0 is not appended at all)
+ * @return {Promise<String>}
+ */
 const getUniqueUsername = (username, tryCount = 0) => {
     const proposedUsername = username + (tryCount === 0 ? '' : tryCount);
     return User
@@ -75,11 +82,17 @@ const getUniqueUsername = (username, tryCount = 0) => {
         });
 };
 
+/**
+ * Returns unigue token for all Users of given field
+ *
+ * @param {String} field Name of field
+ * @return {Promise<String>}
+ */
 const getUniqueToken = (field) => {
-    return generateRandomToken().then(token => {
+    return _generateRandomToken().then(token => {
         return User.findOne({[field]: token}).then((user) => {
             if(user) {
-                return generateRandomToken();
+                return getUniqueToken(field);
             }
             return token;
         })
@@ -101,7 +114,7 @@ const updateUser = (user, data) => {
     let promises = [];
 
     if (data.username) {
-        promises.push(validateUniqueUsername(user, data.username).then(() => {
+        promises.push(_validateUniqueUsername(user, data.username).then(() => {
             user.username = data.username;
         }));
     }
@@ -119,7 +132,7 @@ const updateUser = (user, data) => {
     });
 };
 
-const validateUniqueUsername = (user, username) => {
+const _validateUniqueUsername = (user, username) => {
     return getUserByUsername(username).then((foundUser) => {
         return (foundUser === null || user._id === foundUser._id) ? Promise.resolve() : Promise.reject({code: 11000});
     });

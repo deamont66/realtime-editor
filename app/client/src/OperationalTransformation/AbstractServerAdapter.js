@@ -17,7 +17,7 @@ class AbstractServerAdapter extends EventEmitter {
         super();
         // could be new.target but create-react-scripts doesn't like it yet
         if ((this instanceof AbstractServerAdapter ? this.constructor : void 0) === AbstractServerAdapter) {
-            throw new TypeError("Cannot construct AbstractServerAdapter instances directly");
+            throw new TypeError('Cannot construct AbstractServerAdapter instances directly');
         }
     }
 
@@ -29,7 +29,7 @@ class AbstractServerAdapter extends EventEmitter {
      * @param {Selection|null} selection - meta selection data
      */
     sendOperation(revision, operation, selection) {
-        throw new TypeError("Must override sendOperation method");
+        throw new TypeError('Must override sendOperation method');
     }
 
     /**
@@ -38,7 +38,7 @@ class AbstractServerAdapter extends EventEmitter {
      * @param {Selection|null} selection
      */
     sendSelection(selection) {
-        throw new TypeError("Must override sendSelection method");
+        throw new TypeError('Must override sendSelection method');
     }
 }
 

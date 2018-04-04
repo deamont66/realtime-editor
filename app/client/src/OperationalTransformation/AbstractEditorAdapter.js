@@ -18,7 +18,7 @@ class AbstractEditorAdapter extends EventEmitter {
         super();
         // could be new.target but create-react-scripts doesn't like it yet
         if ((this instanceof AbstractEditorAdapter ? this.constructor : void 0) === AbstractEditorAdapter) {
-            throw new TypeError("Cannot construct AbstractEditorAdapter instances directly");
+            throw new TypeError('Cannot construct AbstractEditorAdapter instances directly');
         }
     }
 
@@ -26,21 +26,21 @@ class AbstractEditorAdapter extends EventEmitter {
      * Sets other client selection to editor.
      */
     setOtherSelection() {
-        throw new TypeError("Must override setOtherSelection method");
+        throw new TypeError('Must override setOtherSelection method');
     }
 
     /**
      * @return {String} editor value
      */
     getValue() {
-        throw new TypeError("Must override getValue method");
+        throw new TypeError('Must override getValue method');
     }
 
     /**
      * @return {Selection} editor active selection
      */
     getSelection() {
-        throw new TypeError("Must override getSelection method");
+        throw new TypeError('Must override getSelection method');
     }
 
     /**
@@ -48,7 +48,7 @@ class AbstractEditorAdapter extends EventEmitter {
      * @param {TextOperation} operation
      */
     applyOperation(operation) {
-        throw new TypeError("Must override applyOperation method");
+        throw new TypeError('Must override applyOperation method');
     }
 
     /**
@@ -56,7 +56,7 @@ class AbstractEditorAdapter extends EventEmitter {
      * @param {Selection} selection
      */
     setSelection(selection) {
-        throw new TypeError("Must override setSelection method");
+        throw new TypeError('Must override setSelection method');
     }
 
 }

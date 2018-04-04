@@ -11,6 +11,8 @@ import EventEmitter from 'event-emitter-es6';
 import WrappedOperation from './WrappedOperation';
 import UndoManager from './UndoManager';
 import createColor from '../Utils/ColorGenerator';
+import AbstractServerAdapter from './AbstractServerAdapter';
+import AbstractEditorAdapter from './AbstractEditorAdapter';
 
 class SelfSelection {
     constructor(selectionBefore, selectionAfter) {
@@ -85,7 +87,6 @@ class OtherClient {
 class EditorClient extends Client {
 
     /**
-     *
      * @param {Number} revision
      * @param {Object} clients
      * @param {AbstractServerAdapter} serverAdapter
@@ -93,6 +94,15 @@ class EditorClient extends Client {
      */
     constructor(revision, clients, serverAdapter, editorAdapter) {
         super(revision);
+
+        if(!serverAdapter instanceof AbstractServerAdapter) {
+            throw new TypeError(`Invalid serverAdapter parameter type (${typeof serverAdapter}) expected instanceof AbstractServerAdapter`);
+        }
+
+        if(!editorAdapter instanceof AbstractEditorAdapter) {
+            throw new TypeError(`Invalid editorAdapter parameter type (${typeof editorAdapter}) expected instanceof AbstractEditorAdapter`);
+        }
+
         this.serverAdapter = serverAdapter;
         this.editorAdapter = editorAdapter;
         this.undoManager = new UndoManager();

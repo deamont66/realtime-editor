@@ -168,7 +168,7 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {function} responseCallback
      */
     rejoinClient(document, allowedOperations, messages, revision, responseCallback) {
-        OperationRepository.getMissingOperationsByRevisionAndDocument(document, revision).then((documentOperations) => {
+        OperationRepository.getOperationsAfterRevisionByDocument(document, revision).then((documentOperations) => {
             responseCallback({
                 documentOperations: documentOperations,
                 clients: this.users,
@@ -275,16 +275,6 @@ class DocumentSocketIOServer extends DocumentServer {
     }
 
     /**
-     * Returns client data.
-     *
-     * @param {Socket} socket - socket.io socket instance
-     * @return {object|{}}
-     */
-    getClient(socket) {
-        return this.users[socket.id] || (this.users[socket.id] = {});
-    }
-
-    /**
      * Handles user disconnect.
      *
      * @param {Socket} socket - socket.io socket instance
@@ -315,6 +305,16 @@ class DocumentSocketIOServer extends DocumentServer {
         }).catch(() => {
             return Promise.reject(found ? 403 : 404);
         });
+    }
+
+    /**
+     * Returns client data.
+     *
+     * @param {Socket} socket - socket.io socket instance
+     * @return {object}
+     */
+    getClient(socket) {
+        return this.users[socket.id] || (this.users[socket.id] = {});
     }
 }
 

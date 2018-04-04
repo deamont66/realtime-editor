@@ -6,8 +6,9 @@ const TextOperation = require('ot').TextOperation;
 /**
  * Gets last n operations by document.
  *
- * @param {ObjectId|String} documentId
+ * @param {ObjectId|String|Document} documentId
  * @param {Number} last
+ * @return {Promise<WrappedOperation[]>}
  */
 const getLastOperationsByDocument = (documentId, last = 50) => {
     return Operation.find({
@@ -19,7 +20,14 @@ const getLastOperationsByDocument = (documentId, last = 50) => {
     });
 };
 
-const getMissingOperationsByRevisionAndDocument = (documentId, revisionNumber) => {
+/**
+ * Gets all document operations after given revision.
+ *
+ * @param {ObjectId|String|Document} documentId
+ * @param {Number} revisionNumber
+ * @return {Promise<TextOperation[]>}
+ */
+const getOperationsAfterRevisionByDocument = (documentId, revisionNumber) => {
     return Operation.find({
         document: documentId,
         revision: {$gt: revisionNumber}
@@ -33,10 +41,11 @@ const getMissingOperationsByRevisionAndDocument = (documentId, revisionNumber) =
 /**
  * Creates and stores new Operation.
  *
- * @param {Document} document
+ * @param {ObjectId|String|Document} document
  * @param {User} author
  * @param {Number} revision
  * @param {TextOperation} operation
+ * @return {Promise<Operation>}
  */
 const saveOperation = (document, author, revision, operation) => {
     return new Operation({
@@ -49,6 +58,6 @@ const saveOperation = (document, author, revision, operation) => {
 
 module.exports = {
     getLastOperationsByDocument: getLastOperationsByDocument,
-    getMissingOperationsByRevisionAndDocument: getMissingOperationsByRevisionAndDocument,
+    getOperationsAfterRevisionByDocument: getOperationsAfterRevisionByDocument,
     saveOperation: saveOperation
 };

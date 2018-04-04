@@ -6,6 +6,12 @@ const mailer = require('../mailer');
 
 const debug = require('debug')('editor:authRepository');
 
+/**
+ * Invalidates valid token or fails.
+ *
+ * @param {String} token - token to be invalidated
+ * @return {Promise<User>}
+ */
 const consumeRememberMeToken = (token) => {
     return UserRepository.getUserBy('rememberMeToken', token).then((user) => {
         if (!user) {
@@ -16,6 +22,12 @@ const consumeRememberMeToken = (token) => {
     })
 };
 
+/**
+ * Generates new unique token for user.
+ *
+ * @param {ObjectId|String|User} user
+ * @return {Promise<String>} token
+ */
 const issueRememberMeToken = (user) => {
     return UserRepository.getUniqueToken('rememberMeToken').then((token) => {
         user.rememberMeToken = token;
@@ -23,6 +35,12 @@ const issueRememberMeToken = (user) => {
     });
 };
 
+/**
+ * Invalidates valid token or fails.
+ *
+ * @param {String} token - token to be invalidated
+ * @return {Promise<User>}
+ */
 const consumeForgotPasswordToken = (token) => {
     return UserRepository.getUserBy('recoverToken', token).then((user) => {
         if (!user || moment().isAfter(user.recoverEnd)) {
@@ -34,6 +52,12 @@ const consumeForgotPasswordToken = (token) => {
     })
 };
 
+/**
+ * Generates new unique token for user valid for 2 days from now.
+ *
+ * @param {ObjectId|String|User} user
+ * @return {Promise<String>} token
+ */
 const issueForgotPasswordToken = (user) => {
     return UserRepository.getUniqueToken('recoverToken').then((token) => {
         user.recoverToken = token;
@@ -42,6 +66,13 @@ const issueForgotPasswordToken = (user) => {
     });
 };
 
+/**
+ * Gets user matching username and password or fails.
+ *
+ * @param {String} username
+ * @param {String} password
+ * @return {Promise<User>}
+ */
 const getAndAuthenticateUser = (username, password) => {
     return UserRepository.getUserByUsername(username).then((user) => {
         if (!user) {
@@ -55,6 +86,16 @@ const getAndAuthenticateUser = (username, password) => {
     });
 };
 
+/**
+ * Gets user matching field value or creates new with given field value, username and email.
+ *
+ * @param {String} field
+ * @param {String} value
+ * @param {String} username
+ * @param {String} email
+ *
+ * @return {Promise<User>}
+ */
 const getOrCreateUserByField = (field, value, username, email) => {
     return UserRepository.getUserBy(field, value).then((user) => {
         if (user) return user;
@@ -73,6 +114,14 @@ const getOrCreateUserByField = (field, value, username, email) => {
     });
 };
 
+/**
+ * Sets field value to given user or fails when another user already uses this value.
+ *
+ * @param {String} field
+ * @param {String} value
+ * @param {User} user
+ * @return {Promise<User>}
+ */
 const connectFieldToUser = (field, value, user) => {
     return UserRepository.getUserBy(field, value).then((matchedUser) => {
         if(matchedUser) return Promise.reject(Errors.fieldAlreadyUsed);

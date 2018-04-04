@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-require('dotenv').config();
+require('dotenv-safe').config();
 
 const port = normalizePort(process.env.SERVER_PORT || '3000');
 const server = require('../src/server')(port);

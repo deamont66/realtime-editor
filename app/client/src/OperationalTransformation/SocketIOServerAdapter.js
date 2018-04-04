@@ -4,7 +4,7 @@ import AbstractServerAdapter from './AbstractServerAdapter';
  * Implementation of ServerAdapter for OT.js's EditorClient class.
  * @class
  */
-class SocketIOAdapter extends AbstractServerAdapter {
+class SocketIOServerAdapter extends AbstractServerAdapter {
 
     /**
      * Creates SocketIOAdapter based on socket.io's socket instance.
@@ -56,4 +56,4 @@ class SocketIOAdapter extends AbstractServerAdapter {
     };
 }
 
-export default SocketIOAdapter;
+export default SocketIOServerAdapter;

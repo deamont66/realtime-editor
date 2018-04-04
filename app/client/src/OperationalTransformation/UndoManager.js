@@ -50,7 +50,7 @@ class UndoManager {
      * @param {Operation|*} operation
      * @param {Boolean} compose
      */
-    add(operation, compose) {
+    add(operation, compose = false) {
         switch(this.state) {
             case UNDOING_STATE: {
                 this.redoStack.push(operation);

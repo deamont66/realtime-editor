@@ -9,13 +9,20 @@ const User = require('../model/User');
 const Errors = require('../utils/Errors');
 
 
+/**
+ * Iterates through documents and gets all document details for them.
+ *
+ * @param {ObjectId|String|User} user
+ * @param {Document[]} documents
+ * @return {Promise<*>}
+ */
 const getDocumentsDetails = (user, documents) => {
     return Promise.all(documents.map(document => {
-        return getDocumentDetails(user, document);
+        return _getDocumentDetails(user, document);
     }));
 };
 
-const getDocumentDetails = (user, document) => {
+const _getDocumentDetails = (user, document) => {
     return Promise.all([
         User.findById(document.owner).select('username').exec(),
         UserAccess.findOne({user, document}).select('accessTime').exec(),
@@ -31,8 +38,9 @@ const getDocumentDetails = (user, document) => {
 
 /**
  * Gets documents by User owner.
- * @param {User} user
- * @returns {Promise}
+ *
+ * @param {ObjectId|String|User} user
+ * @returns {Promise<Document[]>}
  */
 const getDocumentsByOwner = (user) => {
     return Document.find({owner: user})
@@ -42,7 +50,8 @@ const getDocumentsByOwner = (user) => {
 /**
  * Gets shared documents by User.
  *
- * @param {User} user
+ * @param {ObjectId|String|User} user
+ * @returns {Promise<Document[]>}
  */
 const getSharedDocumentsByUser = (user) => {
     return DocumentInvite.find({to: user})
@@ -59,8 +68,8 @@ const getSharedDocumentsByUser = (user) => {
 /**
  * Gets last documents by User.
  *
- * @param {User} user
- * @returns {Promise}
+ * @param {ObjectId|String|User} user
+ * @returns {Promise<Document[]>}
  */
 const getLastDocumentsByUser = (user) => {
     return UserAccess.find({user: user})
@@ -77,7 +86,7 @@ const getLastDocumentsByUser = (user) => {
 /**
  * Gets document be ID.
  *
- * @param {ObjectId|String} documentId
+ * @param {ObjectId|String|Document} documentId
  * @returns {Promise}
  */
 const getDocumentById = (documentId) => {
@@ -101,6 +110,12 @@ const createDocument = (owner) => {
     });
 };
 
+/**
+ * Removes document and all related data in DB.
+ *
+ * @param {ObjectId|String|Document} document
+ * @return {Promise<*>}
+ */
 const removeDocument = (document) => {
     return Promise.all([
         UserAccess.find({document: document}).remove().exec(),
@@ -117,6 +132,7 @@ const removeDocument = (document) => {
  *
  * @param {Document} document
  * @param {String} value
+ * @return {Promise<Document>}
  */
 const updateLastContent = (document, value) => {
     document.lastAckContent = value;
@@ -128,7 +144,8 @@ const updateLastContent = (document, value) => {
  * Updates DocumentSettings for document.
  *
  * @param {Document} document
- * @param {Object} settings
+ * @param {Object} settings - settings data
+ * @return {Promise<Document>}
  */
 const updateSettings = (document, settings) => {
     document.title = settings.title;
@@ -143,10 +160,11 @@ const updateSettings = (document, settings) => {
 };
 
 /**
+ * Updates user access for given document.
  *
- *
- * @param document
- * @param user
+ * @param {ObjectId|String|Document} document
+ * @param {ObjectId|String|User} user
+ * @return {Promise<UserAccess>}
  */
 const updateUserAccess = (document, user) => {
     return UserAccess.findOneAndUpdate({
@@ -159,6 +177,12 @@ const updateUserAccess = (document, user) => {
     }).exec();
 };
 
+/**
+ * Gets all document invites for document.
+ *
+ * @param {ObjectId|String|Document} document
+ * @return {Promise<DocumentInvite[]>}
+ */
 const getDocumentInvites = (document) => {
     return DocumentInvite.find({document: document, rights: {$gt: 0}})
         .select('to rights')
@@ -166,6 +190,13 @@ const getDocumentInvites = (document) => {
         .exec();
 };
 
+/**
+ * Gets highest document invite for user.
+ *
+ * @param {ObjectId|String|Document} document
+ * @param {ObjectId|String|User} user
+ * @return {Promise<DocumentInvite>}
+ */
 const getHighestDocumentInviteByUser = (document, user) => {
     return DocumentInvite.findOne({document: document, to: user, rights: {$gt: 0}})
         .select('rights')
@@ -173,11 +204,26 @@ const getHighestDocumentInviteByUser = (document, user) => {
         .exec();
 };
 
+/**
+ * Saves shareLinkRights for document.
+ *
+ * @param {ObjectId|String|Document} document
+ * @param {Number} shareLinkRights
+ */
 const updateDocumentShareLinkRights = (document, shareLinkRights) => {
     document.shareLinkRights = shareLinkRights;
     return document.save();
 };
 
+/**
+ * Updates documentInvite for user and document.
+ *
+ * @param {ObjectId|String|Document} document
+ * @param {ObjectId|String|User} from
+ * @param {ObjectId|String|User} to
+ * @param {Number} rights
+ * @return {Promise<DocumentInvite>}
+ */
 const updateDocumentInvite = (document, from, to, rights) => {
     return (document.owner.equals(to._id))
         ? Promise.reject(Errors.cannotInviteDocumentOwner)
@@ -193,6 +239,12 @@ const updateDocumentInvite = (document, from, to, rights) => {
         }).exec();
 };
 
+/**
+ * Removes documentInvite of user from document.
+ *
+ * @param {ObjectId|String|Document} document
+ * @param {ObjectId|String|User} to
+ */
 const removeDocumentInvite = (document, to) => {
     return DocumentInvite.findOneAndRemove({
         document: document,

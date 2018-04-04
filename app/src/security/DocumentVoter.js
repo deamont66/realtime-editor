@@ -25,7 +25,7 @@ class DocumentVoter {
                 });
             });
         }, Promise.resolve([]));
-    };
+    }
 
     /**
      * @param {string} operationType - Can be one of following: "view", "chat", "write", "share", "remove"
@@ -57,7 +57,7 @@ class DocumentVoter {
             } else {
                 level = document.shareLinkRights;
             }
-            // if we already have level 4 and more, we cannot get any higher and stop
+            // if we already have level 4 and more, we cannot get any higher, than stop
             if(!logged_in || level >= 4) {
                 resolve(level);
                 return;
