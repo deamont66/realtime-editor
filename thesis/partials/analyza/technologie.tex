@@ -43,10 +43,19 @@ Nejčastějším hostitelským prostředím je webový prohlížeč, ale Javascr
 Javascript je více paradigmový, dynamický jazyk s datovými typy a operátory, standardními vestavěnými objekty a metodami.
 Jeho syntaxe je založena na jazycích Java a C.
 JavaScript podporuje objektově orientované programování pomocí objektových prototypů namísto tříd jako je tomu například u jazyku Java.
-Dále také podporuje principy funkcionální programování -- funkce jsou také objekty.~\cite{mozzila:javascript}.
+Dále také podporuje principy funkcionální programování -- funkce jsou také objekty.~\cite{mozzila:javascript}
 
-\subsection{NodeJS}\label{subsec:nodejs}
-Javascript je.
+\subsection{Node.js}\label{subsec:nodejs}
+
+Node.js je JavaScriptové běhové prostředí (anglicky runtime environment), které používá událostmi řízenou architekturu umožňující asynchronní přístup k I/O\footnote{Vstupní/výstupní} operacím.
+Tato architektura umožňuje optimalizovat propustnost a škálovatelnost webových aplikací s mnoha I/O operacemi, ale také webových aplikací ve skutečném čase (například komunikační programy nebo hry v prohlížeči).~\cite{node:article2013}
+
+Toto je v kontrastu s dnešními více známými modely souběžnosti, kde se využívají vlákna operačního systému.
+Síťová komunikace založená na vláknech je relativně neefektivní a její použití je velmi složité.~\cite{node:about}
+
+Node.js využívá V8 JavaScript interpret vytvořený společností Google pod skupinou The Chromium Project pro prohlížeč Google Chrome a ostatní prohlížeče postavené na Chromium~\cite{node:about}.
+V8 je napsaný v C++ a kompiluje JavaScriptový kód do nativního strojového kódu namísto interpretace kódu za běhu programu.
+Toto umožňuje vytvořit rychlé běhové prostředí, které nemusí čekat na překlad potřebného kódu.~\cite{node:article2013}
 
 \subsection{ReactJS}\label{subsec:reactjs}
 Javascript je.
