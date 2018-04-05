@@ -23,8 +23,8 @@ class PasswordStrengthEstimator extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.password) {
-            estimateStrength(nextProps.password, nextProps.inputs).then((res) => {
+        if(nextProps.password !== this.props.password) {
+            estimateStrength(nextProps.password.slice(0, 100), nextProps.inputs).then((res) => {
                 this.setState({speed: res.crack_times_seconds.online_no_throttling_10_per_second});
             });
         }
