@@ -9,8 +9,15 @@ case "$1" in
     -x | --xelatex )
         xelatex -shell-escape "$FILE"
         ;;
+    -g | --glossaries )
+        makeglossaries "$FILE"
+        ;;
     -b | --biber )
         biber "$FILE"
+        ;;
+    -c | --clear )
+        # expects all files for clean to be ignored and match patterns in command below
+        git clean -e BP_* -e *.log -X -i
         ;;
     * )
         arara "$FILE"
