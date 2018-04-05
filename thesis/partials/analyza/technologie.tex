@@ -3,7 +3,7 @@
 % vim: set fenc=utf-8
 
 \section{Technologie}\label{sec:technologie}
-V této kapitole popisuji použité technologie vycházející z nefunkčních požadavků, které jsou uvedeny v kapitole~\ref{sec:nefuncniPozadavky}.
+V této část popisuji použité technologie vycházející z nefunkčních požadavků, které jsou uvedeny v kapitole~\ref{sec:nefuncniPozadavky}.
 
 \subsection{HTML5}\label{subsec:html5}
 
@@ -37,10 +37,12 @@ Další verze ECMAScript standartu podle~\cite{mozzila:javascriptVerisions} jsou
     \item připravovaný standart ECMAScript 2018.
 \end{itemize}
 
-Javascript je navržen k běhu jako skriptovací jazyk v hostitelském prostředí, které musí zajistit mechanismy pro komunikaci mimo toho prostředí.
-Nejčastějším hostitelským prostředím je webový prohlížeč, ale Javascript můžeme nalézt na místech jako jsou Adobe Acrobat, Adobe Photoshop, SVG vektorová grafika, serverové prostředí jako je NodeJS, NoSQL databáze jako je Apache CouchDB, vestavěné systémy a další.~\cite{mozzila:javascript}
+Dnes pod označením JavaScript běžně chápeme právě standardizovaný ECMAScript~\cite{mozzila:javascript} a i já ho tak budu dále používat.
 
-Javascript je více paradigmový, dynamický jazyk s datovými typy a operátory, standardními vestavěnými objekty a metodami.
+Javascript je navržen k běhu jako skriptovací jazyk v hostitelském prostředí, které musí zajistit mechanismy pro komunikaci mimo toho prostředí.
+Nejčastějším hostitelským prostředím je webový prohlížeč, ale Javascript můžeme nalézt i na místech jako je Adobe Acrobat, Adobe Photoshop, SVG vektorová grafika, serverové prostředí NodeJS, NoSQL databáze Apache CouchDB, nejrůznější vestavěné systémy a další.~\cite{mozzila:javascript}
+
+Javascript je více paradigmový, dynamický jazyk s datovými typy, operátory, standardními vestavěnými objekty a metodami.
 Jeho syntaxe je založena na jazycích Java a C.
 JavaScript podporuje objektově orientované programování pomocí objektových prototypů namísto tříd jako je tomu například u jazyku Java.
 Dále také podporuje principy funkcionální programování -- funkce jsou také objekty.~\cite{mozzila:javascript}
@@ -51,14 +53,27 @@ Node.js je JavaScriptové běhové prostředí (anglicky runtime environment), k
 Tato architektura umožňuje optimalizovat propustnost a škálovatelnost webových aplikací s mnoha I/O operacemi, ale také webových aplikací ve skutečném čase (například komunikační programy nebo hry v prohlížeči).~\cite{node:article2013}
 
 Toto je v kontrastu s dnešními více známými modely souběžnosti, kde se využívají vlákna operačního systému.
-Síťová komunikace založená na vláknech je relativně neefektivní a její použití je velmi složité.~\cite{node:about}
+Síťová komunikace založená na vláknech je relativně neefektivní a její použití bývá velmi obtížné.~\cite{node:about}
 
-Node.js využívá V8 JavaScript interpret vytvořený společností Google pod skupinou The Chromium Project pro prohlížeč Google Chrome a ostatní prohlížeče postavené na Chromium~\cite{node:about}.
-V8 je napsaný v C++ a kompiluje JavaScriptový kód do nativního strojového kódu namísto interpretace kódu za běhu programu.
-Toto umožňuje vytvořit rychlé běhové prostředí, které nemusí čekat na překlad potřebného kódu.~\cite{node:article2013}
+Node.js využívá V8 JavaScript interpret vytvořený společností Google pod skupinou The Chromium Project pro prohlížeč Google Chrome a ostatní prohlížeče postavené na Chromium\footnote{Prohlížeč s otevřeným zdrojovým kódem od společnosti Google}~\cite{node:es6}.
+V8, který je napsaný v C++, kompiluje JavaScriptový kód do nativního strojového kódu namísto jeho interpretace až za běhu programu.
+To umožňuje vytvořit rychlé běhové prostředí, které nemusí čekat na překlad potřebného kódu.~\cite{node:article2013}
 
-\subsection{ReactJS}\label{subsec:reactjs}
-Javascript je.
+\subsection{React}\label{subsec:reactjs}
+
+React je Javascriptová knihovna pro tvorbu uživatelského rozhraní~\cite{react:about}.
+React byl vytvořen Jordanem Walkem, inženýrem ve společnosti Facebook, a byl poprvé použit v roce 2011.
+Původně byl React určen výhradně pro použití na Facebook Timeline, ale Facebook inženýr Pete Hunt se rozhodl React použít i v aplikaci Instagram.
+Postupně tak React zbavil závislostí na kód Facebooku a tím napomohl vzniku oficiální React knihovny.
+React byl představen veřejnosti jako knihovna s otevřeným zdrojovým kódem v květnu roku 2013.~\cite{react:author}
+
+Základním prvkem Reactu jsou takzvané komponenty, které přijímají neměnné vlastnosti a mohou definovat vlastní stavové proměnné.
+Na základě těchto vlastností a stavu, pak komponenta může rozhodnout co bude jejích výstupem pro uživatele (pomocí metody render).
+Tato vlastnost se nazývá jednosměrný datový tok (anglicky One-way data flow) a architekturu, kterou React implementuje, nazýváme Flux (ta je součástí Reactu už od samého počátku).~\cite{react:about}
+Existují však komunitou vytvořené alternativní nástroje, které řeší datový tok v aplikaci, jako je například knihovna Redux~\cite{react:redux}.
 
 \subsection{MongoDB}\label{subsec:mongodb}
-Javascript je 2.
+MongoDB je nerelační databáze s otevřeným zdrojovým kódem vyvíjena společností MongoDB, Inc.
+Díky zjednodušené reprezentaci dat pomocí dokumentů a jejich rychlému mapování na JSON\footnote{JavaScript Object Notation} není potřeba využívat složité ORM\footnote{Object-relational mapping} nástroje pro mapování dat na objekty, jako tomu je například u SQL\footnote{Structured Query Language} databází, a tím umožňuje urychlit celkový vývoj aplikací.~\cite{mongo:about}
+
+Pro MongoDB jsem se rozhodl převážně s ohledem na jeho rychlost, která se bude u aplikace pro editací textů ve skutečném času hodit, ale také pro jeho rozšířenou komunitu mezi vývojáři~\cite{mongo:speed,mongo:popularity}.
