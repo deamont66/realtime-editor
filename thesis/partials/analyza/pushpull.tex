@@ -2,9 +2,59 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
-\section{Pull a push technologie}
-\subsection{Pull technologie}
-\subsection{Push technologie}
-\subsubsection{Long pooling}
-\subsubsection{Data streaming}
-\subsubsection{WebSocket}
+\section{Technologie pro komunikaci se serverem}\label{sec:technologieProKomunikaciSeServerem}
+
+V této části se zaměřím na rozdílné přístupu ke komunikaci v architektuře klient-server a rozeberu jejich výhody, či nevýhody.
+
+\subsection{Pull technologie}\label{subsec:pullTechnologie}
+
+Jako Pull technologie označuje klasickou strukturu komunikace architektury klient-server.
+Iniciátorem spojení je výhradně klient a není možné odeslat data ze serveru ke klientovi bez jeho předchozí žádosti.
+
+Příkladem může být běžný protokol \gls{HTTP}, kde klient (většinou prohlížeč) odesílá požadavek na server a ten mu obratem zašle zpět odpověď.~\cite{pushpull:about}
+
+\subsection{Push technologie}\label{subsec:pushTechnologie}
+
+Push technologie označuje strukturu komunikace, která je do jisté míry opačná od Pull technologií.
+Iniciátorem komunikace je server, který tak může odeslat nová data klientovi i bez jeho žádosti.
+
+Tento přístup lze použít například pro textovou komunikaci ve skutečném čase.
+Klient nemůže dopředu vědět, zda-li na je na serveru k dispozici nová zpráva a tak neví kdy odeslat požadavek pro získání nové zprávy, ale nyní mu stačí počkat a server mu novou zprávu pošle sám.~\cite{pushpull:about}
+
+\subsubsection{Short a Long polling}
+
+Jednou z nejjednodušších method implementace push technologie je takzvaný \textbf{Short pooling}.
+Jedná se o metodu, kdy se klient musí pravidelně dotazovat serveru na nová data, či nové události a tedy o implementaci pomocí opakované pull komunikace.
+Pokud server žádná nová data nemá, či nedošlo k žádné nové události, odešle klientovi prázdnou odpověď a ukončí spojení.
+
+Druhou možností je držet spojení mezi klientem a serverem otevřené co nejdéle a odpovědět pouze v případě existence nových dat (takzvaný \textbf{Long polling}).
+Výhodou metody Long polling oproti metodě Short polling je nižší počet požadavků a tedy i menší množství přenesených dat, a zároveň snižuje dobu, za kterou se ke klientu dostanou nová data.
+
+Hlavní výhodou obou zmíněných method je jednoduchost implementace a to jak na klientská, tak i serverové straně komunikace.
+Mezi hlavní nevýhody patří režijní náklady spojené s \gls{HTTP} protokolem a jeho hlavičkami, které musí být neustále přeposílány mezi serverem a klientem, a zvyšování doby  mezi přijetím dat serverem a jejich přijetím klientem při časté komunikaci.~\cite{pushpull:issuesRFC}
+
+\subsubsection{HTTP streaming}
+
+Další možnou metodou push technologie je takzvaný \textbf{\gls{HTTP} Streaming}, který je podobný metodě Long polling s tím rozdílem, že data posílá jen jako částečnou odpověď a nemusí tedy ukončit spojení.
+Tato metoda staví na možnosti webové serveru odesílat více částí dat ve stejné odpovědi (pomocí hlavičky \mintinline{http}{Transfer-Encoding: chunked} v rámci protokolu \gls{HTTP} verze~1.1 a starší).
+
+Výhodou metody \gls{HTTP} Streaming je snížení latence a snížení režijních nákladů s posíláním hlaviček, které je nutné poslat jen při vytvoření spojení.
+Mezi nevýhody patří například výchozí vyrovnávací paměť prohlížečů a klientských knihoven, kde není zajištěn přístup k částečným odpovědím od serveru.~\cite{pushpull:issuesRFC}
+
+\subsubsection{Server-Sent Events}
+
+Server-Send události (anglicky events) je způsob implementace push technologie přímo webovým prohlížečem.
+Mimo běžný \gls{HTTP} protokol může podporovat i jiné komunikační protokoly (záleží na podpoře prohlížeče)~\cite{pushpull:events}.
+Z pohledu serveru je jeho použití analogické k Long polling, či HTTP Streaming metodě.~\cite{pushpull:compare}
+
+Výhodou Server-Send událostí je jednoduchá implementace pro webové vývojáře, kteří nemusí využívat externí knihovny, ale mohou použít přímo \gls{API} prohlížeče.
+Nevýhodou je relativně nízká podpora mezi webovými prohlížeči a to převážně mezi prohlížeči pro mobilní zařízení.~\cite{pushpull:issuesRFC}
+
+\subsubsection{HTML5 Web Socket}
+
+HTML5 Web Socket je protokol, který umožňuje plně duplexní oboustrannou komunikaci mezi klientem a server.
+Jedná se o samostatný protokol, který netíží režijní náklady spojené s \gls{HTTP} a umožňuje tak velmi efektivní výměnu informací ve skutečném čase.
+Web Socket využívá \gls{HTTP} protokol pouze pro navázání spojení, pro které je následně pomocí hlavičky \mintinline{http}{Connection: Upgrade} změněn protokol z \gls{HTTP} právě na Web Socket.~\cite{pushpull:websocketQuantum}
+
+Hlavní výhodou používání protokolu Web Socket je již zmíněná oboustranná komunikace, nízká odezva a nízké režijní náklady, jak na klientské, tak i na serverové straně komunikace.
+Mezi hlavní nevýhody patří slabší podpora ze strany prohlížečů, která ovšem kvůli vysoké popularitě stále zlepšuje a obecně je stále lepší než podpora Server-Sent Events.~\cite{pushpull:compare}

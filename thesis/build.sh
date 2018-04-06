@@ -20,6 +20,6 @@ case "$1" in
         git clean -e BP_* -e *.log -X -i
         ;;
     * )
-        arara "$FILE"
+        time arara "$FILE"
         ;;
 esac

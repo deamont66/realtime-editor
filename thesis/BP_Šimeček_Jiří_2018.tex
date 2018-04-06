@@ -37,6 +37,7 @@
 \usepackage[style=iso-numeric]{biblatex}
 \addbibresource{partials/analyza/technologie.bib}
 \addbibresource{partials/analyza/existujiciReseni.bib}
+\addbibresource{partials/analyza/pushpull.bib}
 
 \newcommand{\tg}{\mathop{\mathrm{tg}}} %cesky tangens
 \newcommand{\cotg}{\mathop{\mathrm{cotg}}} %cesky cotangens
@@ -57,18 +58,24 @@
 \authorWithDegrees{Jiří Šimeček} %jméno autora včetně současných akademických titulů
 \author{Jiří Šimeček} %jméno autora bez akademických titulů
 \supervisor{Ing. Petr Špaček, Ph.D.}
+% TODO: poděkování
 \acknowledgements{Doplňte, máte-li komu a za co děkovat. V~opačném případě úplně odstraňte tento příkaz.}
+% TODO: abstrakt
 \abstractCS{Tato práce se zabývá problémem kolaborativní editace textů a porovnává jednotlivé známé algoritmy, které tento problém řeší. Dále se zabývá návrhem a implementací prototypu pomocí jednoho z vybraných algortmů.}
 \abstractEN{Sem doplňte ekvivalent abstraktu Vaší práce v~angličtině.}
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
+% TODO: klíčová slova
 \keywordsCS{návrh webové aplikace, kolaborativní editace textů, web v~reálném čase, Javascript, ReactJS, NodeJS}
 \keywordsEN{Nahraďte seznamem klíčových slov v angličtině oddělených čárkou.}
-% \website{http://site.example/thesis} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
+% \website{https://editor.simecekjiri.cz/} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
 \begin{document}
 
-    \newacronym{FIT}{FIT}{Fakulta informačních technologií}
+    \newacronym{HTTP}{HTTP}{Hypertext Transfer Protocol}
+    \newacronym{API}{API}{Application Programming Interface}
+    \newacronym{OP}{OP}{Operační transformace}
+    \newacronym{DS}{DS}{Diferenciální synchronizace}
     % usage: \gls{FIT}
 
     \input{partials/introduction}
