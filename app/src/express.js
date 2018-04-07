@@ -17,7 +17,6 @@ module.exports = function (session) {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'hbs');
 
-    console.log(process.env.APP_ENV);
     app.use(process.env.APP_ENV === 'development' ?
         logger('dev') : logger(':date[web] :remote-addr ":method :url HTTP/:http-version" :status :res[content-length] :user-agent'));
     app.use(bodyParser.json());

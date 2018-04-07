@@ -70,18 +70,21 @@ class ShareLink extends React.Component {
                     </Tooltip>
                 </Typography>
 
-                <FormControl className={classes.linkInput}>
+                <FormControl className={classes.linkInput} disabled={this.props.shareLinkRights === 0}>
                     <InputLabel htmlFor="link_input">{t('link_rights.link_label')}</InputLabel>
                     <Input id="link_input" readOnly={true} value={window.location.href}
                            onFocus={(evt) => evt.target.select()} onClick={(evt) => evt.target.select()}/>
                     <FormHelperText>{this.state.copied && t('link_rights.link_copied_text')}</FormHelperText>
                 </FormControl>
                 <Tooltip title={t('link_rights.link_copy_title')}>
-                    <CopyToClipboard text={window.location} onCopy={this.handleStatus('copied')}>
-                        <IconButton className={classes.linkCopyButtons} color="secondary">
-                            <ContentCopy/>
-                        </IconButton>
-                    </CopyToClipboard>
+                    <div style={{display: 'inline-block'}}>
+                        <CopyToClipboard text={window.location} onCopy={this.handleStatus('copied')}>
+                            <IconButton className={classes.linkCopyButtons} color="secondary"
+                                        disabled={this.props.shareLinkRights === 0}>
+                                <ContentCopy/>
+                            </IconButton>
+                        </CopyToClipboard>
+                    </div>
                 </Tooltip>
                 <Tooltip title={t('link_rights.open_settings_title')}>
                     <IconButton color={this.props.settingsOpen ? 'secondary' : 'default'}
@@ -91,7 +94,7 @@ class ShareLink extends React.Component {
                     </IconButton>
                 </Tooltip>
 
-                <ShareButtons/>
+                {this.props.shareLinkRights !== 0 && <ShareButtons/>}
             </div>
         );
     }

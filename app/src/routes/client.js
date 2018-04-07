@@ -76,10 +76,10 @@ router.all('/document/history', (req, res, next) => {
 
 router.all('/document/:documentId', (req, res, next) => {
     DocumentRepository.getDocumentById(req.params.documentId).then((document) => {
-        return DocumentVoter.can('view', req.user, document).then(() => {
-            res.locals.title = document.title;
-            renderWithMeta(req, res, next);
-        });
+        return DocumentVoter.can('view', req.user, document).then(() => document.title);
+    }).then(title => {
+        res.locals.title = title;
+        renderWithMeta(req, res, next);
     }).catch(() => {
         next();
     });
