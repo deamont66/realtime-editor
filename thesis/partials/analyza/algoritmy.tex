@@ -30,7 +30,7 @@ Poslední častou metodou je takzvané \textbf{třísměrné sloučení}.
 Uživatel odešle svůj změněný dokument na server, který provede sloučení s aktuální verzí na serveru a uživateli pošle novou sloučenou verzi zpět.
 Pokud uživatel provedl v době synchronizace v dokumentu změny novou verzi ignoruje a musí to zkusit později.
 
-Jedná se poloduplexní systém, dokud uživatel píše nedostává žádné aktualizace o dokumentu a ve chvíli co přestane psát zobrazí se všechny změny od ostatních uživatel nebo vyskočí hláška o nastalé kolizi (to samozřejmě záleží na použitém slučovacím algoritmu).~\cite{ds:neil_paper, ds_neil_video}
+Jedná se poloduplexní systém, dokud uživatel píše nedostává žádné aktualizace o dokumentu a ve chvíli co přestane psát zobrazí se všechny změny od ostatních uživatel nebo vyskočí hláška o nastalé kolizi (to samozřejmě záleží na použitém slučovacím algoritmu).~\cite{ds:neil_paper, ds:neil_video}
 
 \enquote{Tento system lze přirovnat k automobilu s čelním sklem, které se stane během jízdy neprůhledné.
 Podívej se na cestu, pak jeď chvilku poslepu, pak zastav a podívej se znovu.
@@ -60,11 +60,11 @@ Algoritmus pokračuje následujícími kroky (viz čísla u jednotlivých přech
     \item klient text je porovnán oproti společní stínové kopii,
     \item výsledkem porovnání je seznam změn, které byly provedeny na klient text kopii dokumentu,
     \item klient text je překopírován přes společnou stínovou kopii,
-    \item seznam změn je aplikován na server text (za použití best-effort math algoritmu),\label{krok:aplikace}
-    \item server text je přepsán výsledkem aplikace změn.\label{krok:prepsani}
+    \item seznam změn je aplikován na server text (za použití best-effort math algoritmu),\label{krok:ds_aplikace}
+    \item server text je přepsán výsledkem aplikace změn.\label{krok:ds_prepsani}
 \end{enumerate}
 
-Důležité je, že pro správné fungování musí být kroky~\ref{krok:aplikace} a~\ref{krok:prepsani} atomické, tedy nesmí se stát, že by se server text v tuto chvíli změnil.
+Důležité je, že pro správné fungování musí být kroky~\ref{krok:ds_aplikace} a~\ref{krok:ds_prepsani} atomické, tedy nesmí se stát, že by se server text v tuto chvíli změnil.
 
 Algoritmus předpokládá použití libovolného diff-patch algoritmu, který umožňuje aplikovat změny i na dokument, který se změnil.
 Lze například použít diff-patch-match\footnote{https://github.com/google/diff-match-patch} algoritmus od společnosti Google.
@@ -72,5 +72,56 @@ Ten implementuje diff algoritmus od Eugene W. Myers, který je považování za 
 
 \subsection{Operační transformace}\label{subsec:operacniTransformace}
 
-\gls{OP} je algoritmus, který se poprvé objevil v \ldots
+\gls{OT} je algoritmus, který se poprvé objevil ve výzkumném článku s názvem Kontrola souběhu v skupinových systémech od autorů Ellis a Gibbs roku 1989.
+Jedná se o nejčastěji používaný algoritmus pro kolaborativní spolupráci ve skutečném čase.
 
+Algoritmu je možná použít na synchronizaci dokumentů různých formátů, ale pro jednoduchost se zaměřím pouze na textové dokumenty bez jakýchkoliv formátovacích značek (například zdrojový kód).
+
+Základní jednotkou celého algoritmu je \textbf{operace}.
+Operace označuje změnu v dokumentu a u čistě textových dokumentech rozlišujeme tři druhy operací:
+\begin{itemize}
+    \item přeskoč s parametrem počet znaků, který označuje počet znaků k přeskočení,
+    \item odstraň řetězec s řetězce jako parametrem, který označuje řetězec k odstranění a
+    \item přidej řetězec s parametrem který označuje řetězec k přidání.
+\end{itemize}
+
+\paragraph{Transformace dokumentu}
+Pomocí těchto třech operací jsme schopni popsat jakoukoli změnu, která mohla v dokumentu nastat, a zároveň daný dokument upravit, tak aby odpovídal stavu po této operaci.
+Tento proces aplikace operace (či jejich souboru) se nazývá transformace dokumentu a umožňuje upravit dokument bez nutnosti jeho uzamčení, či řešení konfliktů.
+Transformace má i své omezení, které říká, že součet znaků všech operací transformace se musí rovnat délce dokumentu nad kterým bude transformace provedena.
+Toto omezení není například u aplikace změn v rámci algoritmu \gls{DS} vůbec potřeba, protože změny nenesou informaci o délce celého dokumentu.
+
+\paragraph{Kombinace operací}
+Operace také můžeme kombinovat, určitě totiž platí, že pokud máme dokument A, soubor operací transformující dokument A na B a soubor operací transformující dokument B na C, tak jistě existuje soubor operací transformující dokument A na dokument C.
+
+\paragraph{Transformace operací}
+Dále lze operace transformovat a to pomocí jiných operací.
+Mějme dokument A, soubory operací z A do B, z A do C, pak aplikací změn z druhého souboru na dokument B získáme nový soubor (soubor transformovaný).
+
+Základní komunikace se skládá z následujících kroků (také znázorněna pomocí sekvenčního diagramu na obrázku číslo~\ref{fig:OP_diagram}):
+
+\begin{enumerate}
+    \item po změně dokumentu klient změnu popíše pomocí souboru operací, který odešle na server,\label{krok:op_zmena}
+    \item klient do přijetí potvrzení nesmí na server odeslat další operace, další změny si klient ukládá a kombinuje do jednoho velkého souboru operací,\label{krok:op_kombinace}
+    \item server po přijetí odešle klientu, který soubor vytvořil, potvrzení o přijetí přijetí a pošle soubor všem ostatním klientům,
+    \item klient po přijetí souboru může odeslat nastřádaný soubor zkombinovaných operací (pokračuje bodem~\ref{krok:op_zmena}) nebo čeká na další změnu a pokračuje znovu bodem~\ref{krok:op_kombinace}.
+\end{enumerate}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{partials/analyza/OP_diagram.pdf}
+    \caption{Operační transformace sekvenční diagram}\label{fig:OP_diagram}
+\end{figure}
+
+O krok s čekáním klienta před odesláním dalších operací na potvrzení přijetí posledního souboru serverem se zaručili vývojáři společnosti Google, kteří toto pravidlo poprvé použili pro službu Google Wave (viz~\ref{subsec:apacheWave}).
+Tento krok snižuje náročnost celého algoritmu omezením počtu současných operací, které by musel server kombinovat.
+
+Pokud klient při čekání na server dostane od serveru cizí soubor operací musí tento soubor aplikovat na svou kopii dokumentu a transformovat již uložené operace v závislosti na přijatých operacích.
+Také pokud server dostane od klienta soubor operací, který vznikl před potvrzením posledního souboru, musí soubor transformovat přes všechny soubory operací, která server potvrdil po jejím vytvořem.
+Z tohoto důvodu jsou soubory operací číslovány a klient s novým souborem operací odesílá na server i poslední pro něj známé číslo souboru.
+
+Implementace obecného algoritmu \gls{OT} pro různé typy strukturovaných souborů není jednoduchá a potvrzuje to i následující tvrzení tehdejšího vývojáře Google Wave Josepha Gentle:
+
+\enquote{Unfortunately, implementing OT sucks.
+There's a million algorithms with different tradeoffs, mostly trapped in academic papers.
+The algorithms are really hard and time consuming to implement correctly.}~\cite{vyvojar} přeložil Jiří Šimeček.
