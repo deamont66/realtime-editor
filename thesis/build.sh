@@ -21,5 +21,11 @@ case "$1" in
         ;;
     * )
         time arara "$FILE"
+        if [ $? -eq 0 ]; then
+            echo -e "\nBuild: SUCCESS"
+            open "$FILE.pdf" # non OSX equivalent is command xdg-open
+        else
+            echo -e "\nBuild: FAILURE"
+        fi
         ;;
 esac
