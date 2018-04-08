@@ -7,7 +7,7 @@
 Synchronizace dvou a více kopií stejného dokumentu ve skutečném čase je komplexní problém.
 V této části popisuji dva nejznámější a nejrozšířenější algoritmy pro synchronizaci textu mezi více klienty při použití architektury klient-server~\cite{algoritmy:first}.
 
-\subsection{Druhy algoritmů}
+\subsection{Druhy algoritmů}\label{subsec:druhyAlgoritmů}
 
 Existují tři nejčastější přístupy k problému synchronizace, metoda zamykání (nebo také vlastnictví), předávání událost a třísměrné sloučení.
 
@@ -67,22 +67,22 @@ Algoritmus pokračuje následujícími kroky (viz čísla u jednotlivých přech
 Důležité je, že pro správné fungování musí být kroky~\ref{krok:ds_aplikace} a~\ref{krok:ds_prepsani} atomické, tedy nesmí se stát, že by se server text v tuto chvíli změnil.
 
 Algoritmus předpokládá použití libovolného diff-patch algoritmu, který umožňuje aplikovat změny i na dokument, který se změnil.
-Lze například použít diff-patch-match\footnote{https://github.com/google/diff-match-patch} algoritmus od společnosti Google.
+Lze například použít diff-match-patch\footnote{https://github.com/google/diff-match-patch} algoritmus od společnosti Google.
 Ten implementuje diff algoritmus od Eugene W. Myers, který je považování za nejlepší obecně použitelný diff algoritmus~\cite{ds:myers_diff}.~\cite{ds:neil_paper, ds:neil_video}
 
 \subsection{Operační transformace}\label{subsec:operacniTransformace}
 
 \gls{OT} je algoritmus, který se poprvé objevil ve výzkumném článku s názvem Kontrola souběhu v skupinových systémech od autorů Ellis a Gibbs roku 1989.
-Jedná se o nejčastěji používaný algoritmus pro kolaborativní spolupráci ve skutečném čase.
+Jedná se o nejčastěji používaný algoritmus pro kolaborativní spolupráci ve skutečném čase.~\cite{ot:intro}
 
 Algoritmu je možná použít na synchronizaci dokumentů různých formátů, ale pro jednoduchost se zaměřím pouze na textové dokumenty bez jakýchkoliv formátovacích značek (například zdrojový kód).
 
 Základní jednotkou celého algoritmu je \textbf{operace}.
-Operace označuje změnu v dokumentu a u čistě textových dokumentech rozlišujeme tři druhy operací:
+Operace označuje změnu v dokumentu a u čistě textových dokumentů rozlišujeme tři druhy operací:
 \begin{itemize}
     \item přeskoč s parametrem počet znaků, který označuje počet znaků k přeskočení,
     \item odstraň řetězec s řetězce jako parametrem, který označuje řetězec k odstranění a
-    \item přidej řetězec s parametrem který označuje řetězec k přidání.
+    \item přidej řetězec s parametrem který označuje řetězec k přidání.~\cite{ot:aboutOT}
 \end{itemize}
 
 \paragraph{Transformace dokumentu}
@@ -96,7 +96,7 @@ Operace také můžeme kombinovat, určitě totiž platí, že pokud máme dokum
 
 \paragraph{Transformace operací}
 Dále lze operace transformovat a to pomocí jiných operací.
-Mějme dokument A, soubory operací z A do B, z A do C, pak aplikací změn z druhého souboru na dokument B získáme nový soubor (soubor transformovaný).
+Mějme dokument A, soubory operací z A do B, z A do C, pak aplikací změn z druhého souboru na dokument B získáme nový soubor (soubor transformovaný).~\cite{ot:codecommit}
 
 Základní komunikace se skládá z následujících kroků (také znázorněna pomocí sekvenčního diagramu na obrázku číslo~\ref{fig:OP_diagram}):
 
@@ -104,7 +104,7 @@ Základní komunikace se skládá z následujících kroků (také znázorněna 
     \item po změně dokumentu klient změnu popíše pomocí souboru operací, který odešle na server,\label{krok:op_zmena}
     \item klient do přijetí potvrzení nesmí na server odeslat další operace, další změny si klient ukládá a kombinuje do jednoho velkého souboru operací,\label{krok:op_kombinace}
     \item server po přijetí odešle klientu, který soubor vytvořil, potvrzení o přijetí přijetí a pošle soubor všem ostatním klientům,
-    \item klient po přijetí souboru může odeslat nastřádaný soubor zkombinovaných operací (pokračuje bodem~\ref{krok:op_zmena}) nebo čeká na další změnu a pokračuje znovu bodem~\ref{krok:op_kombinace}.
+    \item klient po přijetí souboru může odeslat nastřádaný soubor zkombinovaných operací (pokračuje bodem~\ref{krok:op_zmena}) nebo čeká na další změnu a pokračuje znovu bodem~\ref{krok:op_kombinace}.~\cite{ot:waveAddition}
 \end{enumerate}
 
 \begin{figure}[ht]
@@ -114,14 +114,21 @@ Základní komunikace se skládá z následujících kroků (také znázorněna 
 \end{figure}
 
 O krok s čekáním klienta před odesláním dalších operací na potvrzení přijetí posledního souboru serverem se zaručili vývojáři společnosti Google, kteří toto pravidlo poprvé použili pro službu Google Wave (viz~\ref{subsec:apacheWave}).
-Tento krok snižuje náročnost celého algoritmu omezením počtu současných operací, které by musel server kombinovat.
+Tento krok snižuje náročnost celého algoritmu omezením počtu současných operací, které by musel server kombinovat.~\cite{ot:waveAddition}
 
 Pokud klient při čekání na server dostane od serveru cizí soubor operací musí tento soubor aplikovat na svou kopii dokumentu a transformovat již uložené operace v závislosti na přijatých operacích.
 Také pokud server dostane od klienta soubor operací, který vznikl před potvrzením posledního souboru, musí soubor transformovat přes všechny soubory operací, která server potvrdil po jejím vytvořem.
 Z tohoto důvodu jsou soubory operací číslovány a klient s novým souborem operací odesílá na server i poslední pro něj známé číslo souboru.
 
-Implementace obecného algoritmu \gls{OT} pro různé typy strukturovaných souborů není jednoduchá a potvrzuje to i následující tvrzení tehdejšího vývojáře Google Wave Josepha Gentle:
+Implementace obecného algoritmu \gls{OT} pro různé typy dokumentů není vůbec jednoduchá, což potvrzuje i následující tvrzení tehdejšího vývojáře Google Wave Josepha Gentle:
 
-\enquote{Unfortunately, implementing OT sucks.
-There's a million algorithms with different tradeoffs, mostly trapped in academic papers.
-The algorithms are really hard and time consuming to implement correctly.}~\cite{vyvojar} přeložil Jiří Šimeček.
+\enquote{Naneštěstí, implementovat OT není vůbec veselé.
+Existuje milion algoritmů s různými kompromisy, které jsou však většinou uvězněny ve věděckých pracích.
+Tyto algoritmy je opravdu obtížné a časově náročné správně implementovat.
+[\ldots]
+Jsem bývalý vývojář Google Wave.
+Napsání Wave trvalo 2 roky a pokud bychom ho dnes chtěli přepsat, napodruhé by to trvalo téměř stejně tak dlouho.
+}~\cite{ot:sharejs} přeložil Jiří Šimeček.
+
+I přes jeho složitější implementaci, jsem se nakonec rozhodl pro použití algoritmu \gls{OT}.
+Algoritmus je dostatečně rozšířený a otestovaný praxí (příkladem jeho úspěšného použití jsou projekty jako Google Wave a jeho mladší bratr Google Docs, viz~\ref{sec:existujícíŘešení}).
