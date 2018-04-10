@@ -2,7 +2,7 @@
 % -*- coding: UTF-8; -*-
 % vim: set fenc=utf-8
 
-\section{Použité technologie}\label{sec:technologie}
+\section{Technologie}\label{sec:technologie}
 V této část popisuji použité technologie vycházející z nefunkčních požadavků, které jsou uvedeny v kapitole~\ref{sec:nefuncniPozadavky}.
 
 \subsection{HTML5}\label{subsec:html5}
@@ -27,7 +27,7 @@ Později téhož roku představila firma Microsoft pro svůj prohlížeč Intern
 Roku 1997 vydala organizace ECMA\footnote{European Computer Manufacturer's Association} první verzi standartu ECMAScript, který z původního JavaScriptu a JScriptu vycházel~\cite{ecma:ecmascript1}.
 Tento standart prošel v roce 1999 rozsáhlou aktualizací jako ECMAScript 3, která je bez větších změn používána dodnes~\cite{mozzila:javascript}.
 
-Další verze ECMAScript standartu podle~\cite{mozzila:javascriptVerisions} jsou:
+Další verze ECMAScript standartu podle~\cite{mozzila:javascriptVersions} jsou:
 \begin{itemize}
     \item ECMAScript 5 z roku 2009,
     \item ECMAScript 5.1 z roku 2011 (\href{http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=55755}{ISO/IEC 16262:2011}),
@@ -72,8 +72,16 @@ Na základě těchto vlastností a stavu, pak komponenta může rozhodnout co bu
 Tato vlastnost se nazývá jednosměrný datový tok (anglicky One-way data flow) a architekturu, kterou React implementuje, nazýváme Flux (ta je součástí Reactu už od samého počátku).~\cite{react:about}
 Existují však komunitou vytvořené alternativní nástroje, které řeší datový tok v aplikaci, jako je například knihovna Redux~\cite{react:redux}.
 
-\subsection{MongoDB}\label{subsec:mongodb}
-MongoDB je nerelační databáze s otevřeným zdrojovým kódem vyvíjena společností MongoDB, Inc.
-Díky zjednodušené reprezentaci dat pomocí dokumentů a jejich rychlému mapování na JSON\footnote{JavaScript Object Notation} není potřeba využívat složité ORM\footnote{Object-relational mapping} nástroje pro mapování dat na objekty, jako tomu je například u SQL\footnote{Structured Query Language} databází, a tím umožňuje urychlit celkový vývoj aplikací.~\cite{mongo:about}
+\subsection{Databáze}\label{subsec:databáze}
+Databáze je strukturovaný systém souborů určený pro perzistentní uložení dat.
+Často je ve smyslu slova databáze chápána i množina podpůrných softwarových nástrojů, tato množiny je nazývána jako systém řízení báze dat (SŘBD\footnote{Anglicky database management system (DBMS)}).
 
-Pro MongoDB jsem se rozhodl převážně s ohledem na jeho rychlost, která se u aplikace pro editací textů ve skutečném času hodí, ale také pro jeho rozsáhlou komunitu mezi vývojáři~\cite{mongo:speed,mongo:popularity}.
+Zaměřím se pouze na nejoblíbenější zástupce SQL\footnote{Structured Query Language} a NoSQL\footnote{Not only SQL} databázi, tedy MySQL a MongoDB~\cite{mongo:popularity}.
+
+\textbf{MySQL} je relační SŘBD vyvíjený a podporovaný společností Oracle.
+Uložená data musejí mít pevnou strukturu, jsou strukturována do tabulek (jednotlivé záznamy jsou pak jejich řádky).
+MySQL využívá dotazovací jazyk SQL a každá změna struktury dat vyžaduje migrační proceduru, které může způsobit dočasné problémy s dostupností.~\cite{mongo:about}
+
+\textbf{MongoDB} je nerelační SŘBD s otevřeným zdrojovým kódem vyvíjena společností MongoDB, Inc.
+Data nemají pevně definovanou strukturu a jsou representována pomocí BSON\footnote{Binary JSON} dokumentů.
+Díky jejich rychlému převodu na klasický JSON\footnote{JavaScript Object Notation} není potřeba využívat složité ORM\footnote{Object-relational mapping} nástroje pro mapování dat na objekty, jako tomu je například u SQL\footnote{Structured Query Language} databází, a tím umožňuje urychlit celkový vývoj aplikací.~\cite{mongo:about}
