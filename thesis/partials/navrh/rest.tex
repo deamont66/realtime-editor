@@ -4,6 +4,39 @@
 
 \section{REST komunikace}\label{sec:restKomunikace}
 
+Základním způsobem komunikace mezi klientskou a serverovou části aplikace je \gls{REST} komunikace.
+
+K implementaci jednotlivých koncových bodů, ale i obecnému zpracování všech \gls{HTTP} požadavků, jsem se rozhodl použít již připravené řešení v podobě Node.js knihovny, či balíčku knihoven (dále jen framework).
+Pro prostření Node.js existuje několik frameworků pro jednoduchou implementaci REST \gls{API}, podle~\cite{node:framework} jsem vybíral ze 3 neoblíbenějších frameworků: Sails.js, Express.js a Hapi.js.
+
+\subsection{Sails.js}\label{subsec:sails.js}
+
+Sails.js je plnohodnotný webový \gls{MVC} framework pro Node.js.
+Jeho integrovanou součástí je Waterline \gls{ORM}, který umožňuje použít téměř libovolný \gls{SŘBD}.
+
+Waterline je, ale také záporem celého frameworku, protože není mezi vývojáři příliš rozšířený a občas ho není jednoduché použít (například mapování vnořených objektů).
+
+\subsection{Express.js}\label{subsec:express.js}
+
+Express.js je velice rozšířený, jednoduchý a lehký framework pro Node.js.
+V základní konfiguraci obsahuje pouze základní logiku ohledně zpracování \gls{HTTP} požadavků.
+
+Ale jako každý framework má i své nevýhody.
+Mezi hlavní nevýhody patří nepříliš propracované zpracování chybových stavů nebo také nedostatečná kódová nezávislost, což může komplikovat další vývoj a znovupoužitelnost částí aplikace.
+
+\subsection{Hapi.js}\label{subsec:hapi.js}
+
+Hapi.js je framework pro Node.js vyvíjený společností WalMart.
+Byl vytvořen jako přímá náhrada frameworku Express.js a snaží se řešit jeho nedostatečnou kódovou nezávislost použitím modulární architektury.
+
+Modulární architektura tento problém sice řeší, ale přidává do frameworku vysokou složitost návrhu.
+Tato složitost je pro většinu projektů zbytečně vysoká a nevyrovná se přidané hodnotě, která přichází oproti použití Express.js.
+
+\subsection{Výběř frameworku}\label{subsec:výběřFrameworku}
+
+Jelikož mám navrhnout a implementovat pouze prototyp aplikace, nepovažuji za nutné volit robustní framework typu Sail.js, či Hapi.js.
+Nakonec jsem se rozhodl použít framework Express.js, převážně kvůli jeho jednoduchosti a rozšířenosti mezi vývojáři, která může být nápomocna hlavně při řešení potenciálního problému.
+
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
 
 \subsubsection{DELETE /api/auth}
