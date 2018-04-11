@@ -16,16 +16,18 @@ Komunikace mezi nimi probíhá pomocí předem definovaných aplikačních rozhr
 \subsection{Klientská část}\label{subsec:klientskáČást}
 
 Jedná se o část aplikace, která běží v samotném prohlížeči uživatele.
-Reaguje na uživatelský vstup, generuje uživatelské rozhraní podle stavu aplikace a pomocí protokolu \gls{HTTP} komunikuje se serverovou částí za účelem aktualizace, či získání dat.
+Reaguje na uživatelský vstup, generuje uživatelské rozhraní podle stavu aplikace a pomocí protokolu \gls{HTTP} komunikuje se serverovou částí za účelem úpravy, či získání dat.
 
-Klientská část je napsána v jazyce JavaScript a využívá knihovny pro tvorbu uživatelského rozhraní ReactJS (více o technologií v sekci~\ref{sec:technologie}).
+Klientská část je napsána v jazycích HTML5 a JavaScript, ale také využívá knihovny pro tvorbu uživatelského rozhraní ReactJS (více o technologií v sekci~\ref{sec:technologie}).
 
 \subsection{Serverová část}\label{subsec:serverováČást}
 
 Serverová část je centrem aplikace, její hlavní zodpovědností je poskytnutí autentizace a autorizace jednotlivých uživatelů.
 Dále je tato část zodpovědná za zajištění konzistence dat v perzistentním (databázovém) uložišti a poskytuje rozhraní pro komunikaci s klientskou částí aplikace.
 
-Serverová část využívá JavaScriptové běhové prostředí Node.js (více o prostření v sekci~\ref{subsec:nodejs}).
+Serverová část využívá JavaScriptové běhové prostředí Node.js (více o prostření v sekci~\ref{subsec:nodejs}) a je navržena podle dvouvrstvé architektury.
+Datová vrstva zajišťuje přístup k databázové části a za pomoci návrhového vzoru repositář (anglicky repository pattern) vystavuje rozhraní v rámci serverové části, které umožňuje přístup k datům.
+Presenční vrstva zajišťuje komunikaci s klientskou části a validitu přijatých dat, volá jednotlivé funkce datové vrstvy za účelem získání, či uložení dat.
 
 \subsection{Databázová čast}\label{subsec:databázováČast}
 
