@@ -80,9 +80,11 @@ Zaměřím se pouze na nejoblíbenější zástupce \gls{SQL} a \gls{NoSQL} data
 
 \textbf{MySQL} je relační \gls{SŘBD} vyvíjený a podporovaný společností Oracle.
 Uložená data musejí mít pevnou strukturu, jsou strukturována do tabulek (jednotlivé záznamy jsou pak jejich řádky).
-MySQL využívá dotazovací jazyk SQL a každá změna struktury dat vyžaduje migrační proceduru, které může způsobit dočasné problémy s dostupností.~\cite{mongo:about}
+MySQL využívá dotazovací jazyk SQL a každá změna struktury dat vyžaduje migrační proceduru, které může způsobit dočasné problémy s dostupností.
+MySQL databáze nabízí pouze možnost vertikálního škálování, případně replikaci dat mezi více databázemi.~\cite{mongo:about}
 
 \textbf{MongoDB} je nerelační \gls{SŘBD} s otevřeným zdrojovým kódem vyvíjena společností MongoDB, Inc.
 Data nemají pevně definovanou strukturu a jsou representována pomocí \gls{BSON} dokumentů.
 Díky jejich rychlému převodu na klasický \gls{JSON} není potřeba využívat složité \gls{ORM} nástroje pro mapování dat na objekty, jako tomu je například u \gls{SQL} databází, a tím umožňuje urychlit celkový vývoj aplikací.
-Nástroje pro mapování dat z dokumentů na objekty jsou nazývány \gls{ODM}.~\cite{mongo:about}
+Nástroje pro mapování dat z dokumentů na objekty jsou nazývány \gls{ODM}.
+MongoDB nabízí možnost horizontálního škálování a to až do stovek databázových serverů.~\cite{mongo:about}
