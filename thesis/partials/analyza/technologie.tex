@@ -7,14 +7,14 @@ V této část popisuji použité technologie vycházející z nefunkčních po�
 
 \subsection{HTML5}\label{subsec:html5}
 
-HTML5 je značkovací jazyk používaný pro reprezentaci a strukturování  obsahu na internetu (přesněji na WWW\footnote{World Wide Web}).
-Jedná se již o pátou verzi standardu HTML\footnote{Hypertext Markup Language} (doporučená verze podle W3C\footnote{The World Wide Web Consortium} v roce 2018 je HTML 5.2~\cite{w3c:html52}).
+HTML5 je značkovací jazyk používaný pro reprezentaci a strukturování  obsahu na internetu (přesněji na \gls{WWW}).
+Jedná se již o pátou verzi standardu \gls{HTML} (doporučená verze podle \gls{W3C} v roce 2018 je HTML 5.2~\cite{w3c:html52}).
 Tato verze do standartu přidává mimo jiné nové elementy, atributy a funkcionalitu.
 Pod pojem HTML5 také často zařazujeme rozsáhlou množinu moderních technologií, které umožňují tvorbu více rozmanitých a mocných webových stránek a aplikací.~\cite{mozzila:html5}
 
-HTML vytvořil Tim Berners-Lee a HTML standart byl definován ve spolupráci s organizací IETF\footnote{Internet Engineering Task Force} v roce 1993~\cite{html:autor}.
-Od roku 1996 převzala vývoj HTML standartu organizace W3C~\cite{w3c:html32}.
-Roku 2008 se k W3C přidala organizace WHATWG\footnote{Web Hypertext Application Technology Working Group} a započali vývoj standartu HTML5, který společně vydali v roce 2014~\cite{w3c:html5}.
+\gls{HTML} vytvořil Tim Berners-Lee a \gls{HTML} standart byl definován ve spolupráci s organizací \gls{IETF} v roce 1993~\cite{html:autor}.
+Od roku 1996 převzala vývoj \gls{HTML} standartu organizace \gls{W3C}~\cite{w3c:html32}.
+Roku 2008 se k \gls{W3C} přidala organizace \gls{WHATWG} a započali vývoj standartu HTML5, který společně vydali v roce 2014~\cite{w3c:html5}.
 
 
 \subsection{JavaScript}\label{subsec:javascript}
@@ -24,7 +24,7 @@ Přejmenování na JavaScript bylo marketingové rozhodnutí a mělo využít te
 Javascript byl poprvé vydán jako součást prohlížeče Netscape 2 roku 1996.
 Později téhož roku představila firma Microsoft pro svůj prohlížeč Internet Explorer 3 jazyk JScript, který byl JavaScriptu velice podobný.~\cite{mozzila:javascript}
 
-Roku 1997 vydala organizace ECMA\footnote{European Computer Manufacturer's Association} první verzi standartu ECMAScript, který z původního JavaScriptu a JScriptu vycházel~\cite{ecma:ecmascript1}.
+Roku 1997 vydala organizace \gls{ECMA} první verzi standartu ECMAScript, který z původního JavaScriptu a JScriptu vycházel~\cite{ecma:ecmascript1}.
 Tento standart prošel v roce 1999 rozsáhlou aktualizací jako ECMAScript 3, která je bez větších změn používána dodnes~\cite{mozzila:javascript}.
 
 Další verze ECMAScript standartu podle~\cite{mozzila:javascriptVersions} jsou:
@@ -37,10 +37,10 @@ Další verze ECMAScript standartu podle~\cite{mozzila:javascriptVersions} jsou:
     \item připravovaný standart ECMAScript 2018.
 \end{itemize}
 
-Dnes pod označením JavaScript běžně chápeme právě standardizovaný ECMAScript~\cite{mozzila:javascript} a i já ho tak budu dále používat.
+Dnes pod označením JavaScript běžně chápeme právě standardizovaný ECMAScript~\cite{mozzila:javascript} a i já ho tak budu dále označovat.
 
 Javascript je navržen k běhu jako skriptovací jazyk v hostitelském prostředí, které musí zajistit mechanismy pro komunikaci mimo toho prostředí.
-Nejčastějším hostitelským prostředím je webový prohlížeč, ale Javascript můžeme nalézt i na místech jako je Adobe Acrobat, Adobe Photoshop, SVG vektorová grafika, serverové prostředí NodeJS, NoSQL databáze Apache CouchDB, nejrůznější vestavěné systémy a další.~\cite{mozzila:javascript}
+Nejčastějším hostitelským prostředím je webový prohlížeč, ale Javascript můžeme nalézt i na místech jako je Adobe Acrobat, Adobe Photoshop, SVG vektorová grafika, serverové prostředí NodeJS, databáze Apache CouchDB, nejrůznější vestavěné systémy a další.~\cite{mozzila:javascript}
 
 Javascript je více paradigmový, dynamický jazyk s datovými typy, operátory, standardními vestavěnými objekty a metodami.
 Jeho syntaxe je založena na jazycích Java a C.
@@ -49,13 +49,13 @@ Dále také podporuje principy funkcionální programování -- funkce jsou tak�
 
 \subsection{Node.js}\label{subsec:nodejs}
 
-Node.js je JavaScriptové běhové prostředí (anglicky runtime environment), které používá událostmi řízenou architekturu umožňující asynchronní přístup k I/O\footnote{Vstupní/výstupní} operacím.
-Tato architektura umožňuje optimalizovat propustnost a škálovatelnost webových aplikací s mnoha I/O operacemi, ale také webových aplikací ve skutečném čase (například komunikační programy nebo hry v prohlížeči).~\cite{node:article2013}
+Node.js je JavaScriptové běhové prostředí (anglicky runtime environment), které používá událostmi řízenou architekturu umožňující asynchronní přístup k \gls{I/O} operacím.
+Tato architektura umožňuje optimalizovat propustnost a škálovatelnost webových aplikací s mnoha \gls{I/O} operacemi, ale také webových aplikací ve skutečném čase (například komunikační programy nebo hry v prohlížeči).~\cite{node:article2013}
 
 Toto je v kontrastu s dnešními více známými modely souběžnosti, kde se využívají vlákna operačního systému.
 Síťová komunikace založená na vláknech je relativně neefektivní a její použití bývá velmi obtížné.~\cite{node:about}
 
-Node.js využívá V8 JavaScript interpret vytvořený společností Google pod skupinou The Chromium Project pro prohlížeč Google Chrome a ostatní prohlížeče postavené na Chromium\footnote{Prohlížeč s otevřeným zdrojovým kódem od společnosti Google}~\cite{node:es6}.
+Node.js využívá V8 JavaScript interpret vytvořený společností Google pod skupinou The Chromium Project pro prohlížeč Google Chrome a ostatní prohlížeče postavené na Chromium (prohlížeč s otevřeným zdrojovým kódem od společnosti Google)~\cite{node:es6}.
 V8, který je napsaný v C++, kompiluje JavaScriptový kód do nativního strojového kódu namísto jeho interpretace až za běhu programu.
 To umožňuje vytvořit rychlé běhové prostředí, které nemusí čekat na překlad potřebného kódu.~\cite{node:article2013}
 
@@ -74,14 +74,15 @@ Existují však komunitou vytvořené alternativní nástroje, které řeší da
 
 \subsection{Databáze}\label{subsec:databáze}
 Databáze je strukturovaný systém souborů určený pro perzistentní uložení dat.
-Často je ve smyslu slova databáze chápána i množina podpůrných softwarových nástrojů, tato množiny je nazývána jako systém řízení báze dat (SŘBD\footnote{Anglicky database management system (DBMS)}).
+Často je ve smyslu slova databáze chápána i množina podpůrných softwarových nástrojů, tato množiny je nazývána jako \gls{SŘBD}, anglicky \gls{DBMS}.
 
-Zaměřím se pouze na nejoblíbenější zástupce SQL\footnote{Structured Query Language} a NoSQL\footnote{Not only SQL} databázi, tedy MySQL a MongoDB~\cite{mongo:popularity}.
+Zaměřím se pouze na nejoblíbenější zástupce \gls{SQL} a \gls{NoSQL} databázi, tedy MySQL a MongoDB~\cite{mongo:popularity}.
 
-\textbf{MySQL} je relační SŘBD vyvíjený a podporovaný společností Oracle.
+\textbf{MySQL} je relační \gls{SŘBD} vyvíjený a podporovaný společností Oracle.
 Uložená data musejí mít pevnou strukturu, jsou strukturována do tabulek (jednotlivé záznamy jsou pak jejich řádky).
 MySQL využívá dotazovací jazyk SQL a každá změna struktury dat vyžaduje migrační proceduru, které může způsobit dočasné problémy s dostupností.~\cite{mongo:about}
 
-\textbf{MongoDB} je nerelační SŘBD s otevřeným zdrojovým kódem vyvíjena společností MongoDB, Inc.
-Data nemají pevně definovanou strukturu a jsou representována pomocí BSON\footnote{Binary JSON} dokumentů.
-Díky jejich rychlému převodu na klasický JSON\footnote{JavaScript Object Notation} není potřeba využívat složité ORM\footnote{Object-relational mapping} nástroje pro mapování dat na objekty, jako tomu je například u SQL\footnote{Structured Query Language} databází, a tím umožňuje urychlit celkový vývoj aplikací.~\cite{mongo:about}
+\textbf{MongoDB} je nerelační \gls{SŘBD} s otevřeným zdrojovým kódem vyvíjena společností MongoDB, Inc.
+Data nemají pevně definovanou strukturu a jsou representována pomocí \gls{BSON} dokumentů.
+Díky jejich rychlému převodu na klasický \gls{JSON} není potřeba využívat složité \gls{ORM} nástroje pro mapování dat na objekty, jako tomu je například u \gls{SQL} databází, a tím umožňuje urychlit celkový vývoj aplikací.
+Nástroje pro mapování dat z dokumentů na objekty jsou nazývány \gls{ODM}.~\cite{mongo:about}

@@ -36,7 +36,7 @@ Jedná se poloduplexní systém, dokud uživatel píše nedostává žádné akt
 Podívej se na cestu, pak jeď chvilku poslepu, pak zastav a podívej se znovu.
 Kdyby všichni řídili stejný druh \enquote{dívej se a nebo jeď} automobilů, těžké nehody by byly velmi časté.}}~\cite{ds:neil_paper} přeložil Jiří Šimeček.
 
-Příkladem systému, který používá třísměrné sloučené je například SVN\footnote{Apache Subversion - systém pro správu zdrojových kódů}.
+Příkladem systému, který používá třísměrné sloučené je například \gls{SVN}, systém pro správu zdrojových kódů.
 
 \subsection{Diferenciální synchronizace}\label{subsec:diferencialniSynchronizace}
 
@@ -67,7 +67,7 @@ Algoritmus pokračuje následujícími kroky (viz čísla u jednotlivých přech
 Důležité je, že pro správné fungování musí být kroky~\ref{krok:ds_aplikace} a~\ref{krok:ds_prepsani} atomické, tedy nesmí se stát, že by se server text v tuto chvíli změnil.
 
 Algoritmus předpokládá použití libovolného diff-patch algoritmu, který umožňuje aplikovat změny i na dokument, který se změnil.
-Lze například použít diff-match-patch\footnote{https://github.com/google/diff-match-patch} algoritmus od společnosti Google.
+Lze například použít diff-match-patch algoritmus od společnosti Google.
 Ten implementuje diff algoritmus od Eugene W. Myers, který je považování za nejlepší obecně použitelný diff algoritmus~\cite{ds:myers_diff}.~\cite{ds:neil_paper, ds:neil_video}
 
 \subsection{Operační transformace}\label{subsec:operacniTransformace}

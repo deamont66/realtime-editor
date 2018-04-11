@@ -15,7 +15,7 @@ Projekt dnes není prakticky nasaditelný (nevyšla žádná stabilní verze), a
 
 \subsection{Google Docs}\label{subsec:googleDocs}
 Google Docs je textový procesor, který je spolu s dalšími kancelářskými aplikacemi součástí služby Google Drive od společnosti Google.
-Jedná se editor typu WYSIWYG\footnote{Akronym věty \enquote{What you see is what you get.}, česky \enquote{Co vidíš, to dostaneš.}}, který je podobný ostatním kancelářským textovým procesorům (jako je například Microsoft Word, OpenOffice Writer a další).~\cite{docs:top10}
+Jedná se editor typu \gls{WYSIWYG}, který je podobný ostatním kancelářským textovým procesorům (jako je například Microsoft Word, OpenOffice Writer a další).~\cite{docs:top10}
 
 Google Docs využívá Google Apps API, které je také postaveno nad algoritmem \gls{OT} (více o algoritmu v~\ref{subsec:operacniTransformace})~\cite{docs:conflict} a to včetně vylepšení se kterým přišel Google při vývoji Google Wave~\cite{docs:appsConf}.
 
@@ -32,7 +32,7 @@ Google poté zveřejnil zdrojové kódy služby a vznil tak projekt Etherpad, te
 
 Etherpad byl od zveřejnění otevřeného kódu přepsán z jazyka Scala do JavaScriptu~(více o JavaScriptu v~\ref{subsec:javascript}) a serverové prostředí NodeJS~(více o NodeJS v~\ref{subsec:nodejs}), ale původní synchronizační knihovna nazývaná EasySync zůstává nadále stejná~\cite{etherpad:newgithub, etherpad:easySync}.
 Knihovna EasySync (a tím tedy i Etherpad samotný) využívá principy algoritmu \gls{OT} (více o algoritmu v~\ref{subsec:operacniTransformace}) a vylepšení ve formě včetně čekání klienta po odeslání operace na potvrzení od serveru~\cite{etherpad:easySync}.
-Dnes existuje množství nejrůznějších zásuvných modelů, které rozšiřují možnosti nástroje Etherpad a to i včetně modulu pro komunikaci pomocí WebRTC\footnote{Protokol umožňující audio, či video hovory přímo ve webové prohlížeči}~\cite{etherpad:plugins}.
+Dnes existuje množství nejrůznějších zásuvných modelů, které rozšiřují možnosti nástroje Etherpad a to i včetně modulu pro komunikaci pomocí \gls{WebRTC}, protokol umožňující implementaci audio, či video hovorů přímo ve webové prohlížeči.~\cite{etherpad:plugins}.
 
 \begin{figure}[ht]
     \centering
@@ -43,7 +43,7 @@ Dnes existuje množství nejrůznějších zásuvných modelů, které rozšiřu
 \subsection{Codeshare.io}\label{subsec:codeshare.io}
 
 Codeshare.io je textový editor zaměřený na vývojáře a jejich spolupráci ve skutečném čase.
-Jako hlavní využití aplikace Codeshare.io její autor zmiňuje pohovory s vývojáři a to díky integrovanému video chatu pomocí technologie WebRTC.~\cite{codeshare:home}
+Jako hlavní využití aplikace Codeshare.io její autor zmiňuje pohovory s vývojáři a to díky integrovanému video chatu pomocí technologie \gls{WebRTC}.~\cite{codeshare:home}
 
 \enquote{\textit{Spojil jsem Firebase s Ace editorem a vznikl Codeshare.io, nástroj pro sdílení kódu ve skutečném čase.}}~\cite{codeshare:created} přeložil Jiří Šimeček.
 
