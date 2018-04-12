@@ -39,5 +39,109 @@ Nakonec jsem se rozhodl použít framework Express.js, převážně kvůli jeho 
 
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
 
-\subsubsection{DELETE /api/auth}
+\subsubsection{POST /api/auth/}
 
+Koncový bod zajišťující registraci nového uživatele.
+Tento koncový bod přijímá parametry uživatelské jméno, heslo a email.
+
+\subsubsection{POST /api/auth/signIn}
+
+Koncový bod pro přihlášení pomocí parametru uživatelské jméno a heslo.
+
+\subsubsection{DELETE /api/auth/}
+
+Koncový bod pro odhlášení aktuálně přihlášeného uživatele.
+
+\subsubsection{POST /api/auth/forgotPassword/}
+
+Koncový bod sloužící k obnově zapomenutého hesla.
+Přijímá parametry email a uživatelské jméno.
+Pokud je nalezen uživatel se přijatými údaji je mu odeslán email včetně postupu obnovy hesla pomocí unikátního vygenerovaného kódem.
+
+\subsubsection{GET /api/auth/forgotPassword/:token}
+
+Koncový bod zjišťující existenci předaného parametru token.
+
+\subsubsection{PUT /api/auth/forgotPassword/:token}
+
+Koncový bod, který umožňuje za podmínky validního parametru token provést změnu hesla na nové zaslané heslo jako parametr.
+
+\subsubsection{GET /api/user/}
+
+Koncový bod pro zjištění informací o aktuálně přihlášeném uživateli.
+
+\subsubsection{PUT /api/user/}
+
+Koncový bod umožňující aktualizaci jednotlivých parametrů přihlášeného uživatele.
+Přijímanými parametry jsou uživatelské jméno, email, nové heslo a aktuální heslo.
+Veškeré změny musí být potvrzeny platným aktuální heslem.
+
+\subsubsection{GET /api/user/document-settings}
+
+Koncový bod pro zjištění výchozího nastavení pro nové dokumenty aktuálně přihlášeného uživatele.
+
+\subsubsection{PUT /api/user/document-settings}
+
+Koncový bod umožňující změnu jednotlivých polí výchozího nastavení pro dokumenty aktuálně přihlášeného uživatele.
+Přijímanými parametry jsou všechny pole entity DocumentSettings z databázového schématu na obrázku~\ref{fig:DB_model}.
+
+\subsubsection{POST /api/document}
+
+Koncový bod umožňující aktuálně přihlášenému uživateli vytvořit nový dokument.
+
+\subsubsection{GET /api/document}
+
+Koncový bod pro získání dokumentů vytvořených aktuálně přihlášeným uživatelem.
+
+\subsubsection{GET /api/document/last}
+
+Koncový bod pro získání dostupných dokumentů, ke kterým v minulosti přistoupil aktuálně přihlášený uživatel.
+
+\subsubsection{GET /api/document/shared}
+
+Koncový bod pro získání dokumentů, ke kterým byl aktuálně přihlášený uživatel přizván.
+
+\subsubsection{GET /api/document}
+
+Koncový bod pro získání dokumentů vytvořených aktuálně přihlášeným uživatelem (je jejich vlastníkem).
+
+\subsubsection{GET /api/document/:documentId/messages}
+
+Koncový bod pro získání zpráv ohledně dokumentu identifikovaného pomocí parametru documentId.
+Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
+Počet vrácených zpráv lze ovlivnit parametrem number a čas odeslání poslední vrácené zprávy lze určit parametrem lastDate.
+
+\subsubsection{POST /api/document/:documentId/messages}
+Koncový bod umožňující vytvoření nové zprávy pro dokument identifikovaný pomocí parametru documentId s textem určeným parametrem message.
+Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
+
+\subsubsection{GET /api/document/:documentId/rights}
+
+Koncový bod pro získání informací ohledně oprávnění a jednotlivých pozvánek dokumentu identifikovaného pomocí parametru documentId.
+Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+
+\subsubsection{PUT /api/document/:documentId/rights}
+
+Koncový bod pro úpravu oprávnění pro uživatele přistupující k dokumentu (identifikovaného pomocí parametru documentId) pomocí veřejného odkazu.
+Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+
+\subsubsection{PUT /api/document/:documentId/rights/invite}
+
+Koncový bod pro úpravu oprávnění pro přizvaného uživatele k dokumentu (identifikovaného pomocí parametru documentId).
+Uživatel je identifikován pomocí parametru uživatelské jméno.
+Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+
+\subsubsection{DELETE /api/document/:documentId/rights/:toUserID}
+
+Koncový bod umožňující odstranění pozvánky pro uživatele (identifikovaného pomocí parametru toUserID) k dokumentu (identifikovaného pomocí parametru documentId).
+Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+
+\subsubsection{DELETE /api/document/:documentId/}
+
+Koncový bod umožňující trvalé odstranění dokumentu identifikovaného pomocí parametru documentId.
+Pro jeho použití musí být aktuálně přihlášený uživatel vlastníkem dokumentu.
+
+\subsubsection{GET /locales/:lang/translation.json}
+
+Koncový bod umožňující stažení textových překladů pro webové rozhraní.
+Jazyk vrácených textů je určen pomocí parametru lang (například hodnota cs vrátí českou jazykovou mutaci textů).
