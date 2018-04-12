@@ -7,7 +7,7 @@
 Základním způsobem komunikace mezi klientskou a serverovou části aplikace je \gls{REST} komunikace.
 
 K implementaci jednotlivých koncových bodů, ale i obecnému zpracování všech \gls{HTTP} požadavků, jsem se rozhodl použít již připravené řešení v podobě Node.js knihovny, či balíčku knihoven (dále jen framework).
-Pro prostření Node.js existuje několik frameworků pro jednoduchou implementaci REST \gls{API}, podle~\cite{node:framework} jsem vybíral ze 3 neoblíbenějších frameworků: Sails.js, Express.js a Hapi.js.
+Pro prostření Node.js existuje mnoho frameworků pro implementaci \gls{REST} \gls{API}, podle~\cite{node:framework} jsem výběr zúžil na 3 neoblíbenější Node.js frameworky: Sails.js, Express.js a Hapi.js.
 
 \subsection{Sails.js}\label{subsec:sails.js}
 
@@ -34,8 +34,8 @@ Tato složitost je pro většinu projektů zbytečně vysoká a nevyrovná se p�
 
 \subsection{Výběř frameworku}\label{subsec:výběřFrameworku}
 
-Jelikož mám navrhnout a implementovat pouze prototyp aplikace, nepovažuji za nutné volit robustní framework typu Sail.js, či Hapi.js.
 Nakonec jsem se rozhodl použít framework Express.js, převážně kvůli jeho jednoduchosti a rozšířenosti mezi vývojáři, která může být nápomocna hlavně při řešení potenciálního problému.
+Jelikož mám navrhnout a implementovat pouze prototyp aplikace, nepovažuji za vhodné zvolit robustní framework typu Sail.js, či Hapi.js.
 
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
 

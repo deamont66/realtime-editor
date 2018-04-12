@@ -1,0 +1,12 @@
+% !TEX encoding = UTF-8 Unicode
+% -*- coding: UTF-8; -*-
+% vim: set fenc=utf-8
+
+\section{Algoritmus synchronizace editovaného textu}\label{sec:synchronizaceEditovanéhoTextu}
+
+Nakonec jsem se rozhodl pro použití algoritmu \gls{OT} (více o algoritmu v sekci~\ref{subsec:operacniTransformace}) a to i přes jeho složitější implementaci.
+Algoritmus je dostatečně rozšířený a otestovaný praxí (příkladem jeho úspěšného použití jsou projekty jako Google Wave a jeho mladší sourozenec Google Docs, viz~\ref{sec:existujícíŘešení}).
+
+Samozřejmě jsem nechtěl celý algoritmus implementovat znovu, a tak jsem rozhodl použít knihovnu OT.js.
+Tato knihovna implementuje základní operace algoritmu \gls{OT} pro práci s textem a také obsahuje ukázku jak knihovnu použít s knihovnami třetích stran.
+Bohužel knihovna není od roku 2015 vyvíjena, téměř pro ni neexistuje dokumentace a část jejího kódu jsem musel značně upravit, protože používá až 5 let staré verze knihoven třetích stran, které nejsou kompatibilní s dnešními verzemi těchto knihoven, či dnes již vůbec neexistují.
