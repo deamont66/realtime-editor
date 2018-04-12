@@ -39,7 +39,7 @@ Jelikož mám navrhnout a implementovat pouze prototyp aplikace, nepovažuji za 
 
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
 
-\subsubsection{POST /api/auth/}
+\subsubsection{POST /api/auth}
 
 Koncový bod zajišťující registraci nového uživatele.
 Tento koncový bod přijímá parametry uživatelské jméno, heslo a email.
@@ -48,11 +48,11 @@ Tento koncový bod přijímá parametry uživatelské jméno, heslo a email.
 
 Koncový bod pro přihlášení pomocí parametru uživatelské jméno a heslo.
 
-\subsubsection{DELETE /api/auth/}
+\subsubsection{DELETE /api/auth}
 
 Koncový bod pro odhlášení aktuálně přihlášeného uživatele.
 
-\subsubsection{POST /api/auth/forgotPassword/}
+\subsubsection{POST /api/auth/forgotPassword}
 
 Koncový bod sloužící k obnově zapomenutého hesla.
 Přijímá parametry email a uživatelské jméno.
@@ -66,11 +66,11 @@ Koncový bod zjišťující existenci předaného parametru token.
 
 Koncový bod, který umožňuje za podmínky validního parametru token provést změnu hesla na nové zaslané heslo jako parametr.
 
-\subsubsection{GET /api/user/}
+\subsubsection{GET /api/user}
 
 Koncový bod pro zjištění informací o aktuálně přihlášeném uživateli.
 
-\subsubsection{PUT /api/user/}
+\subsubsection{PUT /api/user}
 
 Koncový bod umožňující aktualizaci jednotlivých parametrů přihlášeného uživatele.
 Přijímanými parametry jsou uživatelské jméno, email, nové heslo a aktuální heslo.
@@ -83,7 +83,7 @@ Koncový bod pro zjištění výchozího nastavení pro nové dokumenty aktuáln
 \subsubsection{PUT /api/user/document-settings}
 
 Koncový bod umožňující změnu jednotlivých polí výchozího nastavení pro dokumenty aktuálně přihlášeného uživatele.
-Přijímanými parametry jsou všechny pole entity DocumentSettings z databázového schématu na obrázku~\ref{fig:DB_model}.
+Přijímanými parametry jsou všechny pole entity DocumentSettings z databázového schématu na obrázku~\ref{fig:DB_model} (krom pole _id).
 
 \subsubsection{POST /api/document}
 
@@ -131,12 +131,12 @@ Koncový bod pro úpravu oprávnění pro přizvaného uživatele k dokumentu (i
 Uživatel je identifikován pomocí parametru uživatelské jméno.
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
-\subsubsection{DELETE /api/document/:documentId/rights/:toUserID}
+\subsubsection{DELETE /api/document/:documentId/rights/:toUserId}
 
-Koncový bod umožňující odstranění pozvánky pro uživatele (identifikovaného pomocí parametru toUserID) k dokumentu (identifikovaného pomocí parametru documentId).
+Koncový bod umožňující odstranění pozvánky pro uživatele (identifikovaného pomocí parametru toUserId) k dokumentu (identifikovaného pomocí parametru documentId).
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
-\subsubsection{DELETE /api/document/:documentId/}
+\subsubsection{DELETE /api/document/:documentId}
 
 Koncový bod umožňující trvalé odstranění dokumentu identifikovaného pomocí parametru documentId.
 Pro jeho použití musí být aktuálně přihlášený uživatel vlastníkem dokumentu.
