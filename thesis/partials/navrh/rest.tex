@@ -39,18 +39,69 @@ Jelikož mám navrhnout a implementovat pouze prototyp aplikace, nepovažuji za 
 
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
 
-\subsubsection{POST /api/auth}
+V této sekci je obsažen kompletní soupis \gls{REST} koncových bodů.
+Tyto koncové body přijímají různý počet parametrů, které mohou být jako součást cesty požadavku nebo v těle požadavku ve formátu \gls{JSON}, a vrací \gls{HTTP} stavový kód spolu s nepovinnou odpovědí, která je také ve formátu \gls{JSON}.
+
+\subsubsection{Registrace uživatele}
 
 Koncový bod zajišťující registraci nového uživatele.
 Tento koncový bod přijímá parametry uživatelské jméno, heslo a email.
 
-\subsubsection{POST /api/auth/signIn}
+Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth}.
 
-Koncový bod pro přihlášení pomocí parametru uživatelské jméno a heslo.
+\begin{table}[ht!]\centering
+    \caption{Koncový bod Registrace uživatele}\label{tab:POST/api/auth}
 
-\subsubsection{DELETE /api/auth}
+    \begin{tabular}{r|l p{5.5cm}}
+        \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth}\\ \hline
+        \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{POST}\\ \hline
+        \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+        Data parametry: & username & [String]\\
+        & email & [String]\\
+        & password & [String]\\ \hline
+        Úspěch: & 200 & Informace o vytvořeném uživateli\\ \hline
+        Neúspěch: & 422 & Popis chyby\\ \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Přihlášení uživatele}
+
+Koncový bod pro přihlášení již registrovaného uživatele pomocí uživatelské jména a hesla.
+
+Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth/signIn}.
+
+\begin{table}[ht!]\centering
+\caption{Koncový bod Přihlášení uživatele}\label{tab:POST/api/auth/signIn}
+
+\begin{tabular}{r|l p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth/signIn}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{POST}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & username & [String]\\
+    & password & [String]\\ \hline
+    Úspěch: & 200 & Informace o přihlášeném uživateli\\ \hline
+    Neúspěch: & 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Ohlášení uživatele}
 
 Koncový bod pro odhlášení aktuálně přihlášeného uživatele.
+
+Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:DELETE/api/auth}.
+
+\begin{table}[ht!]\centering
+\caption{Koncový bod Ohlášení uživatele}\label{tab:DELETE/api/auth}
+
+\begin{tabular}{r|l p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{DELETE}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 401, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
 
 \subsubsection{POST /api/auth/forgotPassword}
 
