@@ -3,3 +3,13 @@
 % vim: set fenc=utf-8
 
 \section{Komunikace ve skutečném čase}\label{sec:komunikaceVeSkutečnémČase}
+
+K implementaci komunikace ve skutečném čase existuje více způsoby, ale každý má své kompromisy (více o push technologiích v sekci~\ref{subsec:pushTechnologie}).
+Pro komunikaci jsem chtěl použít technologii WebSocket (viz sekce~\ref{subsubsec:websocket}), kvůli podpoře full duplexní oboustranné komunikace, ale zároveň jsem chtěl umožnit použít aplikace uživatelům se starším webovým prohlížečem, či mobilním zařízením.
+
+Z tohoto důvodu jsem se rozhodl pro použití knihovny Socket.io, která je je postavena na transportní knihovně Engine.io.
+Knihovna Socket.io poskytuje ucelené \gls{API} pro použití technologie WebSocket, pro všechny modelní prohlížeče, ale i pro prohlížeče, které technologii WebSocket dosud nepodporují a to díky transparentnímu použití záložní komunikace pomocí long pollingu (viz sekce~\ref{subsubsec:pooling}).
+
+Komunikaci ve skutečném čase využívá komponenta editoru pro synchronizaci textových operací, ale také pro zobrazení nových zpráv u dokumentu ve skutečném čase.
+Komunikace probíhá po jednotlivých zprávách.
+Každá má své jméno, může mít libovolný počet parametrů a funkci zpětného volání (tzv\. callback).

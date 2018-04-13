@@ -21,7 +21,7 @@ Iniciátorem komunikace je server, který tak může odeslat nová data klientov
 Tento přístup lze použít například pro textovou komunikaci ve skutečném čase.
 Klient nemůže dopředu vědět, zda-li na je na serveru k dispozici nová zpráva a tak neví kdy odeslat požadavek pro získání nové zprávy, ale nyní mu stačí počkat a server mu novou zprávu pošle sám.~\cite{pushpull:about}
 
-\subsubsection{Short a Long polling}
+\subsubsection{Short a Long polling}\label{subsubsec:pooling}
 
 Jednou z nejjednodušších method implementace push technologie je takzvaný \textbf{Short pooling}.
 Jedná se o metodu, kdy se klient musí pravidelně dotazovat serveru na nová data, či nové události a tedy o implementaci pomocí opakovaného užití pull technologie.
@@ -34,7 +34,7 @@ Otevřené spojení v případě Long pooling také snižuje dobu, za kterou se 
 Hlavní výhodou obou zmíněných method je jednoduchost implementace a to jak na klientské, tak i serverové straně komunikace.
 Mezi hlavní nevýhody patří režijní náklady spojené s \gls{HTTP} protokolem a jeho hlavičkami, které musí být neustále přeposílány mezi serverem a klientem, a zvyšování doby mezi přijetím dat serverem a jejich přijetím klientem při časté komunikaci.~\cite{pushpull:issuesRFC}
 
-\subsubsection{\gls{HTTP} streaming}
+\subsubsection{\gls{HTTP} streaming}\label{subsubsec:HTTPStreaming}
 
 Další metodou implemntace push technologie je takzvaný \gls{HTTP} Streaming, který je podobný metodě Long polling s tím rozdílem, že data posílá jen jako částečnou odpověď a nemusí tedy ukončit spojení.
 Tato metoda staví na možnosti webové serveru odesílat více částí dat ve stejné odpovědi (pomocí hlavičky \mintinline{http}{Transfer-Encoding: chunked} v rámci protokolu \gls{HTTP} verze~1.1 a starší).
@@ -42,7 +42,7 @@ Tato metoda staví na možnosti webové serveru odesílat více částí dat ve 
 Výhodou metody \gls{HTTP} Streaming je snížení latence a snížení režijních nákladů s posíláním \gls{HTTP} hlaviček, které jsou nutné pouze při vytvoření nového spojení.
 Mezi nevýhody patří chování výchozí vyrovnávací paměti prohlížečů a klientských knihoven, kde není zajištěn přístup k částečným odpovědím od serveru.~\cite{pushpull:issuesRFC}
 
-\subsubsection{Server-Sent Events}
+\subsubsection{Server-Sent Events}\label{subsubsec:serverSentEvents}
 
 Server-Sent Events je způsob implementace push technologie přímo webovým prohlížečem.
 Mimo běžný \gls{HTTP} protokol může podporovat i jiné komunikační protokoly (záleží na podpoře prohlížeče)~\cite{pushpull:events}.
@@ -51,7 +51,7 @@ Z pohledu serveru je jeho použití analogické k Long polling, či \gls{HTTP} S
 Výhodou Server-Sent událostí je jednoduchá implementace pro webové vývojáře, kteří nemusí využívat externí knihovny, ale mohou použít přímo \gls{API} prohlížeče.
 Nevýhodou je relativně nízká podpora mezi webovými prohlížeči a to převážně mezi prohlížeči pro mobilní zařízení.~\cite{pushpull:issuesRFC}
 
-\subsubsection{HTML5 Web Socket}
+\subsubsection{HTML5 Web Socket}\label{subsubsec:websocket}
 
 HTML5 Web Socket je protokol, který umožňuje plně duplexní oboustrannou komunikaci mezi klientem a server.
 Jedná se o samostatný protokol, který netíží režijní náklady spojené s \gls{HTTP} a umožňuje tak velmi efektivní výměnu informací ve skutečném čase.
