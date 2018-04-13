@@ -4,12 +4,69 @@
 
 \section{Komunikace ve skutečném čase}\label{sec:komunikaceVeSkutečnémČase}
 
+% TODO: diagramy komunikace s jednotlivými druhy zpráv
+
 K implementaci komunikace ve skutečném čase existuje více způsoby, ale každý má své kompromisy (více o push technologiích v sekci~\ref{subsec:pushTechnologie}).
 Pro komunikaci jsem chtěl použít technologii WebSocket (viz sekce~\ref{subsubsec:websocket}), kvůli podpoře full duplexní oboustranné komunikace, ale zároveň jsem chtěl umožnit použít aplikace uživatelům se starším webovým prohlížečem, či mobilním zařízením.
 
 Z tohoto důvodu jsem se rozhodl pro použití knihovny Socket.io, která je je postavena na transportní knihovně Engine.io.
 Knihovna Socket.io poskytuje ucelené \gls{API} pro použití technologie WebSocket, pro všechny modelní prohlížeče, ale i pro prohlížeče, které technologii WebSocket dosud nepodporují a to díky transparentnímu použití záložní komunikace pomocí long pollingu (viz sekce~\ref{subsubsec:pooling}).
 
-Komunikaci ve skutečném čase využívá komponenta editoru pro synchronizaci textových operací, ale také pro zobrazení nových zpráv u dokumentu ve skutečném čase.
-Komunikace probíhá po jednotlivých zprávách.
-Každá má své jméno, může mít libovolný počet parametrů a funkci zpětného volání (tzv\. callback).
+\subsection{Druhy zpráv}\label{subsec:druhyZprávyVeSkutečnémČase}
+
+Komunikaci ve skutečném čase využívá komponenta editoru pro synchronizaci textových operací, ale také pro zobrazení nových zpráv v komunikační vlákně dokumentu.
+Dílčí části komunikace se nazývají zprávy.
+Každá zpráva má své jméno, podle kterého jsou od sebe zprávy rozeznávány.
+Zpráva může mít libovolný počet parametrů a nepovinnou funkci zpětného volání.
+
+V této sekci je obsažen kompletní výpis druhů zpráv zasílaných mezi klientem a serverem.
+
+\subsubsection{Připojení k dokumentu} % join(callback), rejoin(callback)
+
+Zpráva Připojení k dokumentu je první zprávou, co klient serveru pošle.
+Server si klienta poznamená, zkontroluje jeho oprávnění, obeznámí ostatní klienty jeho připojením a pomocí zpětného volání vrátí klientu informace o dokumentu, ke kterému se právě připojil.
+Tato zpráva existuje ve dvou variantách, jedna pro prvotní připojení a druhá pro případ opakovaného připojení po obnovení přerušeného spojení.
+
+\subsubsection{Změň jméno} % set_name(clientId, name)
+
+Zprávu Změň jméno odešle server klientům, aby je informoval o nově připojeném klientu.
+Součástí zprávy je identifikátor nově připojeného klienta a jeho jméno.
+
+\subsubsection{Klient se odpojil} % client_left(clientId)
+
+Zprávu Klient se odpojil odešle server zbylým klientům po odpojení jiného klienta.
+Ostatní klienti si odeberou ze svého seznamu klientů klienta s přijatým identifikátorem, který obdrží v rámci této zprávy.
+
+\subsubsection{Operace} % operation(revision, operation, selection)
+
+Zpráva Operace slouží pro propagaci operací mezi připojenými klienty.
+Součástí zprávy Operace je číslo další očekávané verze (mezi autorem a serverem), aby server mohl operaci transformovat vůči všem kolizním operacím (více o algoritmu v sekci~\ref{subsec:operacniTransformace}).
+
+Autor změny odešle zprávu Operace na server, který ji transformovanou uloží a následně odešle všem ostatním klientům, kteří jsou připojeni ke stejnému dokumentu.
+Nakonec Operace server odešle autorovi zprávu Potvrzení.
+
+\subsubsection{Vybrání} % selection(selection)
+
+Zpráva Vybrání slouží pro propagaci změny kurzoru (či vybrání části textu) mezi klienty.
+Server tuto zprávu nijak nezpracovává a pouze ji propaguje ostatním klientům.
+
+Tato zpráva je použita pouze pro případ, že se změnila pozice kurzoru bez změny textu (změna pozice kurzoru při změně textu je obsažena již ev zprávě Operace).
+
+\subsubsection{Nastavení} % settings(settings)
+
+Zpráva Nastavení slouží pro synchronizaci změn nastavení mezi aktuálně připojenými klienty.
+Klient zprávu odešle spolu se změněným nastavením dokumentu, server nastavení pro daný dokument uloží a následovně jej odešle ostatním připojeným klientům.
+
+\subsubsection{Zpráva} % chat_message(message, callback)
+
+Tento druh zpráv slouží pro propagaci nových zpráv komunikačního vlákna dokumentu.
+Klient odešle zprávu s textem na server, ten ji uloží a odešle ostatním připojeným klientům.
+
+Tento způsob propagace je kombinován s \gls{REST} koncovými body (viz sekce~\ref{sec:restKomunikace}), které umožňují klientům získat například historii komunikačního vlákna.
+
+\subsubsection{Chyba} % disconnect_error(status)
+
+Zpráva Chyba předchází násilnému odpojení klienta od dokumentu.
+Její příčinou může být například nedostatečné oprávnění uživatele, či nenalezení příslušného dokumentu.
+
+Součástí zprávy Chyba je stavový kód chyby, který může nabývat hodnot 404 (dokument nebyl nalezen nebo k němu nemá uživatel oprávnění) a 403 (uživatel provedl operaci, ke které neměl dostatečné oprávnění).
