@@ -30,12 +30,12 @@ Hapi.js je framework pro Node.js vyvíjený společností WalMart.
 Byl vytvořen jako přímá náhrada frameworku Express.js a snaží se řešit jeho nedostatečnou kódovou nezávislost použitím modulární architektury.
 
 Modulární architektura tento problém sice řeší, ale přidává do frameworku vysokou složitost návrhu.
-Tato složitost je pro většinu projektů zbytečně vysoká a nevyrovná se přidané hodnotě, která přichází oproti použití Express.js.
+Tato složitost je pro většinu projektů zbytečně vysoká a nevyrovná se přidané hodnotě, která framework přináší oproti použití Express.js.
 
 \subsection{Výběř frameworku}\label{subsec:výběřFrameworku}
 
 Nakonec jsem se rozhodl použít framework Express.js, převážně kvůli jeho jednoduchosti a rozšířenosti mezi vývojáři, která může být nápomocna hlavně při řešení potenciálního problému.
-Jelikož mám navrhnout a implementovat pouze prototyp aplikace, nepovažuji za vhodné zvolit robustní framework typu Sail.js, či Hapi.js.
+Frameworky Sail.js a Hapi.js se svou velikostí hodí spíše pro větší produkční systémy a nejsou příliš vhodné pro implementaci prototypu této aplikace.
 
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
 
@@ -44,7 +44,7 @@ Tyto koncové body přijímají různý počet parametrů, které mohou být jak
 
 \subsubsection{Registrace uživatele}
 
-Koncový bod zajišťující registraci nového uživatele.
+Koncový bod umožňující registraci nového uživatele.
 Tento koncový bod přijímá parametry uživatelské jméno, heslo a email.
 
 Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth}.
@@ -107,15 +107,16 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:DELETE/api/auth
 
 Koncový bod sloužící k obnově zapomenutého hesla.
 Přijímá parametry email a uživatelské jméno.
-Pokud je nalezen uživatel se přijatými údaji je mu odeslán email včetně postupu obnovy hesla pomocí unikátního vygenerovaného kódem.
+
+Pokud je nalezen uživatel se přijatými údaji je mu odeslán email obsahující instrukce pro obnovu hesla pomocí unikátního vygenerovaného kódu.
 
 \subsubsection{GET /api/auth/forgotPassword/:token}
 
-Koncový bod zjišťující existenci předaného parametru token.
+Koncový bod zjišťující existenci kódu pro obnovy hesla předaného pomocí parametru token.
 
 \subsubsection{PUT /api/auth/forgotPassword/:token}
 
-Koncový bod, který umožňuje za podmínky validního parametru token provést změnu hesla na nové zaslané heslo jako parametr.
+Koncový bod, který umožňuje za podmínky validního kódu pro obnovu hesla (parametr token) provést změnu hesla na nové heslo.
 
 \subsubsection{GET /api/user}
 
@@ -125,6 +126,7 @@ Koncový bod pro zjištění informací o aktuálně přihlášeném uživateli.
 
 Koncový bod umožňující aktualizaci jednotlivých parametrů přihlášeného uživatele.
 Přijímanými parametry jsou uživatelské jméno, email, nové heslo a aktuální heslo.
+
 Veškeré změny musí být potvrzeny platným aktuální heslem.
 
 \subsubsection{GET /api/user/document-settings}
@@ -160,39 +162,47 @@ Koncový bod pro získání dokumentů vytvořených aktuálně přihlášeným 
 
 Koncový bod pro získání zpráv ohledně dokumentu identifikovaného pomocí parametru documentId.
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
-Počet vrácených zpráv lze ovlivnit parametrem number a čas odeslání poslední vrácené zprávy lze určit parametrem lastDate.
+
+Počet vrácených zpráv lze ovlivnit \gls{URL} parametrem number a čas odeslání poslední vrácené zprávy lze určit \gls{URL} parametrem lastDate.
 
 \subsubsection{POST /api/document/:documentId/messages}
 Koncový bod umožňující vytvoření nové zprávy pro dokument identifikovaný pomocí parametru documentId s textem určeným parametrem message.
+
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
 
 \subsubsection{GET /api/document/:documentId/rights}
 
 Koncový bod pro získání informací ohledně oprávnění a jednotlivých pozvánek dokumentu identifikovaného pomocí parametru documentId.
+
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
 \subsubsection{PUT /api/document/:documentId/rights}
 
 Koncový bod pro úpravu oprávnění pro uživatele přistupující k dokumentu (identifikovaného pomocí parametru documentId) pomocí veřejného odkazu.
+
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
 \subsubsection{PUT /api/document/:documentId/rights/invite}
 
 Koncový bod pro úpravu oprávnění pro přizvaného uživatele k dokumentu (identifikovaného pomocí parametru documentId).
 Uživatel je identifikován pomocí parametru uživatelské jméno.
+
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
 \subsubsection{DELETE /api/document/:documentId/rights/:toUserId}
 
 Koncový bod umožňující odstranění pozvánky pro uživatele (identifikovaného pomocí parametru toUserId) k dokumentu (identifikovaného pomocí parametru documentId).
+
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
 \subsubsection{DELETE /api/document/:documentId}
 
 Koncový bod umožňující trvalé odstranění dokumentu identifikovaného pomocí parametru documentId.
+
 Pro jeho použití musí být aktuálně přihlášený uživatel vlastníkem dokumentu.
 
 \subsubsection{GET /locales/:lang/translation.json}
 
 Koncový bod umožňující stažení textových překladů pro webové rozhraní.
+
 Jazyk vrácených textů je určen pomocí parametru lang (například hodnota cs vrátí českou jazykovou mutaci textů).

@@ -19,13 +19,14 @@ Dílčí části komunikace se nazývají zprávy.
 Každá zpráva má své jméno, podle kterého jsou od sebe zprávy rozeznávány.
 Zpráva může mít libovolný počet parametrů a nepovinnou funkci zpětného volání.
 
-V této sekci je obsažen kompletní výpis druhů zpráv zasílaných mezi klientem a serverem.
+V této sekci následuje kompletní výpis druhů zpráv zasílaných mezi klientem a serverem.
 
 \subsubsection{Připojení k dokumentu} % join(callback), rejoin(callback)
 
 Zpráva Připojení k dokumentu je první zprávou, co klient serveru pošle.
 Server si klienta poznamená, zkontroluje jeho oprávnění, obeznámí ostatní klienty jeho připojením a pomocí zpětného volání vrátí klientu informace o dokumentu, ke kterému se právě připojil.
-Tato zpráva existuje ve dvou variantách, jedna pro prvotní připojení a druhá pro případ opakovaného připojení po obnovení přerušeného spojení.
+
+Tato zpráva existuje ve dvou variantách, jako zpráva pro prvotní připojení k dokumentu a jako zpráva pro opakované připojení po obnovení přerušeného spojení mezi klientem a serverem.
 
 \subsubsection{Změň jméno} % set_name(clientId, name)
 
@@ -69,4 +70,6 @@ Tento způsob propagace je kombinován s \gls{REST} koncovými body (viz sekce~\
 Zpráva Chyba předchází násilnému odpojení klienta od dokumentu.
 Její příčinou může být například nedostatečné oprávnění uživatele, či nenalezení příslušného dokumentu.
 
-Součástí zprávy Chyba je stavový kód chyby, který může nabývat hodnot 404 (dokument nebyl nalezen nebo k němu nemá uživatel oprávnění) a 403 (uživatel provedl operaci, ke které neměl dostatečné oprávnění).
+Součástí zprávy Chyba je stavový kód chyby, který může nabývat hodnot 404 nebo 403.
+Hodnota 404 značí, že nebyl nalezen požadovaný dokument nebo k němu neměl uživatel oprávnění.
+A hodnota 403 značí, že uživatel provedl operaci, ke které neměl dostatečné oprávnění.
