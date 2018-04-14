@@ -3,6 +3,7 @@
  * https://github.com/Operational-Transformation/ot.js/
  *
  * Only minor functional changes were made (mostly rewritten to ES6).
+ * Cooperation with adapters and usage of EventEmitter designed and implemented by Jiří Šimeček.
  */
 
 import {Client, Selection, TextOperation} from 'ot';
