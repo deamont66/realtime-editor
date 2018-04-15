@@ -36,7 +36,7 @@ Součástí zprávy je identifikátor nově připojeného klienta a jeho jméno.
 \subsubsection{Klient se odpojil} % client_left(clientId)
 
 Zprávu Klient se odpojil odešle server zbylým klientům po odpojení jiného klienta.
-Ostatní klienti si odeberou ze svého seznamu klientů klienta s přijatým identifikátorem, který obdrží v rámci této zprávy.
+Zbylí klienti si odpojeného klienta, kterého identifikují pomocí identifikátoru v parametru zprávy, odeberou ze svého seznamu klientů.
 
 \subsubsection{Operace} % operation(revision, operation, selection)
 
