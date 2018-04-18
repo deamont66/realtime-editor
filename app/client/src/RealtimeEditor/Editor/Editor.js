@@ -5,8 +5,8 @@ import {UnControlled as ReactCodeMirror} from 'react-codemirror2';
 
 import Grid from 'material-ui/Grid';
 
-import EditorModes from '../../../Utils/EditorModes';
-import EditorThemes from '../../../Utils/EditorThemes';
+import EditorModes from '../../Utils/EditorModes';
+import EditorThemes from '../../Utils/EditorThemes';
 
 import './Editor.css';
 

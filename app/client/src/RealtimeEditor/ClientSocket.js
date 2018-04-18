@@ -2,9 +2,9 @@ import io from 'socket.io-client';
 import EventEmitter from 'event-emitter-es6';
 import {TextOperation} from 'ot';
 
-import {SocketIOServerAdapter, EditorClient, CodeMirrorEditorAdapter} from '../../OperationalTransformation';
+import {SocketIOServerAdapter, EditorClient, CodeMirrorEditorAdapter} from '../OperationalTransformation';
 
-import createColor from '../../Utils/ColorGenerator';
+import createColor from '../Utils/ColorGenerator';
 
 /**
  * Event types:
