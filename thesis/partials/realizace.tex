@@ -4,3 +4,41 @@
 %\inputencoding{utf8}
 
 \chapter{Realizace}\label{ch:realizace}
+
+Jednotlivé zajímavé části prototypu (zatím se jedná jen o popsanou struktury kapitoly).
+
+\section{Autentizace}
+
+Využití knihovny passport.js.
+Autentizace pomocí ČVUT hesla a sociálních sítí (OAuth2).
+
+\subsection{Zapomatování uživatele}
+
+Cookie token a jeho konzumace/generace při každém požadavku (ochrana cookie hijacking).
+
+\subsection{Přihlášení pomocí hesla}
+
+\subsubsection{Uložení hesla}
+
+Použití hashovací funkce bcrypt a jeho výhody oproti použití "rychlých" hashovacích funkcí jako jsou funkce standartu sha (dedikovaný hardware a špatně nastavitelná obtížnost výpočtu).
+
+\subsubsection{Odhad obtížnosti hesla}
+
+Knihovna zxcvb od společnost Dropbox.
+Problém s vynucování speciálních znaků v heslech (například hesla typu P@ssw0rd, které nemají téměř žádnou přidanou obtížnost díky použití známých substitucí).
+
+\section{Autorizace}
+
+Třída/metody \texttt{DocumentVoter} a řešení práv pro přístup k dokumentům.
+
+Problém při zobrazení editoru (klient neví jestli dokument vůbec existuje nebo zda-li k němu má uživatel oprávnění) a jeho částí.
+
+\section{Překlady}
+
+Knihovna i18next a rect-i18next, asynchronní načítání překladů.
+
+\section{Materail desing}
+
+Knihovna material-ui ve verzi 1+, material design doporučení přímo od Google.
+Co to řeší (konzistence a přístupnost UX), jak jsem to použil.
+

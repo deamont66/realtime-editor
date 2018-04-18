@@ -52,7 +52,7 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth}.
 \begin{table}[ht!]\centering
     \caption{Koncový bod Registrace uživatele}\label{tab:POST/api/auth}
 
-    \begin{tabular}{r|l p{5.5cm}}
+    \begin{tabular}{r|p{2.5cm} p{5.5cm}}
         \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth}\\ \hline
         \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{POST}\\ \hline
         \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
@@ -73,7 +73,7 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth/s
 \begin{table}[ht!]\centering
 \caption{Koncový bod Přihlášení uživatele}\label{tab:POST/api/auth/signIn}
 
-\begin{tabular}{r|l p{5.5cm}}
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
     \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth/signIn}\\ \hline
     \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{POST}\\ \hline
     \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
@@ -93,116 +93,376 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:DELETE/api/auth
 \begin{table}[ht!]\centering
 \caption{Koncový bod Ohlášení uživatele}\label{tab:DELETE/api/auth}
 
-\begin{tabular}{r|l p{5.5cm}}
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
     \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth}\\ \hline
     \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{DELETE}\\ \hline
     \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
-    Data parametry: & \multicolumn{2}{ l }{žádné}\\
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
     Úspěch: & 204 & \\ \hline
     Neúspěch: & 401, 422 & Popis chyby\\ \hline
 \end{tabular}
 \end{table}
 
-\subsubsection{POST /api/auth/forgotPassword}
+\subsubsection{Odeslání požadavku na obnovu hesla POST /api/auth/forgotPassword}
 
 Koncový bod sloužící k obnově zapomenutého hesla.
 Přijímá parametry email a uživatelské jméno.
 
 Pokud je nalezen uživatel se přijatými údaji je mu odeslán email obsahující instrukce pro obnovu hesla pomocí unikátního vygenerovaného kódu.
 
-\subsubsection{GET /api/auth/forgotPassword/:token}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Odeslání požadavku na obnovu hesla}\label{tab:POST/api/auth/forgotPassword}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth/forgotPassword}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{POST}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & username & [String]\\
+    & email & [String]\\ \hline
+    Úspěch: & 200 & Neutrální zpráva o provedení operace \\ \hline
+    Neúspěch: & \multicolumn{2}{ l }{Nenastává}\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Zjištění platnosti kódu pro obnovu hesla}
 
 Koncový bod zjišťující existenci kódu pro obnovy hesla předaného pomocí parametru token.
 
-\subsubsection{PUT /api/auth/forgotPassword/:token}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Zjištění platnosti kódu pro obnovu hesla}\label{tab:GET/api/auth/forgotPassword/:token}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth/forgotPassword/:token}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & token & [String]\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 404 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Obnova hesla pomocí kódu}
 
 Koncový bod, který umožňuje za podmínky validního kódu pro obnovu hesla (parametr token) provést změnu hesla na nové heslo.
 
-\subsubsection{GET /api/user}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Obnova hesla pomocí kódu}\label{tab:PUT/api/auth/forgotPassword/:token}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/auth/forgotPassword/:token}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{PUT}\\ \hline
+    \acrshort{URL} parametry: & token & [String]\\ \hline
+    Data parametry: &  newPassword & [String] \\ \hline
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 404, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Informace o přihlášeném uživateli}
 
 Koncový bod pro zjištění informací o aktuálně přihlášeném uživateli.
 
-\subsubsection{PUT /api/user}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Informace o přihlášeném uživateli}\label{tab:GET/api/user}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/user}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Informace o přihlášeném uživateli\\ \hline
+    Neúspěch: & 401 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Změna údajů přihlášeného uživatele}
 
 Koncový bod umožňující aktualizaci jednotlivých parametrů přihlášeného uživatele.
-Přijímanými parametry jsou uživatelské jméno, email, nové heslo a aktuální heslo.
 
-Veškeré změny musí být potvrzeny platným aktuální heslem.
+Parametry jsou volitelné, stačí tedy odeslat pouze údaje, které mají být změněné.
+Veškeré změny musí být potvrzeny platným aktuální heslem (parametr password je tedy povinný vždy).
 
-\subsubsection{GET /api/user/document-settings}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Změna údajů přihlášeného uživatele}\label{tab:PUT/api/user}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/user}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{PUT}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & username & [String]\\
+    & email & [String]\\
+    & newPassword & [String]\\
+    & password & [String]\\ \hline
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 401, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Výchozí nastavení dokumentů}
 
 Koncový bod pro zjištění výchozího nastavení pro nové dokumenty aktuálně přihlášeného uživatele.
 
-\subsubsection{PUT /api/user/document-settings}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Výchozí nastavení dokumentů}\label{tab:GET/api/user/document-settings}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/user/document-settings}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Výchozí nastavení dokumentů\\ \hline
+    Neúspěch: & 401 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Změna výchozího nastavení dokumentů}
 
 Koncový bod umožňující změnu jednotlivých polí výchozího nastavení pro dokumenty aktuálně přihlášeného uživatele.
 Přijímanými parametry jsou všechny pole entity DocumentSettings z databázového schématu na obrázku~\ref{fig:DB_model} (krom pole \_id).
 
-\subsubsection{POST /api/document}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Změna výchozího nastavení dokumentů}\label{tab:PUT/api/user/document-settings}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/user/document-settings}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{PUT}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & settings.theme & [String]\\
+    & mode & [Number]\\
+    & tabSize & [Number]\\
+    & indentUnit & [Number]\\
+    & indentWithTabs & [Boolean]\\
+    & fontSize & [Number]\\
+    & keyMap & [String]\\
+    & styleActiveLine & [String]\\
+    & lineWrapping & [Boolean]\\
+    & lineNumbers & [Boolean]\\ \hline
+    Úspěch: & 200 & Výchozí nastavení dokumentů\\ \hline
+    Neúspěch: & 401, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Vytvoření dokumentu}
 
 Koncový bod umožňující aktuálně přihlášenému uživateli vytvořit nový dokument.
 
-\subsubsection{GET /api/document}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Vytvoření dokumentu}\label{tab:POST/api/document}
 
-Koncový bod pro získání dokumentů vytvořených aktuálně přihlášeným uživatelem.
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{POST}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Identifikátor vytvořeného dokumentu\\ \hline
+    Neúspěch: & 401 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
 
-\subsubsection{GET /api/document/last}
-
-Koncový bod pro získání dostupných dokumentů, ke kterým v minulosti přistoupil aktuálně přihlášený uživatel.
-
-\subsubsection{GET /api/document/shared}
-
-Koncový bod pro získání dokumentů, ke kterým byl aktuálně přihlášený uživatel přizván.
-
-\subsubsection{GET /api/document}
+\subsubsection{Vytvořené dokumenty}
 
 Koncový bod pro získání dokumentů vytvořených aktuálně přihlášeným uživatelem (je jejich vlastníkem).
 
-\subsubsection{GET /api/document/:documentId/messages}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Vytvořené dokumenty}\label{tab:GET/api/document}
 
-Koncový bod pro získání zpráv ohledně dokumentu identifikovaného pomocí parametru documentId.
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Seznam dokumentů\\ \hline
+    Neúspěch: & 401 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Poslední dokumenty}
+
+Koncový bod pro získání dostupných dokumentů, ke kterým v minulosti přistoupil aktuálně přihlášený uživatel.
+
+\begin{table}[ht!]\centering
+\caption{Koncový bod Poslední dokumenty}\label{tab:GET/api/document/last}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/last}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Seznam dokumentů\\ \hline
+    Neúspěch: & 401 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Sdílené dokumenty}
+
+Koncový bod pro získání dokumentů, ke kterým byl aktuálně přihlášený uživatel přizván.
+
+\begin{table}[ht!]\centering
+\caption{Koncový bod Sdílené dokumenty}\label{tab:GET/api/document/shared}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/shared}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Seznam dokumentů\\ \hline
+    Neúspěch: & 401 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Komunikační vlákno dokumentu}
+
+Koncový bod pro získání zpráv komunikačního vlákna dokumentu identifikovaného pomocí parametru documentId.
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
 
-Počet vrácených zpráv lze ovlivnit \gls{URL} parametrem number a čas odeslání poslední vrácené zprávy lze určit \gls{URL} parametrem lastDate.
+Počet vrácených zpráv lze ovlivnit volitelným \gls{URL} parametrem number a čas odeslání poslední vrácené zprávy lze určit volitelným \gls{URL} parametrem lastDate.
 
-\subsubsection{POST /api/document/:documentId/messages}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Komunikační vlákno dokumentu}\label{tab:GET/api/document/:documentId/messages}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/:documentId/messages}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & documentId & [String]\\
+    & lastDate & [Date]\\
+    & number & [Number]\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Seznam zpráv\\ \hline
+    Neúspěch: & 403, 404, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Odeslání nové zprávy}
 Koncový bod umožňující vytvoření nové zprávy pro dokument identifikovaný pomocí parametru documentId s textem určeným parametrem message.
 
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
 
-\subsubsection{GET /api/document/:documentId/rights}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Odeslání nové zprávy}\label{tab:POST/api/document/:documentId/messages}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/:documentId/messages}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{POST}\\ \hline
+    \acrshort{URL} parametry: & documentId & [String]\\ \hline
+    Data parametry: & message & [String]\\ \hline
+    Úspěch: & 204 &\\ \hline
+    Neúspěch: & 401, 403, 404, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Práva dokumentu}
 
 Koncový bod pro získání informací ohledně oprávnění a jednotlivých pozvánek dokumentu identifikovaného pomocí parametru documentId.
 
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
-\subsubsection{PUT /api/document/:documentId/rights}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Práva dokumentu}\label{tab:GET/api/document/:documentId/rights}
+
+\begin{tabular}{r|p{2.5cm} p{4.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/:documentId/rights}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & documentId & [String]\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné}\\ \hline
+    Úspěch: & 200 & Informace o sdílení dokumentu\\ \hline
+    Neúspěch: & 403, 404 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Změna práv veřejného odkazu dokumentu}
 
 Koncový bod pro úpravu oprávnění pro uživatele přistupující k dokumentu (identifikovaného pomocí parametru documentId) pomocí veřejného odkazu.
 
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
-\subsubsection{PUT /api/document/:documentId/rights/invite}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Změna práv veřejného odkazu dokumentu}\label{tab:PUT/api/document/:documentId/rights}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/:documentId/rights}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{PUT}\\ \hline
+    \acrshort{URL} parametry: & documentId & [String]\\ \hline
+    Data parametry: & shareLinkRights & [Number]\\ \hline
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 403, 404, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Pozvání uživatele k dokumentu}
 
 Koncový bod pro úpravu oprávnění pro přizvaného uživatele k dokumentu (identifikovaného pomocí parametru documentId).
-Uživatel je identifikován pomocí parametru uživatelské jméno.
+Pozvaný uživatel je identifikován pomocí uživatelského jména v parametru.
 
-Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
-\subsubsection{DELETE /api/document/:documentId/rights/:toUserId}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Pozvání uživatele k dokumentu}\label{tab:PUT/api/document/:documentId/rights/invite}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/:documentId/rights/invite}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{PUT}\\ \hline
+    \acrshort{URL} parametry: & documentId & [String]\\ \hline
+    Data parametry: & rights & [Number]\\
+    & to & [String]\\ \hline
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 403, 404, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Odstranění pozvánky k dokumentu}
 
 Koncový bod umožňující odstranění pozvánky pro uživatele (identifikovaného pomocí parametru toUserId) k dokumentu (identifikovaného pomocí parametru documentId).
 
 Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
-\subsubsection{DELETE /api/document/:documentId}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Odstranění pozvánky k dokumentu}\label{tab:DELETE/api/document/:documentId/rights/:toUserId}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/:documentId/rights/:toUserId}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{DELETE}\\ \hline
+    \acrshort{URL} parametry: & documentId & [String]\\
+    & toUserId & [String]\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné} \\ \hline
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 403, 404, 422 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Odstranění dokumentu}
 
 Koncový bod umožňující trvalé odstranění dokumentu identifikovaného pomocí parametru documentId.
 
 Pro jeho použití musí být aktuálně přihlášený uživatel vlastníkem dokumentu.
 
-\subsubsection{GET /locales/:lang/translation.json}
+\begin{table}[ht!]\centering
+\caption{Koncový bod Odstranění dokumentu}\label{tab:DELETE/api/document/:documentId}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/api/document/:documentId}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{DELETE}\\ \hline
+    \acrshort{URL} parametry: & documentId & [String]\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné} \\ \hline
+    Úspěch: & 204 & \\ \hline
+    Neúspěch: & 403, 404 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Překlady webového rozhraní}
 
 Koncový bod umožňující stažení textových překladů pro webové rozhraní.
 
 Jazyk vrácených textů je určen pomocí parametru lang (například hodnota cs vrátí českou jazykovou mutaci textů).
+
+\begin{table}[ht!]\centering
+\caption{Koncový bod Překlady webového rozhraní}\label{tab:GET/locales/:lang/translation.json}
+
+\begin{tabular}{r|p{2.5cm} p{5.5cm}}
+    \acrshort{URL}: & \multicolumn{2}{ l }{/locales/:lang/translation.json}\\ \hline
+    \acrshort{HTTP} metoda: & \multicolumn{2}{ l }{GET}\\ \hline
+    \acrshort{URL} parametry: & lang & [String]\\ \hline
+    Data parametry: & \multicolumn{2}{ l }{žádné} \\ \hline
+    Úspěch: & 200 & \gls{JSON} s textovými překlady \\ \hline
+    Neúspěch: & 404 & Popis chyby\\ \hline
+\end{tabular}
+\end{table}
