@@ -17,8 +17,14 @@ router.post('/signIn', [
 ], controller.postLocalSignIn);
 
 router.get('/forgotPassword/:token', validator.validateNotLoggedIn(), controller.getForgotPassword);
-router.put('/forgotPassword/:token', validator.validateNotLoggedIn(), controller.putForgetPassword);
-router.post('/forgotPassword', validator.validateNotLoggedIn(), controller.postForgetPassword);
+router.put('/forgotPassword/:token', [
+    validator.validateNotLoggedIn(),
+    validator.validateForgotPasswordReset(),
+], controller.putForgetPassword);
+router.post('/forgotPassword', [
+    validator.validateNotLoggedIn(),
+    validator.validateForgotPasswordRequest(),
+], controller.postForgetPassword);
 
 /* -- CTU OAuth2Strategy --*/
 router.delete('/ctu', validator.validateLoggedIn(), controller.deleteField('CTUUsername'));

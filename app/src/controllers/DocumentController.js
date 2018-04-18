@@ -81,9 +81,7 @@ module.exports = {
                 return MessageRepository.createMessage(document, req.user, data.message);
             });
         }).then(() => {
-            res.json({
-                status: 'success'
-            });
+            res.sendStatus(204);
         }).catch((err) => {
             next(err);
         });

@@ -24,6 +24,23 @@ class AuthMiddleware extends AbstractMiddleware {
         ]
     }
 
+    static validateForgotPasswordRequest() {
+        return [
+            check('email').trim().not().isEmpty().withMessage('email.validation.required')
+                .isEmail().withMessage('email.validation.valid').normalizeEmail(),
+            check('username').trim().not().isEmpty().withMessage('username.validation.required'),
+            super.validateRequest()
+        ]
+    }
+
+    static validateForgotPasswordReset() {
+        return [
+            check('token').trim().not().isEmpty(),
+            check('newPassword').trim().not().isEmpty().withMessage('password.validation.required'),
+            super.validateRequest()
+        ]
+    }
+
     static validateLoggedIn() {
         return (req, res, next) => {
             if (!req.user) {

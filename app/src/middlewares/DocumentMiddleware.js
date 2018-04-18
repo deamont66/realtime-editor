@@ -29,7 +29,7 @@ class DocumentMiddleware extends AbstractMiddleware {
 
     static validateUserRights() {
         return [
-            check('rights').not().isEmpty().isInt().toInt({min: 0, max: 4}),
+            check('rights').not().isEmpty().isInt().toInt({min: 1, max: 4}),
             check('to').not().isEmpty().isLength({min: 1}),
             super.validateRequest()
         ];
