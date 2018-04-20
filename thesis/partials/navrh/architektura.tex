@@ -3,14 +3,19 @@
 % vim: set fenc=utf-8
 
 \section{Architektura}\label{sec:architektura}
-% TODO: diagram?
 
 Architektura určuje strukturu a části aplikace.
 V této sekci vysvětlím jednotlivé části navržené architektury prototypu.
 
 Navrženou architekturu rozdělím na tři část, klientskou, serverovou a databázovou část.
-Jedná se o model klient-server, protože je od sebe role klienta a serveru odděleny.
+Jedná se o model klient-server (viz obrázek~\ref{fig:client_server}), protože jsou od sebe role klienta a serveru odděleny.
 Komunikace mezi nimi probíhá pomocí předem definovaných aplikačních rozhraní postavených na protokolu \gls{HTTP} (více o rozhraní v sekcích~\ref{sec:restKomunikace} a~\ref{sec:komunikaceVeSkutečnémČase}).
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{partials/navrh/clientServer.pdf}
+    \caption{Diagram modelu klient-server}\label{fig:client_server}
+\end{figure}
 
 \subsection{Klientská část}\label{subsec:klientskáČást}
 
