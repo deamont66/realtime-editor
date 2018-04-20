@@ -1,9 +1,16 @@
-
 \section{Uživatelské případy}\label{sec:uzivatelskePripady}
 
-% TODO: přidat úvod k uživatelským případům
+Uživatelské případy blíže rozvádějí funkční požadavky (viz sekce~\ref{sec:seznamFunkčníchPožadavků}) a přesněji tak vymezují funkčnosti aplikace.
+V rámci navrhovaného prototyp této aplikaci nejsou rozlišovány žádné uživatelské role.
+Rozlišován je pouze přihlášený uživatel od obecného nepřihlášeného uživatele.
+Z tohoto důvod se v uživatelských případech vyskytují pouze tito dva aktéři.
 
-% TODO: přidat diagram uživatelských pořadavků
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{partials/analyza/useCases.pdf}
+    \caption{Diagram uživatelských případů}\label{fig:useCases}
+\end{figure}
+
 
 \paragraph{UC1 -- Vytvoření uživatelského účtu}
 
@@ -95,4 +102,18 @@ Panel s komunikačním vláknem je zobrazen po kliknutí na tlačítko s ikonou 
 
 \subsection{Matice pokrytí funkčních požadavků}\label{subsec:maticePokrytíFunkčníchPožadavků}
 
-% TODO: přidat tabulky pokrytí UC a funkčích požadavků
+Při návrhu uživatelských případů je důležité ověřit, zda-li jsme případy pokryli všechny funkční požadavky.
+Právě k tomuto účelu slouží matice pokrytí funkčních požadavků (viz tabulka~\ref{tab:maticePokryti}).
+Matice pokrytí nám ukazuje, které funkční požadavky jsou pokryt v rámci jednotlivých uživatelských případů.
+
+\begin{table}[ht!]
+    \centering
+    \caption{Matice pokrytí uživatelských požadavků}\label{tab:maticePokryti}
+
+    \begin{tabular}{r|c c c c c c c c c c}
+           & UC1      & UC2      & UC3      & UC4      & UC5      & UC6      & UC7      & UC8      & UC9      & UC10     \\ \hline
+        F1 & $\times$ & $\times$ & $\times$ & $\times$ &          &          &          &          &          &          \\
+        F2 &          &          &          & $\times$ & $\times$ & $\times$ & $\times$ &          & $\times$ &          \\
+        F3 &          &          &          &          &          &          & $\times$ & $\times$ & $\times$ & $\times$ \\
+    \end{tabular}
+\end{table}
