@@ -20,6 +20,10 @@ Jednotlivé entity schématu přímo reflektují entity z doménového modelu uv
 Přibyly pouze implementační detaily a atributy jednotlivých relací mezi entitami.
 Také se změnily názvy entit a jejich atributů z českého do anglického jazyka, aby lepé reflektovali samotný kód aplikace.
 
+Jedinou výraznou změnou oproti doménovému modelu, která zde stojí za zmínku, je entita \texttt{User}.
+Přibyly zde atributy sloužící pro autentizaci pomocí služeb třetích stran (například sociální sítě, či \acrshort{ČVUT} heslo).
+Tyto atributy nesou identifikační údaj pro uživatele v rámci dané autentizační služby třetí strany jako je například facebookId pro sociální síť Facebook, či \acrshort{ČVUT} uživatelské jméno pro přihlášení pomocí \acrshort{ČVUT} hesla.
+
 % TODO: upravit cestu podle finální přílohy
 Kompletní definice schématu lze nalézt spolu s ostatními zdrojovými kódy na přeloženém CD ve složce \texttt{/app/src/model}.
 Na definici lze i mimo jiné pozorovat validační pravidla pro jednotlivé atributy, jako jsou například číselné rozsahy, maximální délky atd.
