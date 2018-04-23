@@ -7,6 +7,12 @@
 
 Jednotlivé zajímavé části prototypu (zatím se jedná jen o popsanou struktury kapitoly).
 
+\section{Zveřejnění klientské části}\label{sec:zveřejněníKlientskéČásti}
+
+\subsection{Sdílení veřejných odkazů na dokumenty}
+
+Server rendering meta tagů, knihovna react-helmet pro jejich aktualizaci.
+
 \section{Autentizace}
 
 Využití knihovny passport.js.
@@ -14,13 +20,13 @@ Autentizace pomocí ČVUT hesla a sociálních sítí (OAuth2).
 
 \subsection{Zapomatování uživatele}
 
-Cookie token a jeho konzumace/generace při každém požadavku (ochrana cookie hijacking).
+Cookie remember me token a jeho konzumace/generace při každém požadavku (ochrana cookie hijacking).
 
 \subsection{Přihlášení pomocí hesla}
 
 \subsubsection{Uložení hesla}
 
-Použití hashovací funkce bcrypt a jeho výhody oproti použití "rychlých" hashovacích funkcí jako jsou funkce standartu sha (dedikovaný hardware a špatně nastavitelná obtížnost výpočtu).
+Použití hashovací funkce bcrypt a jeho výhody oproti použití \enquote{rychlých} hashovacích funkcí jako jsou funkce standartu sha (dedikovaný hardware a špatně nastavitelná obtížnost výpočtu).
 
 \subsubsection{Odhad obtížnosti hesla}
 
