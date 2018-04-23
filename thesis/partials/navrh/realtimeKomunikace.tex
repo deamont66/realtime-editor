@@ -4,8 +4,6 @@
 
 \section{Komunikace ve skutečném čase}\label{sec:komunikaceVeSkutečnémČase}
 
-% TODO: diagramy komunikace s jednotlivými druhy zpráv
-
 K implementaci komunikace ve skutečném čase existuje více způsoby, ale každý má své kompromisy (více o push technologiích v sekci~\ref{subsec:pushTechnologie}).
 Pro komunikaci jsem chtěl použít technologii WebSocket (viz sekce~\ref{subsubsec:websocket}), kvůli podpoře full duplexní oboustranné komunikace, ale zároveň jsem chtěl umožnit použít aplikace uživatelům se starším webovým prohlížečem, či mobilním zařízením.
 
@@ -45,6 +43,17 @@ Součástí zprávy Operace je číslo další očekávané verze (mezi autorem 
 
 Autor změny odešle zprávu Operace na server, který ji transformovanou uloží a následně odešle všem ostatním klientům, kteří jsou připojeni ke stejnému dokumentu.
 Nakonec Operace server odešle autorovi zprávu Potvrzení.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{partials/navrh/ukazkaKomunikaceVeSkutečnémČase.pdf}
+    \caption{Sekvenční diagram ukázka komunikace po změně dokumentu}\label{fig:ukazkaKomunikaceVeSkutečnémČase}
+\end{figure}
+
+\subsubsection{Potvrzení} % ack()
+
+Zprávu Potvrzení odešle server klientovi jako odpověď na nově zaslanou zprávu Operace po té co zprávu zpracuje.
+Klient do doby přijetí zprávy Potvrzení nesmí odeslat na server další zprávu Operace (viz sekce~\ref{subsec:klientskáČást}).
 
 \subsubsection{Vybrání} % selection(selection)
 
