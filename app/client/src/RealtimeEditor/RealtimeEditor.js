@@ -178,6 +178,7 @@ class RealtimeEditor extends React.Component {
 
 RealtimeEditor.propTypes = {
     user: PropTypes.object,
+    documentId: PropTypes.string.isRequired
 };
 
 export default withSlots(['header', 'rightMenus', 'error'])(withStyles(styles)(RealtimeEditor));
