@@ -24,6 +24,11 @@ const styles = theme => ({
 class SingleDocument extends React.Component {
 
     render() {
+
+        return (
+            <RealtimeEditor documentId={'helloWorld'}/>
+        );
+
         return (
             <RealtimeEditor user={this.props.user}
                             documentId={this.props.match.params.documentId}

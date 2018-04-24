@@ -3,3 +3,49 @@
 % vim: set fenc=utf-8
 
 \subsubsection{React.js rozhraní komponenty}
+
+Klientská část komponenty v prototypu je zapouzdřena do React.js komponenty (více o React.js v sekci~\ref{subsec:reactjs}), kterou jsem pojmenoval \texttt{RealtimeEditor}.
+React.js komponenta umožňuje klientskou část znovu použití kdekoliv v aplikaci a pomocí modulárního návrhu lze upravit i její vzhled.
+
+React.js komponenta po svém prvním vykreslení vytvoří spojení k serverové části a vytvoří instanci textového editoru CodeMirror, které předá nově vytvořeným instancím tříd \texttt{SocketIOServerAdapter} a \texttt{CodeMirrorEditorAdapter}.
+Komponenta dálé vytvoří instanci třídy \texttt{EditorClient}, které předá vytvořené instance tříd \texttt{SocketIOServerAdapter} a \texttt{CodeMirrorEditorAdapter}.
+Komponenta ve svém stavu drží infromace o připojených klientech, nastavení a další informace ohledně aktuálně připojeného dokumentu.
+
+\paragraph{Vlastnosti} (anglicky properties) jsou standardním způsobem, jak jednotlivým React komponentám předat informace.
+Jedná o analogické řešení jakým jsou atributy u \gls{HTML} entit (kde atributy jsou vlastnosti a entity jsou samotné komponenty).
+
+React.js komponenta \texttt{RealtimeEditor} přijímá jak povinné, tak i nepovinné vlastnosti (viz tabulka~\ref{tab:reactKomponenta}).
+
+\begin{table}[ht!]\centering
+\caption{Vlastnosti přijímané React.js komponentou RealtimeEditor}\label{tab:reactKomponenta}
+
+\begin{tabular}{l c c p{5.5cm}}
+    Jméno: & Povinná: & Datový typ: & Popis:\\ \hline
+    documentId & ano & String & Identifikátor dokumentu\\ \hline
+    user & ne & Object & Informace o přihlášeném uživateli\\ \hline
+    headerSlot & ne & Node & Komponenta, která se vykreslí na místě hlavičky dokumentu \\ \hline
+    menuSlot & ne & Node & Komponenta, která se vykreslí na místě menu dokumentu \\ \hline
+    errorSlot & ne & Node & Komponenta, která se vykreslí pokud dojde k chybě \\
+\end{tabular}
+\end{table}
+
+Vlastnost \texttt{documentId} označuje identifikátor dokumentu, ke kterému se komponenta má připojit.
+Vlastnost \texttt{user} je objekt s informacemi o přihlášeném uživateli (očekávaná struktura je stejná jako struktura, kterou vrací \gls{REST} koncový bod~\ref{subsubsec:GET/api/user}).
+Pokud není uživatel přihlášen není nutné vlastnost předávat, či stačí předat hodnotu, která se vyhodnotí jako nepravdivá (\texttt{false}, \texttt{null} a další).
+Poslední vlastnosti \texttt{headerSlot}, \texttt{menuSlot} a \texttt{errorSlot} označují modulární React.js komponenty, které jsem vykresleny na specifickém místě \texttt{RealtimeEditor} komponenty.
+Modulárním komponentám jsou předány vnitřní informace o stavu editoru pomocí jejich vlastností.
+
+Nejjednodušší použití komponenty je ukázané ve výpisu kódu~\ref{lst:RealtimeEditor}.
+Tento příklad vykreslí pouze samotný textový editor, který je ovšem aktualizovaný v reálném čase ve všemi uživateli, kteří jsou ve stejnou chvíli připojeni k dokumentu s identifikátorem \enquote{helloWorld}.
+
+\begin{listing}[ht]
+    \begin{minted}{javascript}
+        export default () => (
+            <RealtimeEditor documentId="helloWorld"/>
+        )
+    \end{minted}
+
+    \caption{Příklad použití komponenty RealtimeEditor}\label{lst:RealtimeEditor}
+\end{listing}
+
+
