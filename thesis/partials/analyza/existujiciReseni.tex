@@ -30,9 +30,9 @@ Google Docs využívá Google Apps API, které je také postaveno nad algoritmem
 EtherPad jako webová služba pro kolaborativní editaci textů byla odkoupena společností Google roku 2009 za účelem integrace do tehdejší služby Google Wave~\cite{etherpad:acquired}.
 Google poté zveřejnil zdrojové kódy služby a vznil tak projekt Etherpad, tedy webový textový procesor s otevřeným zdrojovým kódem~\cite{etherpad:openSource}.
 
-Etherpad byl od zveřejnění otevřeného kódu přepsán z jazyka Scala do JavaScriptu~(více o JavaScriptu v~\ref{subsec:javascript}) a serverové prostředí NodeJS~(více o NodeJS v~\ref{subsec:nodejs}), ale původní synchronizační knihovna nazývaná EasySync zůstává nadále stejná~\cite{etherpad:newgithub, etherpad:easySync}.
-Knihovna EasySync (a tím tedy i Etherpad samotný) využívá principy algoritmu \gls{OT} (více o algoritmu v~\ref{subsec:operacniTransformace}) a vylepšení ve formě včetně čekání klienta po odeslání operace na potvrzení od serveru~\cite{etherpad:easySync}.
-Dnes existuje množství nejrůznějších zásuvných modelů, které rozšiřují možnosti nástroje Etherpad a to i včetně modulu pro komunikaci pomocí \gls{WebRTC}, protokol umožňující implementaci audio, či video hovorů přímo ve webové prohlížeči.~\cite{etherpad:plugins}.
+Etherpad byl od zveřejnění otevřeného kódu přepsán z jazyka Scala do JavaScriptu~(více o JavaScriptu v~\ref{subsec:javascript}) pro serverové prostředí NodeJS~(více o NodeJS v~\ref{subsec:nodejs}), ale původní synchronizační knihovna nazývaná EasySync zůstává nadále stejná~\cite{etherpad:newgithub}~\cite{etherpad:easySync}.
+Knihovna EasySync (a tím tedy i Etherpad samotný) využívá principy algoritmu \gls{OT} (více o algoritmu v~\ref{subsec:operacniTransformace}) a to včetně vylepšení ve formě čekání klienta po odeslání operace na potvrzení od serveru~\cite{etherpad:easySync}.
+Dnes existuje množství nejrůznějších zásuvných modulů, které rozšiřují možnosti nástroje Etherpad a to i včetně modulu pro komunikaci pomocí \gls{WebRTC}, protokol umožňující implementaci audio, či video hovorů přímo ve webové prohlížeči.~\cite{etherpad:plugins}.
 
 \begin{figure}[ht]
     \centering
@@ -45,7 +45,7 @@ Dnes existuje množství nejrůznějších zásuvných modelů, které rozšiřu
 Codeshare.io je textový editor zaměřený na vývojáře a jejich spolupráci ve skutečném čase.
 Jako hlavní využití aplikace Codeshare.io její autor zmiňuje pohovory s vývojáři a to díky integrovanému video chatu pomocí technologie \gls{WebRTC}.~\cite{codeshare:home}
 
-\enquote{\textit{Spojil jsem Firebase s Ace editorem a vznikl Codeshare.io, nástroj pro sdílení kódu ve skutečném čase.}}~\cite{codeshare:created} přeložil Jiří Šimeček.
+\enquote{\textit{Spojil jsem Firebase s Ace editorem a vznikl Codeshare.io, nástroj pro sdílení kódu ve skutečném čase.}}~\cite{codeshare:created} přeložil Jiří Šimeček
 
 Codeshare.io využívá k synchronizaci textu databázi Firebase Real-time Datebase od společnosti Google.
 Tato databáze umožňuje jednotlivým klientům naslouchat, kdy se v databázi změní data a následně tyto data načíst.

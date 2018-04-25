@@ -8,7 +8,7 @@ V této sekci se zaměřuji na rozdílné přístupy ke komunikaci v architektu�
 
 \subsection{Pull technologie}\label{subsec:pullTechnologie}
 
-Jako Pull technologie označuje klasickou strukturu komunikace architektury klient-server.
+Jako pull technologie označuje klasickou strukturu komunikace architektury klient-server.
 Iniciátorem spojení je výhradně klient a není možné odeslat data ze serveru ke klientovi bez jeho předchozí žádosti.
 
 Příkladem může být běžný protokol \gls{HTTP}, kde klient (většinou prohlížeč) odesílá požadavek na server a ten mu obratem zašle zpět odpověď.~\cite{pushpull:about}
@@ -19,7 +19,8 @@ Push technologie označuje strukturu komunikace, která je do jisté míry opač
 Iniciátorem komunikace je server, který tak může odeslat nová data klientovi i bez jeho žádosti.
 
 Tento přístup lze použít například pro textovou komunikaci ve skutečném čase.
-Klient nemůže dopředu vědět, zda-li na je na serveru k dispozici nová zpráva a tak neví kdy odeslat požadavek pro získání nové zprávy, ale nyní mu stačí počkat a server mu novou zprávu pošle sám.~\cite{pushpull:about}
+Klient nemůže dopředu vědět, zda-li na je na serveru k dispozici nová textová zpráva a neví tedy kdy odeslat požadavek pro získání nové zprávy.
+V případě Push technologií mu stačí počkat a server mu novou zprávu pošle sám.~\cite{pushpull:about}
 
 \subsubsection{Short a Long polling}\label{subsubsec:pooling}
 
@@ -36,8 +37,8 @@ Mezi hlavní nevýhody patří režijní náklady spojené s \gls{HTTP} protokol
 
 \subsubsection{\gls{HTTP} streaming}\label{subsubsec:HTTPStreaming}
 
-Další metodou implemntace push technologie je takzvaný \gls{HTTP} Streaming, který je podobný metodě Long polling s tím rozdílem, že data posílá jen jako částečnou odpověď a nemusí tedy ukončit spojení.
-Tato metoda staví na možnosti webové serveru odesílat více částí dat ve stejné odpovědi (pomocí hlavičky \mintinline{http}{Transfer-Encoding: chunked} v rámci protokolu \gls{HTTP} verze~1.1 a starší).
+Další metodou implementace push technologie je takzvaný \gls{HTTP} Streaming, který je podobný metodě Long polling s tím rozdílem, že server data posílá jen jako částečnou odpověď a nemusí tedy ukončit spojení.
+Tato metoda staví na možnosti webové serveru odesílat více částí dat ve stejné odpovědi (například pomocí hlavičky \mintinline{http}{Transfer-Encoding: chunked} v rámci protokolu \gls{HTTP} verze~1.1 a novější).
 
 Výhodou metody \gls{HTTP} Streaming je snížení latence a snížení režijních nákladů s posíláním \gls{HTTP} hlaviček, které jsou nutné pouze při vytvoření nového spojení.
 Mezi nevýhody patří chování výchozí vyrovnávací paměti prohlížečů a klientských knihoven, kde není zajištěn přístup k částečným odpovědím od serveru.~\cite{pushpull:issuesRFC}
@@ -58,4 +59,4 @@ Jedná se o samostatný protokol, který netíží režijní náklady spojené s
 Web Socket využívá \gls{HTTP} protokol pouze pro navázání spojení, pro které je následně pomocí hlavičky \mintinline{http}{Connection: Upgrade} změněn protokol z \gls{HTTP} právě na Web Socket.~\cite{pushpull:websocketQuantum}
 
 Hlavní výhodou používání protokolu Web Socket je již zmíněná oboustranná komunikace, nízká odezva a nízké režijní náklady, jak na klientské, tak i na serverové straně komunikace.
-Mezi hlavní nevýhody patří slabší podpora ze strany prohlížečů, která ovšem kvůli vysoké popularitě stále zlepšuje a obecně je stále lepší než podpora Server-Sent Events.~\cite{pushpull:compare}
+Mezi hlavní nevýhody patří slabší podpora ze strany prohlížečů, která se ovšem kvůli vysoké popularitě stále zlepšuje a obecně je stále lepší než podpora Server-Sent Events.~\cite{pushpull:compare}
