@@ -1,0 +1,37 @@
+% !TEX encoding = UTF-8 Unicode
+% -*- coding: UTF-8; -*-
+% vim: set fenc=utf-8
+%\inputencoding{utf8}
+
+\section{Autentizace}\label{sec:autentizace}
+
+Využití knihovny passport.js.
+
+\subsection{Přihlášení pomocí hesla}
+
+\subsubsection{Uložení hesla}
+
+Použití hašovací funkce \texttt{bcrypt} a jeho výhody oproti použití \enquote{rychlých} hašovacích funkcí jako jsou funkce standartu sha (dedikovaný hardware a špatně nastavitelná obtížnost výpočtu).
+
+\subsubsection{Odhad obtížnosti hesla}
+
+Knihovna zxcvb od společnost Dropbox.
+Problém s vynucování speciálních znaků v heslech (například hesla typu P@ssw0rd, které nemají téměř žádnou přidanou obtížnost díky použití známých substitucí).
+
+\subsubsection{Zapomatování uživatele}
+
+Cookie remember me token a jeho konzumace/generace při každém požadavku (ochrana cookie hijacking).
+
+\subsection{Ostatní možnosti přihlášení}
+
+Napojení a použití s knihovnou passport.js.
+Autentizace pomocí ČVUT hesla a sociálních sítí (OAuth2).
+
+\subsubsection{ČVUT heslo}
+
+Portál \hyperref{auth.fit.cvut.cz }(https://auth.fit.cvut.cz/manager) a implementace Provider třídy pro passport.js.
+
+\subsubsection{Sociální sítě}
+
+Použití již vytvořených Provider tříd od tvůrce knihovny passport.js a problémy s nepovinným emailem u autentizace pomocí Facebook účtu.
+
