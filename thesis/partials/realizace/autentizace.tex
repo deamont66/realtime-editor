@@ -5,20 +5,51 @@
 
 \section{Autentizace}\label{sec:autentizace}
 
-Využití knihovny passport.js.
+Autentizace označuje proces ověření identity uživatele.
+Pro navržený prototyp aplikace se jedná o proces přihlášení uživatele.
 
-\subsection{Přihlášení pomocí hesla}
+K implementaci autentizace jsem využil knihovnu passport.js, která ulehčuje implementaci autentizace pro knihovnu express.js a prostření Node.js (více o prostředí v sekci~\ref{subsec:nodejs}).
+Passport.js umožňuje použití autentizačních tříd, které implementují jednotlivé způsoby webové autentizace.
+Díky modulárnímu návrhu je možné používat různé způsoby autentizace, bez nutnosti změn zbytku aplikace.
 
-\subsubsection{Uložení hesla}
+Každá autentizační třída přijímá konfigurační objekt a funkci, která volána pro ověření identity.
+Předaná funkce vyhledá uživatele v DB podle identifikátoru, který získá od autentizační třídy, a vrátí objekt uživatele, který má být přihlášen, nebo chybu.
 
-Použití hašovací funkce \texttt{bcrypt} a jeho výhody oproti použití \enquote{rychlých} hašovacích funkcí jako jsou funkce standartu sha (dedikovaný hardware a špatně nastavitelná obtížnost výpočtu).
+Instanci knihovny passport.js musí být předány funkce pro serializaci a deserializaci uživatele.
+V prototypu aplikace jsou uživatelé deserializováni pouze na jejich DB identifikátor a serializováni pomocí jejich opětovného vyhledání v DB.
+
+\subsection{Přihlášení pomocí hesla}\label{subsec:přihlášeníPomocíHesla}
+
+Základním způsobem autentizace v navrženém prototypu je přihlášení pomocí uživatelského jména a hesla.
+Knihovna passport.js pro tento způsob poskytuje připravenou třídu \texttt{LocalStrategy}, která požaduje pouze jména parametrů obsahující jméno a heslo přihlašovaného uživatele.
+
+Autorizační funkci jsou předány hodnoty parametrů a uživatel je podle uživatelského jména vyhledán v DB.
+Následně dojde k validaci přihlašovacího hesla (viz následující sekce~\ref{subsubsec:uloženíHesla}) a v případě úspěchu je uživatel přihlášen.
+
+\subsubsection{Uložení hesla}\label{subsubsec:uloženíHesla}
+
+Pro možnost validace přihlašovacího hesla je potřeba nějakým způsobem heslo zaznamenat.
+Z bezpečnostních důvodů není vhodné v DB uchovávat hesla v čitelné podobě, ani v podobě z které by bylo možné heslo jednoduše získat.
+
+Při implementaci autentizace pomocí hesla jsem se rozhodl pro použití kryptografické hašovací funkce, která poskytuje jednosměrnou transformaci vstupu na téměř náhodný výstup.
+Kryptografické hašovací funkce se od běžných hašovacích funkcí nezaměřují na rychlost, ale na kryptografické vlastnosti funkce.
+
+Použil jsem hašovací funkci \texttt{bcrypt}, která se řadí mezi pomalé kryptografické hašovací funkce.
+Tato funkce (na rozdíl od rychlých funkcí standartu SHA-2) má nastavitelný počet iterací, což umožňuje navyšovat její obtížnost vypočtu.
+Vyšší obtížnost výpočtu je vhodná pro hašování hesel z důvodu zpomalení útoku typu brutal force (opakované a náhodné pokusy o uhodnutí hesla).
 
 \subsubsection{Odhad obtížnosti hesla}
 
-Knihovna zxcvb od společnost Dropbox.
-Problém s vynucování speciálních znaků v heslech (například hesla typu P@ssw0rd, které nemají téměř žádnou přidanou obtížnost díky použití známých substitucí).
+Při změně přihlašovacího hesla jsou dnes běžné minimální požadavky na složitost hesla.
+Tyto požadavky jsou však podle~\cite{dropbox:zxcv} však většinou nedostatečné a neodpovídají skutečné době potřebné pro jejich uhodnutí.
+Například heslo \texttt{P@ssw0rd} oproti \texttt{Password} nepřináší téměř žádnou přidanou obtížnost, jelikož bylo odvozenou použitím pouze známých a častých substitucí.
 
-\subsubsection{Zapomatování uživatele}
+Proto jsem se rozhodl do prototypu přidat odhad obtížnosti hesla, který využívá knihovnu zxcv od společnosti Dropbox.
+Knihovna umožňuje nastavit minimální časovou hodnotu, za kterou je odhadované prolomení hesla, a podle skóre testovaného hesla rozhodnou, zda-li je dostatečně obtížné.
+V prototypu aplikace je tato hodnota nastavena, tak aby bylo zabráněno jen použití opravdu jednoduchých hesel.
+Navíc je také odhadovaná doba prolomení zobrazena přímo u pole pro zadání nového hesla, tak aby si mohl uživatel sám zvolit jaká hodnota je pro něj přijatelná.
+
+\subsubsection{Zapamatování uživatele}
 
 Cookie remember me token a jeho konzumace/generace při každém požadavku (ochrana cookie hijacking).
 
