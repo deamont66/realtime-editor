@@ -7,7 +7,7 @@
 
 Protože v navrženém prototypu aplikace nejsou rozlišovány žádné pokročilejší uživatelské role, je naprosto dostačující jednoduchá kontrola přihlášení uživatele u jednotlivých přístupových bodů.
 Tuto kontrolu provádí \texttt{Middleware} moduly, které validují každý příchozí požadavek od klienta.
-Pokud se uživatel pokouší přistoupit ke koncovému bodu, který vyžaduje přihlášeného (resp\. nepřihlášeného) uživatele, modul \texttt{AuthMiddleware} zkontroluje zda-li je uživatel přihlášen (resp\. odhlášen) a pak teprve serverová část aplikace pokračuje ve zpracování požadavku.
+Pokud se uživatel pokouší přistoupit ke koncovému bodu, který vyžaduje přihlášeného (resp. nepřihlášeného) uživatele, modul \texttt{AuthMiddleware} zkontroluje zda-li je uživatel přihlášen (resp\. odhlášen) a pak teprve serverová část aplikace pokračuje ve zpracování požadavku.
 
 Složitější situace nastává v omezení přístupu uživatelů k jednotlivým dokumentům.
 Uživatel může být k dokumentu přizván a jeho práva, tak nemusí odpovídat globálnímu nastavení práv pro sdílení dokumentu (sdílení pomocí veřejného odkazu).
