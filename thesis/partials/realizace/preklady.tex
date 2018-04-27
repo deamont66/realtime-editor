@@ -3,6 +3,11 @@
 % vim: set fenc=utf-8
 %\inputencoding{utf8}
 
-\section{Jazykové překlady}
+\section{Jazykové překlady}\label{sec:jazykovéPřeklady}
 
-Knihovna i18next a rect-i18next, asynchronní načítání překladů.
+Pro implementaci jazykových překladů jsem použil rozšířenou překladový framework \texttt{i8next} spolu s modulem \texttt{react-i18next}, který obsahuje .
+Tato knihovna umožňuje definovat jazykové překlady textů včetně množných čísel a formátování~\cite{i8next:docs}.
+
+Pro načítání textových překladů jsem použil modul \texttt{i18next-xhr-backend}, který umožňuje asynchronní načtení překladů, tak aby uživateli stačilo stáhnout překlady pouze pro jeho aktuálně zvolený jazyk.
+Modul načítá překladové textu pomocí koncového bodu Překlady webového rozhraní (viz popis koncového bodu v sekci~\ref{subsubsec:prekladyWebovehoRozhrani}).
+
