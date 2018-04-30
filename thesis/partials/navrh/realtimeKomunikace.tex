@@ -4,11 +4,11 @@
 
 \section{Komunikace ve skutečném čase}\label{sec:komunikaceVeSkutečnémČase}
 
-K implementaci komunikace ve skutečném čase existuje více způsoby, ale každý má své kompromisy (více o push technologiích v sekci~\ref{subsec:pushTechnologie}).
-Pro komunikaci jsem chtěl použít technologii WebSocket (viz sekce~\ref{subsubsec:websocket}), kvůli podpoře full duplexní oboustranné komunikace, ale zároveň jsem chtěl umožnit použít aplikace uživatelům se starším webovým prohlížečem, či mobilním zařízením.
+Komunikace ve skutečném čase lze implementovat pomocí více způsobů, ale každý má své kompromisy (více o push technologiích v sekci~\ref{subsec:pushTechnologie}).
+Pro komunikaci jsem se rozhodl použít technologii WebSocket (viz sekce~\ref{subsubsec:websocket}), kvůli podpoře plně duplexní oboustranné komunikace, ale zároveň jsem chtěl zachovat zpětnou kompatibilitu se staršími webovými prohlížeči, či mobilními zařízeními.
 
-Z tohoto důvodu jsem se rozhodl pro použití knihovny Socket.io, která je je postavena na transportní knihovně Engine.io.
-Knihovna Socket.io poskytuje ucelené \gls{API} pro použití technologie WebSocket, pro všechny modelní prohlížeče, ale i pro prohlížeče, které technologii WebSocket dosud nepodporují a to díky transparentnímu použití záložní komunikace pomocí long pollingu (viz sekce~\ref{subsubsec:pooling}).
+Z tohoto důvodu jsem se rozhodl pro použití knihovny Socket.io, která je postavena na transportní knihovně Engine.io.
+Knihovna Socket.io poskytuje ucelené \gls{API} pro použití technologie WebSocket, pro všechny moderní prohlížeče, ale i pro prohlížeče, které technologii WebSocket dosud nepodporují a to díky transparentnímu použití záložní komunikace pomocí long pollingu (viz sekce~\ref{subsubsec:pooling}), za což vděčí transportní knihovně Engine.io.
 
 \subsection{Druhy zpráv}\label{subsec:druhyZprávyVeSkutečnémČase}
 
@@ -39,10 +39,10 @@ Zbylí klienti si odpojeného klienta, kterého identifikují pomocí identifik�
 \subsubsection{Operace} % operation(revision, operation, selection)
 
 Zpráva Operace slouží pro propagaci operací mezi připojenými klienty.
-Součástí zprávy Operace je číslo další očekávané verze (mezi autorem a serverem), aby server mohl operaci transformovat vůči všem kolizním operacím (více o algoritmu v sekci~\ref{subsec:operacniTransformace}).
+Součástí zprávy Operace je číslo další očekávané operace od serveru, aby server mohl operaci transformovat vůči všem kolizním operacím (více o algoritmu v sekci~\ref{subsec:operacniTransformace}).
 
 Autor změny odešle zprávu Operace na server, který ji transformovanou uloží a následně odešle všem ostatním klientům, kteří jsou připojeni ke stejnému dokumentu.
-Nakonec Operace server odešle autorovi zprávu Potvrzení.
+Nakonec zpracování zprávy Operace server odešle autorovi zprávu Potvrzení.
 
 \begin{figure}[ht!]
     \centering
@@ -60,23 +60,23 @@ Klient do doby přijetí zprávy Potvrzení nesmí odeslat na server další zpr
 Zpráva Vybrání slouží pro propagaci změny kurzoru (či vybrání části textu) mezi klienty.
 Server tuto zprávu nijak nezpracovává a pouze ji propaguje ostatním klientům.
 
-Tato zpráva je použita pouze pro případ, že se změnila pozice kurzoru bez změny textu (změna pozice kurzoru při změně textu je obsažena již ev zprávě Operace).
+Tato zpráva je použita pouze pro případ, že se změnila pozice kurzoru bez změny textu (změna pozice kurzoru při změně textu je již obsažena ve zprávě Operace).
 
 \subsubsection{Nastavení} % settings(settings)
 
-Zpráva Nastavení slouží pro synchronizaci změn nastavení mezi aktuálně připojenými klienty.
+Zpráva Nastavení slouží pro synchronizaci změn nastavení mezi aktuálně připojenými klienty upravující stejný dokument.
 Klient zprávu odešle spolu se změněným nastavením dokumentu, server nastavení pro daný dokument uloží a následovně jej odešle ostatním připojeným klientům.
 
 \subsubsection{Zpráva} % chat_message(message, callback)
 
-Tento druh zpráv slouží pro propagaci nových zpráv komunikačního vlákna dokumentu.
+Tento druh zprávy slouží pro propagaci nových zpráv komunikačního vlákna dokumentu.
 Klient odešle zprávu s textem na server, ten ji uloží a odešle ostatním připojeným klientům.
 
-Tento způsob propagace je kombinován s \gls{REST} koncovými body (viz sekce~\ref{sec:restKomunikace}), které umožňují klientům získat například historii komunikačního vlákna.
+Tento způsob propagace zpráv komunikačního vlákna je kombinován s \gls{REST} koncovými body (viz sekce~\ref{sec:restKomunikace}), které umožňují klientům získat například historii komunikačního vlákna.
 
 \subsubsection{Chyba} % disconnect_error(status)
 
-Zpráva Chyba předchází násilnému odpojení klienta od dokumentu.
+Zpráva Chyba předchází násilnému odpojení klienta od serveru (a tedy od dokumentu).
 Její příčinou může být například nedostatečné oprávnění uživatele, či nenalezení příslušného dokumentu.
 
 Součástí zprávy Chyba je stavový kód chyby, který může nabývat hodnot 404 nebo 403.

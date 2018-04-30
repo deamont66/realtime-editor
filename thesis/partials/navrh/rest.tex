@@ -21,21 +21,21 @@ Waterline je, ale také záporem celého frameworku, protože není mezi vývoj�
 Express.js je velice rozšířený, jednoduchý a lehký framework pro Node.js.
 V základní konfiguraci obsahuje pouze základní logiku ohledně zpracování \gls{HTTP} požadavků.
 
-Ale jako každý framework má i své nevýhody.
-Mezi hlavní nevýhody patří nepříliš propracované zpracování chybových stavů nebo také nedostatečná kódová nezávislost, což může komplikovat další vývoj a znovupoužitelnost částí aplikace.
+Mezi hlavní nevýhody patří nepříliš propracované zpracování chybových stavů nebo také nedostatečná kódová nezávislost.
+Nedostatečná kódová nezávislost může komplikovat další vývoj a znovupoužitelnost částí aplikace.
 
 \subsection{Hapi.js}\label{subsec:hapi.js}
 
-Hapi.js je framework pro Node.js vyvíjený společností WalMart.
+Hapi.js je framework vyvíjený společností Walmart.
 Byl vytvořen jako přímá náhrada frameworku Express.js a snaží se řešit jeho nedostatečnou kódovou nezávislost použitím modulární architektury.
 
 Modulární architektura tento problém sice řeší, ale přidává do frameworku vysokou složitost návrhu.
-Tato složitost je pro většinu projektů zbytečně vysoká a nevyrovná se přidané hodnotě, která framework přináší oproti použití Express.js.
+Tato složitost je pro většinu projektů zbytečně vysoká a nevyrovná se přidané hodnotě, kterou framework přináší oproti použití Express.js.
 
 \subsection{Výběř frameworku}\label{subsec:výběřFrameworku}
 
 Nakonec jsem se rozhodl použít framework Express.js, převážně kvůli jeho jednoduchosti a rozšířenosti mezi vývojáři, která může být nápomocna hlavně při řešení potenciálního problému.
-Frameworky Sail.js a Hapi.js se svou velikostí hodí spíše pro větší produkční systémy a nejsou příliš vhodné pro implementaci prototypu této aplikace.
+Frameworky Sail.js a Hapi.js se svou velikostí hodí spíše pro větší produkční systémy a nejsou tak příliš vhodné pro implementaci prototypu této aplikace.
 
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
 
@@ -84,7 +84,7 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth/s
 \end{tabular}
 \end{table}
 
-\subsubsection{Ohlášení uživatele}
+\subsubsection{Odhlášení uživatele}
 
 Koncový bod pro odhlášení aktuálně přihlášeného uživatele.
 
@@ -106,7 +106,7 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:DELETE/api/auth
 \subsubsection{Odeslání požadavku na obnovu hesla}
 
 Koncový bod sloužící k obnově zapomenutého hesla.
-Přijímá parametry email a uživatelské jméno.
+Bod přijímá parametry email a uživatelské jméno pro identifikaci účtu k obnově.
 
 Pokud je nalezen uživatel se přijatými údaji je mu odeslán email obsahující instrukce pro obnovu hesla pomocí unikátního vygenerovaného kódu.
 
@@ -143,7 +143,7 @@ Koncový bod zjišťující existenci kódu pro obnovy hesla předaného pomocí
 
 \subsubsection{Obnova hesla pomocí kódu}
 
-Koncový bod, který umožňuje za podmínky validního kódu pro obnovu hesla (parametr token) provést změnu hesla na nové heslo.
+Koncový bod, který umožňuje za podmínky validního kódu pro obnovu hesla (parametr token) provést změnu hesla na nové.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Obnova hesla pomocí kódu}\label{tab:PUT/api/auth/forgotPassword/:token}
@@ -218,7 +218,7 @@ Koncový bod pro zjištění výchozího nastavení pro nové dokumenty aktuáln
 \subsubsection{Změna výchozího nastavení dokumentů}
 
 Koncový bod umožňující změnu jednotlivých polí výchozího nastavení pro dokumenty aktuálně přihlášeného uživatele.
-Přijímanými parametry jsou všechny pole entity DocumentSettings z databázového schématu na obrázku~\ref{fig:DB_model} (kromě pole \_id).
+Přijímanými parametry jsou všechna pole entity DocumentSettings z databázového schématu na obrázku~\ref{fig:DB_model} (kromě pole \_id).
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Změna výchozího nastavení dokumentů}\label{tab:PUT/api/user/document-settings}
@@ -278,7 +278,7 @@ Koncový bod pro získání dokumentů vytvořených aktuálně přihlášeným 
 
 \subsubsection{Poslední dokumenty}
 
-Koncový bod pro získání dostupných dokumentů, ke kterým v minulosti přistoupil aktuálně přihlášený uživatel.
+Koncový bod pro získání dostupných dokumentů, ke kterým aktuálně přihlášený uživatel v minulosti přistoupil.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Poslední dokumenty}\label{tab:GET/api/document/last}
@@ -313,7 +313,7 @@ Koncový bod pro získání dokumentů, ke kterým byl aktuálně přihlášený
 \subsubsection{Komunikační vlákno dokumentu}
 
 Koncový bod pro získání zpráv komunikačního vlákna dokumentu identifikovaného pomocí parametru documentId.
-Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
+Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
 
 Počet vrácených zpráv lze ovlivnit volitelným \gls{URL} parametrem number a čas odeslání poslední vrácené zprávy lze určit volitelným \gls{URL} parametrem lastDate.
 
@@ -335,7 +335,7 @@ Počet vrácených zpráv lze ovlivnit volitelným \gls{URL} parametrem number a
 \subsubsection{Odeslání nové zprávy}
 Koncový bod umožňující vytvoření nové zprávy pro dokument identifikovaný pomocí parametru documentId s textem určeným parametrem message.
 
-Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
+Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu pro přístup ke zprávám.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Odeslání nové zprávy}\label{tab:POST/api/document/:documentId/messages}
@@ -354,7 +354,7 @@ Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu 
 
 Koncový bod pro získání informací ohledně oprávnění a jednotlivých pozvánek dokumentu identifikovaného pomocí parametru documentId.
 
-Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Práva dokumentu}\label{tab:GET/api/document/:documentId/rights}
@@ -391,7 +391,7 @@ Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu 
 \subsubsection{Pozvání uživatele k dokumentu}
 
 Koncový bod pro úpravu oprávnění pro přizvaného uživatele k dokumentu (identifikovaného pomocí parametru documentId).
-Pozvaný uživatel je identifikován pomocí uživatelského jména v parametru.
+Pozvaný uživatel je identifikován pomocí uživatelského jména předaného v parametru.
 
 Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
@@ -413,7 +413,7 @@ Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu p
 
 Koncový bod umožňující odstranění pozvánky pro uživatele (identifikovaného pomocí parametru toUserId) k dokumentu (identifikovaného pomocí parametru documentId).
 
-Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Odstranění pozvánky k dokumentu}\label{tab:DELETE/api/document/:documentId/rights/:toUserId}

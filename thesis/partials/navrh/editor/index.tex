@@ -4,10 +4,10 @@
 
 \section{Komponenta editoru}\label{sec:komponentaEditoru}
 
-Komponenta editoru je hlavní částí aplikace, která uživatelům umožňuje společně upravovat dokumenty ve skutečném čase a to díky použití algoritmu \gls{OT} (více o volbě algoritmu v sekci~\ref{sec:synchronizaceEditovanéhoTextu}).
+Komponenta editoru je hlavní částí aplikace, která uživatelům umožňuje společně upravovat dokumenty ve skutečném čase díky použití algoritmu \gls{OT} (více o volbě algoritmu v sekci~\ref{sec:synchronizaceEditovanéhoTextu}).
 Komponenta tento algoritmus implementuje a poskytuje rozhraní pro jeho použití bez omezení na použité technologii komunikace, či samotné knihovny textového editoru.
 
-Komponentu editoru lze rozdělit na dvě části, část klientská a část serverová, podle částí aplikace kde běží (viz sekce~\ref{sec:architektura} o architektuře aplikace).
+Komponentu editoru lze rozdělit na dvě části, část klientskou a část serverovou, které jsou pojmenované podle částí aplikace, kde se části nacházejí (viz sekce~\ref{sec:architektura} o architektuře aplikace).
 
 \input{partials/navrh/editor/klient}
 \input{partials/navrh/editor/server}

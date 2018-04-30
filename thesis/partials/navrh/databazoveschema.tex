@@ -4,7 +4,7 @@
 
 \section{Databázové schéma}\label{sec:databázovéSchéma}
 
-Jelikož jsem se rozhodl použít \gls{NoSQL} databázi, nemám jak pevně definovat databázové schéma jako v obvyklé relační databázi.
+Jelikož jsem se rozhodl použít \gls{NoSQL} databázi, nemám jak pevně definovat databázové schéma jako v případě použití relační databáze.
 Konzistenci a validitu ukládaných dat musí zajistit sama aplikace a to jak při čtení, tak i při zápisu dat.
 
 Z tohoto důvodu jsem se rozhodl použít \gls{ODM} nástroj Mongoose, který umožňuje v rámci aplikace definovat struktury jednotlivých dokumentů pro MongoDB a jejich validitu kontroluje před každým uložením.
@@ -12,18 +12,18 @@ Schéma na obrázku~\ref{fig:DB_model} není databázovým schématem v pravém 
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=\textwidth]{partials/navrh/DB_model.pdf}
+    \includegraphics[width=.95\textwidth]{partials/navrh/DB_model.pdf}
     \caption{Databázové schéma v rámci ODM Mongoose}\label{fig:DB_model}
 \end{figure}
 
 Jednotlivé entity schématu přímo reflektují entity z doménového modelu uvedeného v sekci~\ref{sec:domenovyModel}.
 Přibyly pouze implementační detaily a atributy jednotlivých relací mezi entitami.
-Také se změnily názvy entit a jejich atributů z českého do anglického jazyka, aby lepé reflektovali samotný kód aplikace.
+Také se změnily názvy entit a jejich atributů z českého do anglického jazyka tak, aby lepé reflektovaly samotnou implementaci aplikace.
 
-Jedinou výraznou změnou oproti doménovému modelu, která zde stojí za zmínku, je entita \texttt{User}.
+Jedinou podstatnou změnou oproti doménovému modelu, jsou atributy entity \texttt{User}.
 Přibyly zde atributy sloužící pro autentizaci pomocí služeb třetích stran (například sociální sítě, či \acrshort{ČVUT} heslo).
-Tyto atributy nesou identifikační údaj pro uživatele v rámci dané autentizační služby třetí strany jako je například facebookId pro sociální síť Facebook, či \acrshort{ČVUT} uživatelské jméno pro přihlášení pomocí \acrshort{ČVUT} hesla.
+Tyto atributy nesou identifikační údaj pro uživatele v rámci dané autentizační služby třetí strany, jako je například facebookId pro sociální síť Facebook, či \acrshort{ČVUT} uživatelské jméno pro přihlášení pomocí \acrshort{ČVUT} hesla.
 
 % TODO: upravit cestu podle finální přílohy
-Kompletní definice schématu lze nalézt spolu s ostatními zdrojovými kódy na přeloženém CD ve složce \texttt{/app/src/model}.
-Na definici lze i mimo jiné pozorovat validační pravidla pro jednotlivé atributy, jako jsou například číselné rozsahy, maximální délky atd.
+Kompletní definici schématu lze nalézt spolu s ostatními zdrojovými kódy na přeloženém CD ve složce \texttt{/realtime-editor/app/src/model}.
+Na definici lze i mimo jiné pozorovat validační pravidla pro jednotlivé atributy, jako jsou například jejich číselné rozsahy, maximální délky a tak dále.

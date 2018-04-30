@@ -3,12 +3,12 @@
 % vim: set fenc=utf-8
 %\inputencoding{utf8}
 
-\section{Sestavení aplikace}
+\section{Sestavení aplikace}\label{sec:sestaveníAplikace}
 
 Sestavení aplikace označuje postup kompilace, minimalizace a další úpravy zdrojů před jejich vystavením do produkčního prostředí.
 V implementovaném prototypu aplikace je na sebe klientská a serverová část aplikace vázaná právě po sestavení aplikace a jejím vystavení do produkční prostředí (více v následujících podsekcích).
 
-\subsection{Sestavení klientské části}
+\subsection{Sestavení klientské části}\label{subsec:sestaveníKlientskéČásti}
 
 Klientská část vyžaduje sestavení před každým spuštěním v uživatelském prohlížeči, protože využívá syntaktických prvků jazyka JavaScript, které nejsou prohlížeči podporovány.
 Pro sestavení jsem využil již připravené konfigurace pro nástroj \texttt{Webpack}, která přichází s použitím balíčku \texttt{create-react-app} přímo od společnosti Facebook.
@@ -17,7 +17,7 @@ Balíček \texttt{create-react-app} obsahuje mimo nastavení pro produkční ses
 Sestavení klientské části lze spustit pomocí příkazu \texttt{yarn build} a sestavená klientská část aplikace je následně umístěně ve složce \texttt{client/build-prod}.
 Takto sestavenou klientskou část aplikace je možné jednoduše vystavil, protože se jedná o statické webové stránky.
 
-\subsection{Serverová část a vystavení klientské části}
+\subsection{Serverová část a vystavení klientské části}\label{subsec:serverováČástAVystaveníKlientskéČásti}
 
 Serverová část aplikace je připravena na běh v Node.js prostředí (více o prostředí Node.js v sekci~\ref{subsec:nodejs}), ve kterém byla tato část i vyvíjena.
 Proto není u serverové části postup sestavení potřebný.
@@ -43,7 +43,7 @@ Já jsem ale chtěl, aby prototyp aplikace při sdílení veřejného odkazu dok
 Toho jsem dosáhl pomocí generování metadat na straně serveru, které jsou následně vloženy do hlavního \gls{HTML} souboru sestavené klientské části a odeslány klientovi.
 Robot, který takový odkaz navštíví, získá \gls{HTML} soubor s vygenerovanými metadaty a to bez nutnosti spustit jakýkoliv JavaScript kód klientské části aplikace.
 
-\subsection{Sestavení pomocí Dockeru}
+\subsection{Sestavení pomocí Dockeru}\label{subsec:sestaveníPomocíDockeru}
 
 Celý proces sestavení prototypu aplikace jsem zapouzdřil použitím vizualizačního nástroje Docker, který umožňuje definovat aplikace jako takzvané Docker obrazy.
 Tyto obrazy následně běží v takzvaných Docker kontejnerech, které jsou navzájem nezávislé a je možné je jednoduše spravovat (spouštět, duplikovat a tak podobně).
