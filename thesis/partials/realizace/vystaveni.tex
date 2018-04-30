@@ -3,8 +3,61 @@
 % vim: set fenc=utf-8
 %\inputencoding{utf8}
 
-\section{Vystavení klientské části}\label{sec:vystaveníKlientskéČásti}
+\section{Sestavení aplikace}
 
-\subsection{Sdílení veřejných odkazů na dokumenty}\label{subsec:sdíleníVeřejnýchOdkazůNaDokumenty}
+Sestavení aplikace označuje postup kompilace, minimalizace a další úpravy zdrojů před jejich vystavením do produkčního prostředí.
+V implementovaném prototypu aplikace je na sebe klientská a serverová část aplikace vázaná právě po sestavení aplikace a jejím vystavení do produkční prostředí (více v následujících podsekcích).
 
-Server rendering meta tagů, knihovna react-helmet pro jejich aktualizaci.
+\subsection{Sestavení klientské části}
+
+Klientská část vyžaduje sestavení před každým spuštěním v uživatelském prohlížeči, protože využívá syntaktických prvků jazyka JavaScript, které nejsou prohlížeči podporovány.
+Pro sestavení jsem využil již připravené konfigurace pro nástroj \texttt{Webpack}, která přichází s použitím balíčku \texttt{create-react-app} přímo od společnosti Facebook.
+Balíček \texttt{create-react-app} obsahuje mimo nastavení pro produkční sestavení aplikace, i nastavení pro vývoj aplikace a to včetně automatického znovu načtení stránky v prohlížeči po provedení změn ve zdrojovém kódu.
+
+Sestavení klientské části lze spustit pomocí příkazu \texttt{yarn build} a sestavená klientská část aplikace je následně umístěně ve složce \texttt{client/build-prod}.
+Takto sestavenou klientskou část aplikace je možné jednoduše vystavil, protože se jedná o statické webové stránky.
+
+\subsection{Serverová část a vystavení klientské části}
+
+Serverová část aplikace je připravena na běh v Node.js prostředí (více o prostředí Node.js v sekci~\ref{subsec:nodejs}), ve kterém byla tato část i vyvíjena.
+Proto není u serverové části postup sestavení potřebný.
+
+Jediná změna mize produkčním a vývojovým vystavení serverové části je nastavení běhového prostředí Node.js pomocí proměnné prostředí \texttt{APP\_ENV}, který musí být nastaven na hodnotu \texttt{production} (resp. \texttt{development} pro vývoj).
+Tato proměnná zajišťuje správné nastavení session, cookies a protokolování v závislosti na typu vystavení serverové části.
+
+Serverová část aplikace také umožňuje vystavení předem sestavené klientské části.
+Pokud serverová část aplikace zpracovává požadavek, který nemá předponu spojenou s \gls{REST} \gls{API} a ani neodpovídá cestě žádného souboru sestavené klientské části, vrátí serverová část obsah hlavního \gls{HTML} souboru sestavené klientské části.
+Klientská část aplikace se následně po spuštění v prohlížeči uživatele rozhodne, zda daná adresa existuje, či nikoliv.
+
+\subsubsection{Generování HTML metadat}
+
+Klientská část aplikace generuje a aktualizuje určité \gls{HTML} metadata, tak aby jejich obsah odpovídal aktuálnímu obsahu aplikace.
+Například po otevření seznamu dokumentů uživatel očekává, že se obsah tagu \texttt{title} změní na odpovídající text, stejně jakoby se jednalo běžnou webovou stránku.
+K dosažení tohoto chování klientské části aplikace jsem použil knihovnu \texttt{react-helmet}, která umožňuje aktualizovat metadata podle pořadí vykreslení jednotlivých React komponent.
+
+Tento přístup je dostatečný, dokud aplikaci používá obyčejný uživatel, který nepostřehne prvotní aktualizaci metadat po spuštění aplikace.
+Bohužel ale není dostatečný v případě, kdy k aplikaci přistupují roboti sociálních sítí a webových vyhledávačů, kteří při procházení a indexování internetu nespouštějí JavaScriptový kód.
+Pro ně se metadata vůbec nenastaví a při sdílení veřejného odkazu dokumentu na sociálních sítích se objeví pouze jejich původní obsah, který se sdíleným odkazem nemusí souviset.
+
+Já jsem ale chtěl, aby prototyp aplikace při sdílení veřejného odkazu dokumentu zobrazil na sociálních sítích minimálně název tohoto dokumentu.
+Toho jsem dosáhl pomocí generování metadat na straně serveru, které jsou následně vloženy do hlavního \gls{HTML} souboru sestavené klientské části a odeslány klientovi.
+Robot, který takový odkaz navštíví, získá \gls{HTML} soubor s vygenerovanými metadaty a to bez nutnosti spustit jakýkoliv JavaScript kód klientské části aplikace.
+
+\subsection{Sestavení pomocí Dockeru}
+
+Celý proces sestavení prototypu aplikace jsem zapouzdřil použitím vizualizačního nástroje Docker, který umožňuje definovat aplikace jako takzvané Docker obrazy.
+Tyto obrazy následně běží v takzvaných Docker kontejnerech, které jsou navzájem nezávislé a je možné je jednoduše spravovat (spouštět, duplikovat a tak podobně).
+
+Pro prototyp aplikace jsou připravené dva druhy obrazů, vývojový a produkční.
+Tyto obrazy obsahují veškeré závislosti klientské i serverové části aplikace.
+Připravené konfigurace obrazů a kontejnerů aplikace za pomoci nástroje \texttt{docker-compose} obsahují mimo samotný prototyp aplikace i DB kontejner s mongoDB (více o DB v sekci~\ref{subsec:databáze}).
+
+Vývojový obraz je připraven pro rychlý a jednoduchý vývoj aplikace bez nutnosti instalace jakýchkoliv nástrojů (kromě Dockeru samotného).
+Tento obraz lze vytvořit pomocí připraveného příkazu \mintinline{bash}{docker-compose up app_dev}, který vytvoří samotný obraz a jeho kontejner, který následně spustí.
+Kontejner a v něm běžící aplikace naslouchá změnám ve zdrojových souborech aplikace a při jejich uložení aplikaci znovu automaticky sestaví.
+
+Produkční obraz je velmi podobný obrazu vývojovému, liší se především v nastavení běhového prostředí a uzavřenosti kontejneru.
+Tento obraz lze vytvořit pomocí připraveného příkazu \mintinline{bash}{docker-compose up app_prod}, který vytvoří samotný obraz a jeho kontejner, který následně spustí.
+Produkční obraz je připraven pro jeho distribuci mezi dalšími stroji a nese s sebou vše potřebné pro běh aplikace (závislosti, nástroje i zdrojový kód).
+Proto je možné prototyp aplikace rychle nasadit bez nutnosti instalace prostření a jeho konfigurace na produkčním stroji.
+Pro aktualizaci aplikace ze změněných zdrojových kódů je potřeba produkční obraz znovu vytvořit (není zde žádné automatické znovu sestavení).
