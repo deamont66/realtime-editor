@@ -9,11 +9,10 @@ Autentizace označuje proces ověření identity uživatele.
 Pro navržený prototyp aplikace se jedná o proces přihlášení uživatele.
 
 K implementaci autentizace jsem využil knihovnu passport.js, která ulehčuje implementaci autentizace pro knihovnu express.js a prostření Node.js (více o prostředí v sekci~\ref{subsec:nodejs}).
-Passport.js umožňuje použití autentizačních tříd, které implementují jednotlivé způsoby webové autentizace.
-Díky modulárnímu návrhu je možné používat různé způsoby autentizace, bez nutnosti změn zbytku aplikace.
+Passport.js umožňuje použití tak zvaných autentizačních tříd, které implementují jednotlivé způsoby webové autentizace, a díky modulárnímu návrhu knihovny je možné používat různé způsoby autentizace bez nutnosti výrazných změn ve zbytku aplikace.
 
-Každá autentizační třída přijímá konfigurační objekt a funkci, která volána pro ověření identity.
-Předaná funkce vyhledá uživatele v DB podle identifikátoru, který získá od autentizační třídy, a vrátí objekt uživatele, který má být přihlášen, nebo chybu.
+Každá autentizační třída přijímá konfigurační objekt a funkci, která je volána pro ověření identity uživatele.
+Předaná funkce vyhledá uživatele v DB podle identifikátoru, který získá od autentizační třídy, a vrátí objekt uživatele, který má být přihlášen, nebo chybu v případě nesprávných údajů.
 
 Instanci knihovny passport.js musí být předány funkce pro serializaci a deserializaci uživatele.
 V prototypu aplikace jsou uživatelé deserializováni pouze na jejich DB identifikátor a serializováni pomocí jejich opětovného vyhledání v DB.
@@ -21,7 +20,7 @@ V prototypu aplikace jsou uživatelé deserializováni pouze na jejich DB identi
 \subsection{Přihlášení pomocí hesla}\label{subsec:přihlášeníPomocíHesla}
 
 Základním způsobem autentizace v navrženém prototypu je přihlášení pomocí uživatelského jména a hesla.
-Knihovna passport.js pro tento způsob poskytuje připravenou třídu \texttt{LocalStrategy}, která požaduje pouze jména parametrů obsahující jméno a heslo přihlašovaného uživatele.
+Knihovna passport.js pro tento způsob poskytuje připravenou třídu \texttt{LocalStrategy}, která požaduje pouze jména parametrů požadavku obsahující jméno a heslo přihlašovaného uživatele.
 
 Autorizační funkci jsou předány hodnoty parametrů a uživatel je podle uživatelského jména vyhledán v DB.
 Následně dojde k validaci přihlašovacího hesla (viz následující sekce~\ref{subsubsec:uloženíHesla}) a v případě úspěchu je uživatel přihlášen.
@@ -29,56 +28,56 @@ Následně dojde k validaci přihlašovacího hesla (viz následující sekce~\r
 \subsubsection{Uložení hesla}\label{subsubsec:uloženíHesla}
 
 Pro možnost validace přihlašovacího hesla je potřeba nějakým způsobem heslo zaznamenat.
-Z bezpečnostních důvodů není vhodné v DB uchovávat hesla v čitelné podobě, ani v podobě z které by bylo možné heslo jednoduše získat.
+Z bezpečnostních důvodů není vhodné v DB uchovávat hesla v čitelné podobě, ani v podobě, ze které by bylo možné heslo jednoduše získat.
 
 Při implementaci autentizace pomocí hesla jsem se rozhodl pro použití kryptografické hašovací funkce, která poskytuje jednosměrnou transformaci vstupu na téměř náhodný výstup.
 Kryptografické hašovací funkce se od běžných hašovacích funkcí nezaměřují na rychlost, ale na kryptografické vlastnosti funkce.
 
 Jako hašovací funkci jsou zvolil \texttt{bcrypt}, která se řadí mezi pomalé kryptografické hašovací funkce.
-Tato funkce (na rozdíl od rychlých funkcí standartu SHA-2) má nastavitelný počet iterací, což umožňuje navyšovat její obtížnost vypočtu s rostoucím výkonem počítačů.
+Tato funkce (na rozdíl od rychlých hašovacích funkcí standartu SHA-1 či SHA-2) má nastavitelný počet iterací, což umožňuje navyšovat její obtížnost vypočtu s rostoucím výkonem počítačů.
 Vyšší obtížnost výpočtu je vhodná pro hašování hesel z důvodu zpomalení útoku typu brutal force (opakované a náhodné pokusy o uhodnutí hesla).
 
 \subsubsection{Odhad obtížnosti hesla}
 
 Při změně přihlašovacího hesla jsou dnes běžné minimální požadavky na složitost hesla.
-Tyto požadavky jsou však podle~\cite{dropbox:zxcv} však většinou nedostatečné a neodpovídají skutečné době potřebné pro jejich uhodnutí.
+Tyto požadavky jsou však podle~\cite{dropbox:zxcv} většinou nedostatečné a neodpovídají skutečné době potřebné pro jejich uhodnutí v případě útoku.
 Například heslo \texttt{P@ssw0rd} oproti \texttt{Password} nepřináší téměř žádnou přidanou obtížnost, jelikož bylo odvozenou použitím pouze známých a častých substitucí.
 
 Proto jsem se rozhodl do prototypu přidat odhad obtížnosti hesla, který využívá knihovnu zxcv od společnosti Dropbox.
 Knihovna umožňuje nastavit minimální časovou hodnotu, za kterou je odhadované prolomení hesla, a podle skóre testovaného hesla rozhodnou, zda-li je dostatečně obtížné.
-V prototypu aplikace je tato hodnota nastavena, tak aby bylo zabráněno jen použití opravdu jednoduchých hesel.
+V prototypu aplikace je tato hodnota nastavena tak, aby bylo zabráněno jen použití opravdu jednoduchých hesel.
 Navíc je také odhadovaná doba prolomení zobrazena přímo u pole pro zadání nového hesla, tak aby si mohl uživatel sám zvolit jaká hodnota je pro něj přijatelná.
 
 \subsection{Ostatní možnosti přihlášení}\label{subsec:ostatníMožnostiPřihlášení}
 
 Prototyp aplikace je díky použití knihovny passport.js připraven na implementaci dalších způsobů autentizace.
-Dalším způsobem autentizace je například napojení na služby třetích stran jako jsou sociální sítě a podobně.
-Uživateli pak stačí přihlášení do služby třetí strany a je bez nutnosti zadávání hesla přihlášen i v prototypu aplikace.
+Dalším častým způsobem autentizace je například napojení na služby třetích stran jako jsou sociální sítě a podobně.
+Uživateli se pak stačí přihlásit do služby třetí strany a je pak bez nutnosti zadávání hesla přihlášen i v prototypu aplikace.
 
 Většina služeb třetích stran používá jeden, či více způsobů autentizace.
-Mezi nejčastěji používané patří způsoby patří autentizace pomocí protokolů OAuth, OAuth2 a OpenID.
+Mezi nejčastěji používané autentizace služeb třetích stran patří autentizace pomocí protokolů OAuth, OAuth2 a OpenID.
 
 Jednotlivé implementace autorizačních tříd vrací unikátní identifikátor uživatele v rámci dané služby, podle kterého lze v aplikace daného uživatele nalézt a přihlásit.
 Účty třetích stran je v prototypu aplikace možné spravovat v nastavení uživatelského účtu pod záložkou \texttt{Připojené účty}.
 
 \subsubsection{ČVUT heslo}
 
-Jako příklad použití nepříliš rozšířeného způsobu autentizace jsem se rozhodl o implementaci autentizace pomocí školního \gls{ČVUT} hesla.
-Portál \href{auth.fit.cvut.cz}(https://auth.fit.cvut.cz/manager) umožňuje autentizaci pomocí protokolu OAuth2.
-Pomocí získaného OAuth tokenu umožňuje přistupovat k ostatním školním \gls{API} rozhraním (jako je například KOS, Usermap a tak další).
+Jako příklad použití nepříliš rozšířeného způsobu autentizace jsem se rozhodl o implementaci autentizace pomocí školního \acrshort{ČVUT} hesla.
+Portál na doméně \href{https://auth.fit.cvut.cz/manager}{auth.fit.cvut.cz} umožňuje autentizaci pomocí protokolu OAuth2.
+Pomocí získaného OAuth tokenu lze přistupovat k ostatním školním \gls{API} rozhraním (jako je například KOS, Usermap a tak dále).
 
 Implementovaná autentizační třída \texttt{CTUOAuth2Strategy} je potomkem třídy \texttt{Strategy} z balíčku \texttt{passport-oauth2}, která implementuje základní OAuth2 autentizaci.
-Ke kompletní implementaci \gls{ČVUT} autentizace jsem použil identifikaci uživatelů pomocí jejich \gls{ČVUT} jména, které jsem získal pomocí koncového bodu \url{https://auth.fit.cvut.cz/oauth/userinfo}.
-Tento koncový bod vrací v odpovědi informace o předaném OAuth tokenu a jeho majiteli (tedy včetně jeho \gls{ČVUT} uživatelského jména).
+Ke kompletní implementaci \acrshort{ČVUT} autentizace jsem použil identifikaci uživatelů pomocí jejich \acrshort{ČVUT} uživatelská jména, které jsem získal pomocí koncového bodu \url{https://auth.fit.cvut.cz/oauth/userinfo}.
+Tento koncový bod vrací v těle odpovědi informace o předaném OAuth tokenu a jeho majiteli (tedy včetně jeho \acrshort{ČVUT} uživatelského jména).
 
 \subsubsection{Sociální sítě}
 
 Jako běžný příklad způsobu autentizace pomocí služeb třetí strany jsem zvolil autentizaci pomocí sociálních sítí.
-V prototypu aplikace je implementována autentizace pomocí účtů služeb Google, Facebook a Twitter.
+V prototypu aplikace je implementována autentizace pomocí účtů služeb Google Plus, Facebook a Twitter.
 
 Pro implementaci jsem použil připravené autorizační třídy pro jednotlivé sociální sítě.
-Tyto třídy mají již obsahují komunikaci s koncovými body služby a vrací informace o přihlášeném uživateli.
+Tyto třídy již řeší komunikaci s koncovými body služeb a vrací přímo informace o přihlášeném uživateli.
 Získané informace se liší napříč službami a je potřeba je vždy vyhledat v příslušné dokumentaci \gls{API} dané služby.
 
-Problémem, na který jsem při implementaci narazil, je nepovinný údaj emailu uživatele u služby Facebook, kde pole email přihlášeného uživatele služba vrací v závislosti na nastavení jeho soukromí i přes nastavení oprávnění mé aplikace.
-A protože je údaj email v mém schématu pro uživatele povinný (viz sekce~\ref{sec:databázovéSchéma}), musel jsem pro službu facebook email generovat z poskytnutých údajů o uživateli (výsledný vygenerovaný email pak může vypadat například jako \texttt{1784258414938423@facebook.com}).
+Problémem, na který jsem při implementaci narazil, je nepovinný údaj emailu uživatele u služby Facebook, kde pole email přihlášeného uživatele služba vrací v závislosti na jeho nastavení soukromí a to i přes nastavení oprávnění mé aplikace.
+Protože je údaj email v mém schématu pro uživatele povinný (viz sekce~\ref{sec:databázovéSchéma}), musel jsem pro službu facebook email generovat z poskytnutých údajů o uživateli (výsledný vygenerovaný email pak může vypadat například jako \texttt{1784258414938423@facebook.com}).
