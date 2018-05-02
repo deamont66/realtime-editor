@@ -5,7 +5,14 @@
 
 \section{Výkonnostní testování}\label{sec:systémovéTestování}
 
-Rychlost synchronizace mezi více uživateli (porovnání rychlosti s přibývajícím počtem uživatelů).
+Výkon implementovaného prototypu aplikace a komponentu editoru jsem testoval při rozdílných počtech připojených uživatelů.
+Aplikace byla schopna synchronizovat text jednoho dokumentu pro přes 100 připojených uživatelů a to bez znatelného zpomalení.
+Limitujícím faktorem počtu uživatelů byl výkon počítače, který simuloval jednotlivé připojené klienty.
 
-Test prototypu při velkém počtu uživatel (cca 100 připojených uživatel na jeden dokument).
-Postřehy a shrnutí (možnosti optimalizace a co to znamená pro další škálování).
+Tento výsledek byl očekávaný a je dán povahou použitého synchronizačního algoritmu~\gls{OT} (více k algoritmu v sekci~\ref{subsec:operacniTransformace}).
+Server propagovanou operaci před odesláním pouze transformuje oproti souběžným operacím a aplikuje na vlastní kopii textu daného dokumentu.
+Každý jednotlivý klient je zodpovědný za správnou transformaci všech přijatých operací a jejich aplikaci na vlastní kopii textu, ale také za odchycení uživatelského vstupu a jeho převod do na Operace.
+
+Toto je dobrá zpráva, protože právě server a databáze je dnes, i přes široké možnosti škálování, stále úzkým hrdlem většiny aplikací.
+Výpočet u uživatele samotného lze dále optimalizovat, ale jeho náročnost se neprojevuje u ostatních uživatelů aplikace tak, jako kdyby probíhal na serveru.
+
