@@ -26,6 +26,7 @@ class SocketIOServerAdapter extends AbstractServerAdapter {
                 this.emit('ack');
             })
             .on('operation', (clientId, operation, selection) => {
+                console.log('recv:', new Date().getTime());
                 this.emit('operation', operation);
                 this.emit('selection', clientId, selection);
             })
@@ -42,6 +43,7 @@ class SocketIOServerAdapter extends AbstractServerAdapter {
      * @param {Selection|null} selection - meta selection data
      */
     sendOperation(revision, operation, selection) {
+        console.log('send:', new Date().getTime());
         // console.log('emitted op: ', revision, operation);
         this.socket.emit('operation', revision, operation, selection);
     };
