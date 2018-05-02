@@ -76,8 +76,7 @@ class DocumentTable extends React.Component {
                                     <TableCell><MaterialLink
                                         to={'/document/' + document._id}>{document.title || t('documentTable.unnamedDocument')}</MaterialLink></TableCell>
                                     <TableCell>
-                                        <Tooltip id="tooltip-icon"
-                                                 title={(document.lastAccessed) ? moment(document.lastAccessed).format('llll') : t('documentTable.neverAccessed')}>
+                                        <Tooltip title={(document.lastAccessed) ? moment(document.lastAccessed).format('llll') : t('documentTable.neverAccessed')}>
                                             <div>
                                                 {(document.lastAccessed) ? moment(document.lastAccessed).fromNow() : t('documentTable.neverAccessed')}
                                             </div>
@@ -86,15 +85,13 @@ class DocumentTable extends React.Component {
                                     <Hidden xsDown>
                                         <Hidden smDown>
                                             <TableCell>
-                                                <Tooltip id="tooltip-icon"
-                                                         title={moment(document.lastChange).format('llll')}>
+                                                <Tooltip title={moment(document.lastChange).format('llll')}>
                                                     <div>{moment(document.lastChange).fromNow()}</div>
                                                 </Tooltip>
                                             </TableCell>
                                         </Hidden>
                                         <TableCell>
-                                            <Tooltip id="tooltip-icon"
-                                                     title={moment(document.createdDate).format('llll')}>
+                                            <Tooltip title={moment(document.createdDate).format('llll')}>
                                                 <div>{moment(document.createdDate).format('L')}</div>
                                             </Tooltip>
                                         </TableCell>

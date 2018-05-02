@@ -6,7 +6,7 @@ import withStyles from 'material-ui/styles/withStyles';
 
 const styles = theme => ({
     link: {
-        color: theme.palette.secondary.main
+        color: (theme.palette.type === 'light') ? theme.palette.secondary.dark : theme.palette.secondary.light
     },
 });
 

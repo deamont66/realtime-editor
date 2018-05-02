@@ -97,12 +97,12 @@ class AppBarMenu extends React.Component {
                     this.props.history.push('/sign-in')
                 }}>{t('signIn.submit_button')}</Button>}
                 {this.props.user && <div>
-                    <Tooltip id="tooltip-icon" title={t('appBar.logged_in_as', {username: this.props.user.username})}>
+                    <Tooltip id="app-tooltip-icon" title={t('appBar.logged_in_as', {username: this.props.user.username})}>
                         <IconButton
                             aria-owns={Boolean(this.state.anchorEl) ? 'menu-appbar' : null}
                             aria-haspopup="true"
                             aria-label={t('appBar.logged_in_as', {username: this.props.user.username})}
-                            aria-describedby="tooltip-icon"
+                            aria-describedby="app-tooltip-icon"
                             onClick={this.handleMenu}
                             color="inherit"
                         >

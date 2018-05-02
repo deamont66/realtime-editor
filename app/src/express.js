@@ -4,6 +4,7 @@ const logger = require('morgan');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const compression = require('compression')
 
 const passport = require('passport');
 
@@ -11,6 +12,7 @@ module.exports = function (session) {
     const app = express();
 
     app.use(session);
+    app.use(compression());
     app.set('trust proxy', 1);
 
     // view engine setup

@@ -26,7 +26,7 @@ const styles = theme => ({
     sendButton: {
         // eslint-disable-next-line
         ['&:hover, &:focus']: {
-            color: theme.palette.secondary.main
+            color: (theme.palette.type === 'light') ? theme.palette.secondary.dark : theme.palette.secondary.light
         }
     },
     signInOverlay: {

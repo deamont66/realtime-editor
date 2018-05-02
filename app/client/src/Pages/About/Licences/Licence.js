@@ -21,7 +21,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.default
     },
     link: {
-        color: theme.palette.secondary.main
+        color: (theme.palette.type === 'light') ? theme.palette.secondary.dark : theme.palette.secondary.light
     },
     licenceButton: {
         float: 'right',

@@ -1,6 +1,6 @@
 {
-    "name": "Realtime editor",
-    "short_name": "Realtime editor",
+    "name": "Real-time editor",
+    "short_name": "Real-time",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
