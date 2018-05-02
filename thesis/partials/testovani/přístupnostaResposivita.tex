@@ -1,0 +1,33 @@
+% !TEX encoding = UTF-8 Unicode
+% -*- coding: UTF-8; -*-
+% vim: set fenc=utf-8
+%\inputencoding{utf8}
+
+\section{Webová použitelnost a podpora}\label{sec:webováPoužitelnostAPodpora}
+
+Jak jsem již zmiňoval v sekci~\ref{sec:uživatelskéRozhraní} o uživatelském rozhraní, aplikace se řídí zásadami návrh uživatelského rozhraní Material Design.
+Tyto zásady hovoří i mimo jiné o použitelnost a přístupnosti webových aplikací.
+
+Implementovaný prototyp aplikace byl otestován pomocí nástroje Google Lighthouse, nástroje s veřejným zdrojovým kódem, který slouží k testování přístupnosti webových aplikací.
+Tento nástroj aplikace hodnotí v různých kategoriích bodovým ohodnocením mezi 0 až 100 body.
+Implementovaný prototyp aplikace v tomto nástroji dosáhl hodnocení 100 bodů z přístupnosti, 94 bodů z doporučených postupů (anglicky Best practises) a 89 bodů ze \gls{SEO}.
+
+Prototyp aplikace podporuje poslední stabilní verze hlavních platforem a webových prohlížečů.
+Podpora verzí jednotlivých webových prohlížečů je dána podporou použité knihovny \texttt{Material-UI} (viz sekce~\ref{subsec:materialDesign}).
+
+Prototyp aplikace byl otestován a je funkční i několik verzí zpět, kde je limitujícím faktorem především podpora \acrshort{CSS} vlastnosti \texttt{Flex}.
+Tato vlastnost je používána pro rozvržení rozhraní webové aplikace a bez její podpory se obsah nebude zobrazovat správně.
+Podporované verze webových prohlížečů, úspěšně otestované verze a oficiální verze podpory \texttt{Flex} jsou zobrazené v tabulce~\ref{tab:verzeProhlížečů}.
+
+\begin{table}[ht!]
+    \centering
+    \caption{Podporované verze webových prohlížečů}
+    \label{tab:verzeProhlížečů}
+    \begin{tabular}{l|ccccc}
+        & IE & Edge & Firefox & Chrome & Safari \\ \hline
+        Podpora prototypu aplikace & $11$ & $\geq 14$ & $\geq 45$ & $\geq 49$ & $\geq 10$ \\
+        Úspěšně testované verze & $11$ & $\geq 14$ & $\geq 28$ & $\geq 39$ & $\geq 10$ \\
+        Oficiální podpora vlastnosti Flex & $11$ & $\geq 12$ & $\geq 20$ & $\geq 29$ & $\geq 9$
+    \end{tabular}
+\end{table}
+
