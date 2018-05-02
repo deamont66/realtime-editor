@@ -1,0 +1,26 @@
+Bez zátěže (pouze 2 pozorovaní klienti):
+Průměr: 91 ms
+Nejlepší: 65 ms
+Nejhorší: 157 ms
+
+10 připojených klientů (a 2 pozorovaní klienti):
+Průměr: 109 ms
+Nejlepší: 62 ms
+Nejhorší: 249 ms
+
+50 připojených klientů (a 2 pozorovaní klienti):
+Průměr: 117 ms
+Nejlepší: 60 ms
+Nejhorší: 225 ms
+
+100 připojených klientů (a 2 pozorovaní klienti):
+Průměr: 113 ms
+Nejlepší: 59 ms
+Nejhorší: 264 ms
+
+[ 72, 70, 65, 157 ]
+[ 95, 75, 62, 95, 249, 105, 87 ]
+[ 92, 85, 70, 88, 60, 63, 190, 225, 180, 215, 101, 79, 81 ]
+[ 85, 71, 76, 83, 59, 57, 264, 210 ]
+
+60 ms avg ICMP ping na server
