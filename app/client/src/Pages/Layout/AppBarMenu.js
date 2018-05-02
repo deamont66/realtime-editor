@@ -88,7 +88,7 @@ class AppBarMenu extends React.Component {
 
                 {this.props.user &&
                 <Button variant="raised" color="secondary" size="small" className={classes.createButton}
-                        onClick={this.createNewDocument}>
+                        aria-label={t('appBar.create_button')} onClick={this.createNewDocument}>
                     <Hidden smDown>{t('appBar.create_button')}</Hidden>
                     <Hidden mdUp><Add/></Hidden>
                 </Button>}
