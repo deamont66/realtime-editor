@@ -1,0 +1,10 @@
+3. Změna heslo, potvrzení stávajícím heslem není dostatečne označeno. 1/5
+
+5. Navigace otevření menu, nezná ikonu navigace. Po otevření bez problémů. 2/5
+
+6. Uložení názvu dokumentu (účastník zapomněl na uložení nadpisu, očekával, že se nadpis uloží automaticky). 4/5
+
+7. Otevření sdíleného dokumentu, problém s nalezením seznamu (před otevřením menu vyzkoušela filtr řazení "Nasdílel", který byl již zobrazený). 3/5
+
+10. Otevření komunikačního vlákna (neznalost ikony pro tlačítka pro otevření panelu) 4/5
+
