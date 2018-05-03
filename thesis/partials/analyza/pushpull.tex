@@ -16,7 +16,7 @@ Příkladem může být běžný protokol \gls{HTTP}, kde klient (většinou pro
 \subsection{Push technologie}\label{subsec:pushTechnologie}
 
 Push technologie označuje strukturu komunikace, která je do jisté míry opačná od Pull technologií.
-Iniciátorem komunikace je server, který tak může odeslat nová data klientovi i bez jeho žádosti.
+Iniciátorem komunikace je server, jenž tak může odeslat nová data klientovi i bez jeho žádosti.
 
 Tento přístup lze použít například pro textovou komunikaci ve skutečném čase.
 Klient nemůže dopředu vědět, zda-li na je na serveru k dispozici nová textová zpráva a neví tedy kdy odeslat požadavek pro získání nové zprávy.
@@ -54,7 +54,7 @@ Nevýhodou je relativně nízká podpora mezi webovými prohlížeči a to přev
 
 \subsubsection{HTML5 Web Socket}\label{subsubsec:websocket}
 
-HTML5 Web Socket je protokol, který umožňuje plně duplexní oboustrannou komunikaci mezi klientem a server.
+HTML5 Web Socket je protokol umožňující plně duplexní oboustrannou komunikaci mezi klientem a server.
 Jedná se o samostatný protokol, který netíží režijní náklady spojené s \gls{HTTP} a umožňuje tak velmi efektivní výměnu informací ve skutečném čase.
 Web Socket využívá \gls{HTTP} protokol pouze pro navázání spojení, pro které je následně pomocí hlavičky \mintinline{http}{Connection: Upgrade} změněn protokol z \gls{HTTP} právě na Web Socket.~\cite{pushpull:websocketQuantum}
 

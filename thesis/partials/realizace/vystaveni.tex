@@ -41,23 +41,23 @@ Pro ně se metadata vůbec nenastaví a při sdílení veřejného odkazu dokume
 
 Chtěl jsem, aby prototyp aplikace při sdílení veřejného odkazu dokumentu zobrazil na sociálních sítích minimálně název tohoto dokumentu.
 Toho jsem dosáhl pomocí generování metadat na straně serveru, které jsou následně vloženy do hlavního \gls{HTML} souboru sestavené klientské části a odeslány klientovi.
-Robot, který takový odkaz navštíví, získá \gls{HTML} soubor s vygenerovanými metadaty a to bez nutnosti spustit jakýkoliv JavaScript kód klientské části aplikace.
+Robot, jenž takový odkaz navštíví, získá \gls{HTML} soubor s vygenerovanými metadaty a to bez nutnosti spustit jakýkoliv JavaScript kód klientské části aplikace.
 
 \subsection{Sestavení pomocí Dockeru}\label{subsec:sestaveníPomocíDockeru}
 
 Celý proces sestavení prototypu aplikace jsem zapouzdřil použitím vizualizačního nástroje Docker, který umožňuje definovat aplikace jako takzvané Docker obrazy.
-Tyto obrazy následně běží v takzvaných Docker kontejnerech, které jsou navzájem nezávislé a je možné je jednoduše spravovat (spouštět, duplikovat a tak podobně).
+Tyto obrazy následně běží v takzvaných Docker kontejnerech, ty jsou navzájem nezávislé a jsou jednoduše spravovatelné (lze je spouštět, duplikovat a tak podobně).
 
 Pro prototyp aplikace jsou připravené dva druhy obrazů, vývojový a produkční.
 Tyto obrazy obsahují veškeré závislosti klientské i serverové části aplikace.
 Připravené konfigurace obrazů a kontejnerů aplikace za pomoci nástroje \texttt{docker-compose} obsahují mimo samotný prototyp aplikace i DB kontejner s mongoDB (více o DB v sekci~\ref{subsec:databáze}).
 
 Vývojový obraz je připraven pro rychlý a jednoduchý vývoj aplikace bez nutnosti instalace jakýchkoliv nástrojů (kromě Dockeru samotného).
-Tento obraz lze vytvořit pomocí připraveného příkazu \mintinline{bash}{docker-compose up app_dev}, který vytvoří samotný obraz a jeho kontejner, který následně spustí.
+Tento obraz lze vytvořit pomocí připraveného příkazu \mintinline{bash}{docker-compose up app_dev}, ten vytvoří samotný obraz a jeho kontejner, který následně spustí.
 Kontejner a v něm běžící aplikace naslouchá změnám ve zdrojových souborech aplikace a při jejich uložení aplikaci znovu automaticky sestaví.
 
 Produkční obraz je velmi podobný obrazu vývojovému, liší se především v nastavení běhového prostředí a uzavřenosti kontejneru.
-Tento obraz lze vytvořit pomocí připraveného příkazu \mintinline{bash}{docker-compose up app_prod}, který vytvoří samotný obraz a jeho kontejner, který následně spustí.
+Tento obraz lze vytvořit pomocí připraveného příkazu \mintinline{bash}{docker-compose up app_prod}, ten vytvoří samotný obraz a jeho kontejner, který následně spustí.
 Produkční obraz je připraven pro jeho distribuci mezi dalšími stroji a nese s sebou vše potřebné pro běh aplikace (závislosti, nástroje i zdrojový kód).
 Proto je možné prototyp aplikace rychle nasadit bez nutnosti instalace prostření a jeho konfigurace na produkčním stroji.
 Pro aktualizaci aplikace ze změněných zdrojových kódů je potřeba produkční obraz znovu vytvořit (není zde žádné automatické znovu sestavení).

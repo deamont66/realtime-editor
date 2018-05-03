@@ -9,7 +9,7 @@ Výkon implementovaného prototypu aplikace a komponentu editoru jsem testoval p
 Aplikace byla schopna synchronizovat text jednoho dokumentu pro přes 100 připojených uživatelů a to bez znatelného zpomalení.
 Limitujícím faktorem počtu uživatelů byl výkon počítače, který simuloval jednotlivé připojené klienty.
 
-Měření probíhalo otevřením daného počtu aktivních oken editoru na jiném, než pozorovaném počítači (z důvodu ovlivnění výsledků mezi klienty).
+Měření probíhalo otevřením daného počtu aktivních oken editoru na jiném než pozorovaném počítači (z důvodu ovlivnění výsledků mezi klienty).
 Na pozorovaném počítači byl měřen čas odchozí a příchozí operace mezi dvěma pozorovanými editory.
 Čas průměrné odezvy mezi testovaným počítačem a testovaným aplikačním serverem byl 60 ms.
 
@@ -32,7 +32,7 @@ Rozdíly mezi jednotlivými testy jsou v rámci chyby měření, která mohla b�
 
 Tento výsledek byl očekávaný a je dán povahou použitého synchronizačního algoritmu~\gls{OT} (více k algoritmu v sekci~\ref{subsec:operacniTransformace}).
 Server propagovanou operaci před odesláním pouze transformuje oproti souběžným operacím a aplikuje na vlastní kopii textu daného dokumentu.
-Každý jednotlivý klient je zodpovědný za správnou transformaci všech přijatých operací a jejich aplikaci na vlastní kopii textu, ale také za odchycení uživatelského vstupu a jeho převod do na Operace.
+Každý jednotlivý klient je zodpovědný za správnou transformaci všech přijatých operací a jejich aplikaci na vlastní kopii textu, ale také za odchycení uživatelského vstupu a jeho převod na soubor operací.
 
 Toto je dobrá zpráva, protože právě server a databáze je dnes, i přes široké možnosti škálování, stále úzkým hrdlem většiny aplikací.
 Výpočet u uživatele samotného lze dále optimalizovat, ale jeho náročnost se neprojevuje u ostatních uživatelů aplikace tak, jako kdyby probíhal na serveru.

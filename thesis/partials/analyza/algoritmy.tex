@@ -22,7 +22,7 @@ To však zamezuje úzké spolupráci více uživatelů nad dokumentem, protože 
 Metoda \textbf{předávání událostí} spočívá v myšlence zachycení všech změn provedených nad dokumentem a jejich provedení nad všemi kopiemi zároveň.
 Hlavní představitelem tohoto přístupu je právě operační transformace, o které píší níže v sekci~\ref{subsec:operacniTransformace}.
 
-Hlavním problémem tohoto přístupu je zachycení všech změn dokumentu, které mohou být triviální, jako je například napsání znaku, ale také například vložení obrázku, přetažení velkého množství textu, automatická oprava překlepů a mnoho dalších.
+Hlavním problémem tohoto přístupu je zachycení všech změn dokumentu, jež mohou být triviální, jako je například napsání znaku, ale také například vložení obrázku, přetažení velkého množství textu, automatická oprava překlepů a mnoho dalších.
 Přístup předávání událostí není přirozeně konvergentní.
 Každá změna, která není správně zachycena (nebo ztracena při cestě po síti), vytváří novou verzi dokumentu, kterou již není možné správně obnovit.
 
@@ -41,7 +41,7 @@ Příkladem systému, který používá třísměrné sloučení, je například
 \subsection{Diferenciální synchronizace}\label{subsec:diferencialniSynchronizace}
 
 \gls{DS} je algoritmus, který vymyslel Neil Fraser a lze považovat za zástupce třísměrného sloučení.
-\gls{DS} řeší problém s průběžnou synchronizací, kterým trpí klasický model třísměrného sloučení, a to použitím stínových kopií a diff-patch algoritmu nejen na serveru, ale i u každé kopie dokumentu.
+\gls{DS} řeší problém s průběžnou synchronizací, jímž trpí klasický model třísměrného sloučení, a to použitím stínových kopií a diff-patch algoritmu nejen na serveru, ale i u každé kopie dokumentu.
 
 Na obrázek číslo~\ref{fig:DS_diagram} je vidět zjednodušený vývojový diagram \gls{DS} algoritmu.
 Diagram předpokládá dva dokumenty (pojmenované server text a klient text), které jsou umístěné na stejném počítači a tedy nepočítá se síťovou dobou odezvy.
@@ -66,9 +66,9 @@ Algoritmus pokračuje následujícími kroky (viz čísla u jednotlivých přech
 
 Důležité je, že pro správné fungování musí být kroky~\ref{krok:ds_aplikace} a~\ref{krok:ds_prepsani} atomické, tedy nesmí se stát, že by se server text v tuto chvíli změnil.
 
-Algoritmus předpokládá použití libovolného diff-patch algoritmu, který umožňuje aplikovat změny i na dokument, který se změnil.
+Algoritmus předpokládá použití libovolného diff-patch algoritmu, který umožňuje aplikovat změny i na změněný dokument.
 Lze například použít diff-match-patch algoritmus od společnosti Google.
-Ten implementuje diff algoritmus od Eugene W. Myers, který je považování za nejlepší obecně použitelný diff algoritmus~\cite{ds:myers_diff}.~\cite{ds:neil_paper}~\cite{ds:neil_video}
+Ten implementuje diff algoritmus od Eugene W. Myers považovaný za nejlepší obecně použitelný diff algoritmus~\cite{ds:myers_diff}.~\cite{ds:neil_paper}~\cite{ds:neil_video}
 
 \subsection{Operační transformace}\label{subsec:operacniTransformace}
 
@@ -80,9 +80,9 @@ Algoritmus je možné použít pro synchronizaci dokumentů různých formátů,
 Základní jednotkou celého algoritmu je \textbf{operace}.
 Operace označuje změnu v dokumentu a u čistě textových dokumentů rozlišujeme tři druhy operací:
 \begin{itemize}
-    \item přeskoč s parametrem počet znaků, který označuje počet znaků k přeskočení,
-    \item odstraň řetězec s řetězcem jako parametrem, který označuje řetězec k odstranění,
-    \item přidej řetězec s parametrem který označuje řetězec k přidání.~\cite{ot:aboutOT}
+    \item přeskoč s parametrem počet znaků označující počet znaků k přeskočení,
+    \item odstraň řetězec s řetězcem jako parametrem označující řetězec k odstranění,
+    \item přidej řetězec s parametrem označující řetězec k přidání.~\cite{ot:aboutOT}
 \end{itemize}
 
 \paragraph{Transformace dokumentu}
@@ -119,7 +119,7 @@ O čekání klienta před odesláním dalších operací na potvrzení přijetí
 Toto vylepšení snižuje náročnost celého algoritmu omezením počtu současných operací, které by musel server kombinovat.~\cite{ot:waveAddition}
 
 Pokud klient při čekání na potvrzení od serveru dostane cizí soubor operací, musí tento soubor aplikovat na svou kopii dokumentu a transformovat již uložené operace v závislosti na přijatých operacích.
-Také pokud server dostane od klienta soubor operací, který vznikl před potvrzením posledního souboru, musí soubor transformovat přes všechny soubory operací, které server potvrdil po jeho vytvoření.
+Také pokud server dostane od klienta soubor operací vzniklý před potvrzením posledního souboru, musí soubor transformovat přes všechny soubory operací, které server potvrdil po jeho vytvoření.
 Z tohoto důvodu jsou soubory operací číslovány a klient s novým souborem operací odesílá na server i poslední pro něj známé číslo souboru.
 
 Implementace obecného algoritmu \gls{OT} pro různé typy dokumentů není vůbec jednoduchá, což potvrzuje i následující tvrzení tehdejšího vývojáře Google Wave Josepha Gentle:

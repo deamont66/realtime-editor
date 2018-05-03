@@ -8,11 +8,11 @@
 Autentizace označuje proces ověření identity uživatele.
 Pro navržený prototyp aplikace se jedná o proces přihlášení uživatele.
 
-K implementaci autentizace jsem využil knihovnu passport.js, která ulehčuje implementaci autentizace pro knihovnu express.js a prostření Node.js (více o prostředí v sekci~\ref{subsec:nodejs}).
-Passport.js umožňuje použití tak zvaných autentizačních tříd, které implementují jednotlivé způsoby webové autentizace, a díky modulárnímu návrhu knihovny je možné používat různé způsoby autentizace bez nutnosti výrazných změn ve zbytku aplikace.
+K implementaci autentizace jsem využil knihovnu passport.js ulehčující implementaci autentizace pro knihovnu express.js a prostření Node.js (více o prostředí v sekci~\ref{subsec:nodejs}).
+Passport.js umožňuje použití takzvaných autentizačních tříd implementující jednotlivé způsoby webové autentizace, a díky modulárnímu návrhu knihovny je možné používat různé způsoby autentizace bez nutnosti výrazných změn ve zbytku aplikace.
 
-Každá autentizační třída přijímá konfigurační objekt a funkci, která je volána pro ověření identity uživatele.
-Předaná funkce vyhledá uživatele v DB podle identifikátoru, který získá od autentizační třídy, a vrátí objekt uživatele, který má být přihlášen, nebo chybu v případě nesprávných údajů.
+Každá autentizační třída přijímá konfigurační objekt a funkci, jež je volána pro ověření identity uživatele.
+Předaná funkce vyhledá uživatele v DB podle identifikátoru získaného od autentizační třídy, a vrátí objekt uživatele, který má být přihlášen, nebo chybu v případě nesprávných údajů.
 
 Instanci knihovny passport.js musí být předány funkce pro serializaci a deserializaci uživatele.
 V prototypu aplikace jsou uživatelé deserializováni pouze na jejich DB identifikátor a serializováni pomocí jejich opětovného vyhledání v DB.
@@ -66,8 +66,8 @@ Jako příklad použití nepříliš rozšířeného způsobu autentizace jsem s
 Portál na doméně \href{https://auth.fit.cvut.cz/manager}{auth.fit.cvut.cz} umožňuje autentizaci pomocí protokolu OAuth2.
 Pomocí získaného OAuth tokenu lze přistupovat k ostatním školním \gls{API} rozhraním (jako je například KOS, Usermap a tak dále).
 
-Implementovaná autentizační třída \texttt{CTUOAuth2Strategy} je potomkem třídy \texttt{Strategy} z balíčku \texttt{passport-oauth2}, která implementuje základní OAuth2 autentizaci.
-Ke kompletní implementaci \acrshort{ČVUT} autentizace jsem použil identifikaci uživatelů pomocí jejich \acrshort{ČVUT} uživatelská jména, které jsem získal pomocí koncového bodu \url{https://auth.fit.cvut.cz/oauth/userinfo}.
+Implementovaná autentizační třída \texttt{CTUOAuth2Strategy} je potomkem třídy \texttt{Strategy} z balíčku \texttt{passport-oauth2}, jež implementuje základní OAuth2 autentizaci.
+Ke kompletní implementaci \acrshort{ČVUT} autentizace jsem použil identifikaci uživatelů pomocí jejich \acrshort{ČVUT} uživatelská jména získaná pomocí koncového bodu \url{https://auth.fit.cvut.cz/oauth/userinfo}.
 Tento koncový bod vrací v těle odpovědi informace o předaném OAuth tokenu a jeho majiteli (tedy včetně jeho \acrshort{ČVUT} uživatelského jména).
 
 \subsubsection{Sociální sítě}
@@ -77,7 +77,7 @@ V prototypu aplikace je implementována autentizace pomocí účtů služeb Goog
 
 Pro implementaci jsem použil připravené autorizační třídy pro jednotlivé sociální sítě.
 Tyto třídy již řeší komunikaci s koncovými body služeb a vrací přímo informace o přihlášeném uživateli.
-Získané informace se liší napříč službami a je potřeba je vždy vyhledat v příslušné dokumentaci \gls{API} dané služby.
+Získané informace se liší napříč službami a je potřeba se vždy poradit s dokumentací \gls{API} příslušné služby.
 
 Problémem, na který jsem při implementaci narazil, je nepovinný údaj emailu uživatele u služby Facebook, kde pole email přihlášeného uživatele služba vrací v závislosti na jeho nastavení soukromí a to i přes nastavení oprávnění mé aplikace.
 Protože je údaj email v mém schématu pro uživatele povinný (viz sekce~\ref{sec:databázovéSchéma}), musel jsem pro službu facebook email generovat z poskytnutých údajů o uživateli (výsledný vygenerovaný email pak může vypadat například jako \texttt{1784258414938423@facebook.com}).
