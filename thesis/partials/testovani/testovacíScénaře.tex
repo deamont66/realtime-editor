@@ -1,0 +1,215 @@
+% !TEX encoding = UTF-8 Unicode
+% -*- coding: UTF-8; -*-
+% vim: set fenc=utf-8
+%\inputencoding{utf8}
+
+\subsection{Testovací scénáře}\label{subsec:testovacíScénáře}
+
+Testování může obsahovat více testovacích scénářů.
+Scénáře obsahují jejich účel, čas, podmínky, kroky a očekávaný výsledek.
+Účastník testu nesmí mít osobní zájem na jeho výsledku, musí být objektivní a nebát se cokoliv říct.
+Přísedící musí na případné otázky účastníka odpovídat tak, aby nenarušil výsledky testu.
+
+Účastník je seznámen s účelem scénáře a dále postupuje podle jeho kroků.
+Během průchodu každého scénáře popisuje svou interakci s aplikací a své myšlenky, přísedící pořizuje poznámky či průběh testování nahrává.
+Po skončení průchodu jsou poznámky zpracovány a výsledek je porovnán s očekávaným výsledkem scénáře.
+
+Jednotlivé testovací scénáře reflektují stejnojmenné uživatelské případy ze sekce~\ref{sec:uzivatelskePripady}.
+
+\paragraph{TC1 -- Vytvoření uživatelského účtu}
+
+Účelem toho to testovacího scénáře je vytvoření nového uživatelského účtu.
+Před začátkem průchodu je aplikace ve stavu, kdy není přihlášen žádný uživatel a je zobrazen přihlašovací formulář.
+Doba průchodu celého scénáře by neměla být delší než 5 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník klikne na odkaz \texttt{Registrovat se}.
+    \item Vyplní registrační formulář.
+    \item Formulář odešle kliknutím na tlačítko \texttt{Registrovat se}.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Je vytvořen nový uživatelský účet se zadanými údaji.
+    \item Na zadaný email je odeslán uvítací email.
+    \item Vytvořený uživatel je přihlášen do aplikace.
+    \item Je zobrazen prázdný seznam vytvořených dokumentů spolu s tlačítkem pro vytvoření nového dokumentu.
+\end{enumerate}
+
+\paragraph{TC2 -- Přihlášení do aplikace}
+
+Účelem toho to testovacího scénáře je přihlášení uživatele pomocí již vytvořeného uživatelského účtu.
+Před začátkem průchodu je aplikace ve stavu, kdy není přihlášen žádný uživatel a je zobrazen přihlašovací formulář.
+Doba průchodu celého scénáře by neměla být delší než 5 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník vyplní přihlašovací formulář.
+    \item Formulář odešle kliknutím na tlačítko \texttt{Přihlásit se}.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Uživatel je přihlášen do aplikace.
+    \item Je zobrazen seznam vytvořených dokumentů spolu s tlačítkem pro vytvoření nového dokumentu.
+\end{enumerate}
+
+\paragraph{TC3 -- Změna uživatelských údajů}
+
+Účelem toho to testovacího scénáře je změna uživatelských údajů přihlášeného uživatele.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 5 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník otevře vyskakovací menu s možnosti kliknutím na ikonu uživatele.
+    \item Pokračuje kliknutím na tlačítko \texttt{Nastavení}.
+    \item Vyplní formulář pro změnu uživatelských údajů.
+    \item Formulář odešle kliknutím na tlačítko \texttt{Uložit změny}.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Uživatelovi údaje jsou změněny.
+    \item Je zobrazeno plovoucí upozornění o výsledku akce.
+\end{enumerate}
+
+\paragraph{TC4 -- Změna výchozího nastavení dokumentů}
+
+Účelem toho to testovacího scénáře je změna výchozího nastavení pro nově vytvořené dokumenty.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 10 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník otevře vyskakovací menu s možnosti kliknutím na ikonu uživatele.
+    \item Pokračuje kliknutím na tlačítko \texttt{Nastavení}.
+    \item Přepne se do požadovaného nastavení kliknutím na záložku \texttt{Nastavení dokumentů}.
+    \item Vyplní formulář s výchozím nastavením pro nově vytvořené dokumenty.
+    \item Formulář odešle kliknutím na tlačítko \texttt{Uložit změny}.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Výchozí nastavení údaje pro nově vytvořené dokumenty je uloženo.
+    \item Je zobrazeno plovoucí upozornění o výsledku akce.
+\end{enumerate}
+
+
+\paragraph{TC5 -- Zobrazení seznamu dokumentů}
+
+Účelem toho to testovacího scénáře je zobrazení seznamů vytvořených, sdílených a posledních dokumentů.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 5 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník otevře navigační menu kliknutím na ikonu navigace.
+    \item Pokračuje kliknutím na tlačítka \texttt{Mé dokumenty}, \texttt{Sdílené} a \texttt{Poslední}.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Postupně jsou zobrazeny všechny tři seznamy dokumentů.
+\end{enumerate}
+
+
+\paragraph{TC6 -- Vytvoření nového dokumentu}
+
+Účelem toho to testovacího scénáře je zobrazení vytvoření nového dokumentu a nastavení jeho jména.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 5 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník klikne na tlačítko \texttt{Vytvořit nový dokument}.
+    \item Vyplní jméno dokumentu.
+    \item Jméno uloží kliknutím na tlačítko s ikonou uložit.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Nový dokument je vytvořen.
+    \item Je zobrazen textový editor nově vytvořeného dokumentu.
+    \item Dokument má nastavené vyplněné jméno.
+\end{enumerate}
+
+\paragraph{TC7 -- Otevření textového editoru}
+
+Účelem toho to testovacího scénáře je zobrazení textového editoru pro již existujícího sdíleného dokumentu.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 5 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník otevře navigační menu kliknutím na ikonu navigace.
+    \item Zobrazí seznam sdílených dokumentů kliknutím na tlačítko \texttt{Sdílené}.
+    \item Pokračuje kliknutím na název vybraného dokumentu v seznamu.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Je zobrazen textový editor vybraného dokumentu.
+\end{enumerate}
+
+\paragraph{TC8 -- Změna nastavení dokumentu}
+
+Účelem toho to testovacího scénáře je změna nastavení již vytvořeného dokumentu.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 10 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník klikne na název vybraného dokumentu v seznamu.
+    \item Pokračuje kliknutím na tlačítko nastavení dokumentu s ikonou ozubeného kola.
+    \item Upraví nastavení dokumentu.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Je zobrazen textový editor vybraného dokumentu a otevřeno postranní menu s jeho nastavením.
+    \item Změny nastavení byly ve skutečném čase uloženy a aplikovány na otevřený editor.
+\end{enumerate}
+
+\paragraph{TC9 -- Přizvání uživatele k dokumentu}
+
+Účelem toho to testovacího scénáře je přizvání jiného uživatel k editaci vytvořeného dokumentu.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 10 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník klikne na název vybraného dokumentu v seznamu.
+    \item Pokračuje kliknutím na tlačítko \texttt{Sdílet}.
+    \item Zobrazí formulář pro vytvoření nové pozvánky kliknutím na tlačítko \texttt{Nová pozvánka}.
+    \item Vyplní formulář pro vytvoření nové pozvánky.
+    \item Formulář odešle kliknutím na tlačítko \texttt{Pozvat}.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Je zobrazen textový editor vybraného dokumentu a otevřeno postranní menu s možnostmi jeho sdílení.
+    \item Pozvaný uživatel vidí dokument ve svém seznamu sdílených dokumentů.
+    \item Pozvaný uživatel se zobrazil v seznamu pozvaných uživatel v otevřeném postranním menu.
+\end{enumerate}
+
+\paragraph{TC10 -- Komunikační vlákno dokumentu}
+
+Účelem toho to testovacího scénáře je zobrazení komunikačního kanálu již vytvořeného dokumentu a přidání nové zprávy.
+Před začátkem průchodu je aplikace ve stavu, kdy je uživatel přihlášen a je zobrazen seznam vytvořených dokumentů.
+Doba průchodu celého scénáře by neměla být delší než 5 minut.
+
+Kroky scénáře:
+\begin{enumerate}
+    \item Účastník klikne na název vybraného dokumentu v seznamu.
+    \item Pokračuje kliknutím na tlačítko komunikačního kanálu s ikonou konzervační bubliny.
+    \item Vyplní pole pro text nové zprávy.
+    \item Zprávu odešle kliknutím na tlačítko s ikonou odeslat.
+\end{enumerate}
+
+Očekávaný výsledek po průchodu scénáře:
+\begin{enumerate}
+    \item Je zobrazen textový editor vybraného dokumentu a otevřeno postranní menu s komunikačním kanálem dokumentu.
+    \item Odeslaná zpráva se zobrazila v komunikačním kanálu dokumentu.
+\end{enumerate}
