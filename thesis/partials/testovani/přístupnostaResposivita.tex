@@ -11,13 +11,15 @@ Tyto zásady hovoří i mimo jiné o použitelnost a přístupnosti webových ap
 Implementovaný prototyp aplikace byl otestován pomocí nástroje Google Lighthouse, nástroje s veřejným zdrojovým kódem, který slouží k testování přístupnosti webových aplikací.
 Tento nástroj aplikace hodnotí v různých kategoriích bodovým ohodnocením mezi 0 až 100 body.
 Implementovaný prototyp aplikace v tomto nástroji dosáhl hodnocení 100 bodů z přístupnosti, 94 bodů z doporučených postupů (anglicky Best practises) a 89 bodů z kategorie \gls{SEO}.
+Stržené body z kategorie doporučených postupů jsou způsobeny nedostatečnou podporou \gls{HTTP}/2 prostředím, kde je prototyp aplikace nasazen.
+Stržené body z kategorie \gls{SEO} jsou způsobeny dynamickým výpočtem velikosti písma uvnitř použité knihovny \texttt{Material-UI}.
 
 Prototyp aplikace podporuje poslední stabilní verze hlavních platforem a webových prohlížečů.
-Podpora verzí jednotlivých webových prohlížečů je dána podporou použité knihovny \texttt{Material-UI} (viz sekce~\ref{subsec:materialDesign}).
+Podpora verzí jednotlivých webových prohlížečů je dána jejich podporou použité knihovny \texttt{Material-UI} (viz sekce~\ref{subsec:materialDesign}).
 
 Prototyp aplikace byl otestován a je funkční i několik verzí zpět, kde je limitujícím faktorem především podpora \acrshort{CSS} vlastnosti \texttt{Flex}.
 Tato vlastnost je používána pro rozvržení rozhraní webové aplikace a bez její podpory se obsah nebude zobrazovat správně.
-Podporované verze webových prohlížečů, úspěšně otestované verze a oficiální verze podpory \texttt{Flex} jsou zobrazené v tabulce~\ref{tab:verzeProhlížečů}.
+Podporované verze webových prohlížečů, úspěšně otestované verze a oficiální verze podpory vlastnosti \texttt{Flex} jsou zobrazené v tabulce~\ref{tab:verzeProhlížečů}.
 
 \begin{table}[ht!]
     \centering

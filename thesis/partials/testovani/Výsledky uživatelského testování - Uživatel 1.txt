@@ -1,0 +1,3 @@
+3. Pole pro potvrzení změn aktuálním heslem. Na první pokus si pole účastník nevšiml. Po zobrazení chyby v pokračuje bez problémů.
+   Nevhodné umístění tlačítka působí dojem, že je součástí polí pro změnu hesla.
+   3/5

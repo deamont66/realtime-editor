@@ -1,4 +1,4 @@
-3. Změna heslo, potvrzení stávajícím heslem není dostatečne označeno. 1/5
+3. Změna hesla, potvrzení stávajícím heslem není dostatečně označeno. 1/5
 
 5. Navigace otevření menu, nezná ikonu navigace. Po otevření bez problémů. 2/5
 

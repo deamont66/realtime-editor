@@ -47,12 +47,83 @@ S nástroji pro kolaborativní editaci se nikdy nesetkala.
 V této části jsou popsané výsledky jednotlivých průchodů s účastníky uživatelského testování.
 Každý účastník hodnotil průchod testovacím scénářem hodnotou 1--5, kde 5 znamená intuitivní rozhraní (dokázali ho splnit sami a bez přemýšlení) a 1 neintuitivní (bez pomoci přísedícího nedokázali scénář dokončit).
 
+Účastníci byli před začátkem testování seznámeni s prototypem aplikace, účelem každého scénářem a způsobem jejich hodnocení.
+Pře průchodem každého scénáře byl prototyp aplikace nastaven do stavu podle jeho počátečních podmínek.
+Jednotlivé kroky scénáře byli účastníkům odhaleny pouze v případě potřeby jako nápověda pro dokončení průchodu.
+
 \paragraph{Průchody účastníka 1}
 
-\paragraph{Průchody účastníka 2}
+Účastním odhalil problém při průchodu testovacím scénářem Změna uživatelských údajů (TC3).
+Nevšiml si pole pro potvrzení změn aktuálním heslem a formulář se mu na první pokus nepodařilo odeslat.
+Po zobrazení chyby pole vyplnil a podařilo se mu scénář úspěšně dokončit.
+Podle účastníka je pole nevhodně umístěno a působí dojem, že je určeno pouze pro potvrzení při vyplnění ostatních polí pro změnu hesla.
+
+Účastník prošel všemi ostatními testovacími scénáři bez odhalení dalších problémů uživatelského rozhraní.
+Podle účastníka se uživatelské rozhraní aplikace řídí zavedenými zvyklostmi a je jednoduché se v něm orientovat.
+
+\begin{table}[ht!]
+    \centering
+    \caption{Hodnocení scénářů po průchodu účastníkem 1}
+    \label{tab:poPrůchoduÚčastníkem1}
+    \begin{tabular}{r|c}
+        & Hodnocení (1--5) \\ \hline
+        TC1 & 5 \\
+        TC2 & 5 \\
+        TC3 & 3 \\
+        TC4 & 5 \\
+        TC5 & 5 \\
+        TC6 & 5 \\
+        TC7 & 5 \\
+        TC8 & 5 \\
+        TC9 & 5 \\
+        TC10 & 5 \\
+    \end{tabular}
+\end{table}
+
+
+\paragraph{Průchody účastníka 2} Slovo.
+
+\begin{table}[ht!]
+    \centering
+    \caption{Hodnocení scénářů po průchodu účastníkem 2}
+    \label{tab:poPrůchoduÚčastníkem2}
+    \begin{tabular}{r|c}
+        & Hodnocení (1--5) \\ \hline
+        TC1 & 5 \\
+        TC2 & 5 \\
+        TC3 & 5 \\
+        TC4 & 5 \\
+        TC5 & 5 \\
+        TC6 & 5 \\
+        TC7 & 5 \\
+        TC8 & 5 \\
+        TC9 & 5 \\
+        TC10 & 5 \\
+    \end{tabular}
+\end{table}
 
 \paragraph{Průchody účastníka 3}
 
+Účastník prošel bez problémů testovacími scénáři Vytvoření uživatelského účtu (TC1), Přihlášení do aplikace (TC2), Změna výchozího nastavení dokumentů (TC4), Změna nastavení dokumentu (TC8) a Přizvání uživatele k dokumentu (TC9).
+Uživatelské rozhraní v rámci těchto scénářů je podle účastníka navrženo podle zvyklostí a je na první pohled intuitivní.
+
+Drobné problémy byly odhaleny účastníkovým průchodem testovacích scénářů Vytvoření nového dokumentu (UC 6) a Komunikační vlákno dokumentu (UC10).
+V prvním případě si účastník nevšiml tlačítka pro uložení jména dokumentu a pokračoval bez uložení, protože očekával automatické ukládání názvu dokumentu.
+V druhém případě účastním nepoznal ikonu pro otevření komunikačního vlákna a odeslání nové zprávy, avšak ke správnému výsledku ho dovedly vyskakovací popisy jednotlivých tlačítek.
+
+První závažný problém nastal při průchodu testovacím scénářem Změna uživatelských údajů (TC3).
+Účastník nevyplnil pole pro aktuální heslo a formulář se mu tak nepodařilo odeslat.
+Podle účastníka je pole pro zadání aktuálního hesla nedostatečně označené a svým umístěním spadá pouze pod změnu přihlašovacího hesla.
+
+Účastníkův průchod testovacím scénářem Zobrazení seznamu dokumentů (TC5) odhalil další problém.
+Účastník nepoznal ikonu pro otevření bočního menu aplikace a měl tendenci náhodně klikat na všechna tlačítka za účelem jeho nalezení.
+Ikona podle účastníka není dobře označena a bočnímu očekával stále otevřené.
+
+Na poslední problém účastník narazil při průchodu testovacího scénáře Otevření textového editoru (TC7) a opět se jednalo o problém s bočním menu aplikace.
+Účastník chtěl poprvé zobrazit seznam s ním sdílených dokumentů pomocí tlačítka pro řazení seznamu dokumentů, ale po jeho aktivaci si ihned uvědomil účel tohoto tlačítka a pokračoval ve scénáři.
+
+Některé problémy uživatelského rozhraní odhalené účastníkem souvisí s jeho omezenou znalostí běžně zavedených prvků uživatelského rozhraní na internetu (například neznalost ikony pro menu či odeslání zprávy).
+Poukázal ovšem i na závažnější chyby uživatelského rozhraní, kterými je vhodné se do budoucna zabývat.
 
 \begin{table}[ht!]
     \centering
@@ -74,4 +145,10 @@ Každý účastník hodnotil průchod testovacím scénářem hodnotou 1--5, kde
 \end{table}
 
 \subsubsection{Shrnutí uživatelského testování}
+
+Pomocí uživatelského testovaní byly identifikovány problematické prvky uživatelského rozhraní implementovaného prototypu.
+Mezi závažné problémy jsem s ohledem na jejich odhalení více účastníky zařadil pole aktuálního hesla ve formuláře pro změnu uživatelským nastavením a nutnost potvrzení nového jména dokumentu namísto jeho automatického uložení.
+
+Tyto problémy nejsou překážkou v používání prototypu jako takového, ale mohou být důvodem nepříjemné uživatelské zkušenosti.
+Návrh uživatelského rozhraní nebyl cílem této práce, a proto tyto nalezené problémy nepovažuji za jeho nesplnění.
 
