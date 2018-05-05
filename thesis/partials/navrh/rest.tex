@@ -34,7 +34,7 @@ Tato složitost je pro většinu projektů zbytečně vysoká a nevyrovná se p�
 
 \subsection{Výběř frameworku}\label{subsec:výběřFrameworku}
 
-Nakonec jsem se rozhodl použít framework Express.js, převážně kvůli jeho jednoduchosti a rozšířenosti mezi vývojáři, která může být nápomocna hlavně při řešení potenciálního problému.
+Nakonec jsem se rozhodl použít framework Express.js převážně kvůli jeho jednoduchosti a rozšířenosti mezi vývojáři, která může být nápomocna hlavně při řešení potenciálního problému.
 Frameworky Sail.js a Hapi.js se svou velikostí hodí spíše pro větší produkční systémy a nejsou tak příliš vhodné pro implementaci prototypu této aplikace.
 
 \subsection{Seznam koncových bodů}\label{subsec:seznamKoncovýchBodů}
@@ -44,8 +44,8 @@ Tyto koncové body přijímají různý počet parametrů, které mohou být jak
 
 \subsubsection{Registrace uživatele}
 
-Koncový bod umožňující registraci nového uživatele.
-Tento koncový bod přijímá parametry uživatelské jméno, heslo a email.
+Koncový bod sloužící k vytvoření nového uživatele.
+Tento koncový bod přijímá následující parametry: uživatelské jméno, heslo a email.
 
 Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth}.
 
@@ -66,7 +66,7 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth}.
 
 \subsubsection{Přihlášení uživatele}
 
-Koncový bod pro přihlášení již registrovaného uživatele pomocí uživatelské jména a hesla.
+Koncový bod pro přihlášení již registrovaného uživatele pomocí uživatelského jména a hesla.
 
 Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:POST/api/auth/signIn}.
 
@@ -108,7 +108,7 @@ Více informací o koncovém bodu lze nalézt v tabulce~\ref{tab:DELETE/api/auth
 Koncový bod sloužící k obnově zapomenutého hesla.
 Bod přijímá parametry email a uživatelské jméno pro identifikaci účtu k obnově.
 
-Pokud je nalezen uživatel se přijatými údaji je mu odeslán email obsahující instrukce pro obnovu hesla pomocí unikátního vygenerovaného kódu.
+Pokud je nalezen uživatel s přijatými údaji, je mu odeslán email obsahující instrukce pro obnovu hesla pomocí unikátního vygenerovaného kódu.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Odeslání požadavku na obnovu hesla}\label{tab:POST/api/auth/forgotPassword}
@@ -143,7 +143,7 @@ Koncový bod zjišťující existenci kódu pro obnovy hesla předaného pomocí
 
 \subsubsection{Obnova hesla pomocí kódu}
 
-Koncový bod, který umožňuje za podmínky validního kódu pro obnovu hesla (parametr token) provést změnu hesla na nové.
+Tento Koncový bod umožňuje za podmínky validního kódu pro obnovu hesla (parametr token) provést změnu hesla na nové.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Obnova hesla pomocí kódu}\label{tab:PUT/api/auth/forgotPassword/:token}
@@ -373,7 +373,7 @@ Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu p
 
 Koncový bod pro úpravu oprávnění pro uživatele přistupující k dokumentu (identifikovaného pomocí parametru documentId) pomocí veřejného odkazu.
 
-Pro jeho použití musím mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
+Pro jeho použití musí mít uživatel dostatečná práva v rámci dokumentu pro přístup k pozvánkám a sdílení.
 
 \begin{table}[ht!]\centering
 \caption{Koncový bod Změna práv veřejného odkazu dokumentu}\label{tab:PUT/api/document/:documentId/rights}

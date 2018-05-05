@@ -10,10 +10,10 @@ K autentizaci lze nejčastěji rozdělit na dva způsoby, stavovou a bezstavovou
 
 \subsection{Stavová autentizace}\label{subsec:stavováAutentizace}
 Stavová autentizace (viz diagram na obrázku~\ref{fig:statefullAuthentication}) je nejčastější způsob autentizace na internetu.
-Tento způsob je velmi jednoduchý na implementaci a díky své oblíbenosti lze jeho implementaci najít v každé větší webové autentizační knihovně, či frameworku.
+Tento způsob je velmi jednoduchý na implementaci a díky své oblíbenosti lze jeho implementaci najít v každé větší webové autentizační knihovně či frameworku.
 
 Server si musí pamatovat uložená data pro všechny přihlášené uživatele (nejčastěji v session), ale také klient si musí nějakým způsobem pamatovat identifikátor těchto dat (nejčastěji pomocí cookies).
-Pro správné fungování stavová autentizace potřebuje, aby se všechny části aplikace, které potřebují přístup k informacím o přihlášeném uživateli, nacházeli na stejné doméně.
+Pro správné fungování stavová autentizace potřebuje, aby se všechny části aplikace, které potřebují přístup k informacím o přihlášeném uživateli, nacházely na stejné doméně.
 Toto omezení vyplývá z použití cookies na straně klienta a bezpečnostním opatřením ze strany prohlížeče ohledně přístupu k nim.
 
 \begin{figure}[ht!]
@@ -27,7 +27,7 @@ Bezstavová autentizace (viz diagram na obrázku ~\ref{fig:statelessAuthenticati
 Autentizační server oproti přihlašovacím údajům vydává takzvaný token (speciální kód, který identifikuje uživatele).
 
 Autentizační token samotný může nést více informací o uživateli, jako je například jeho jméno, ale také jeho oprávnění pro přístup ke zdrojům aplikace.
-Díky tomu, že token nese informace o oprávnění nemusí, aplikační server při každém dotazu komunikovat s DB a zjišťovat uživatelovo oprávnění.
+Díky tomu, že token nese informace o oprávnění, nemusí aplikační server při každém dotazu komunikovat s DB a zjišťovat uživatelovo oprávnění.
 Bezstavová autentizace napomáhá škálování a rychlosti webových aplikací, ale je složitější na implementaci, jak na straně klienta, tak na straně serveru.
 
 \begin{figure}[ht!]
@@ -41,6 +41,6 @@ Pro implementaci autentizace jsem se rozhodl použít jednoduchou stavovou auten
 Tento způsob jsem zvolil s ohledem na jednoduchost navrhovaného prototypu.
 
 Díky stavové autentizaci nemusí klientská strana autentizaci vůbec řešit, protože prohlížeč odesílá platné cookies při každém požadavku automaticky.
-To platí jak pro komunikaci pomocí \gls{REST} (viz následující sekce~\ref{sec:restKomunikace}), tak i pro komunikaci ve skutečném čase (viz následující sekce~\ref{sec:komunikaceVeSkutečnémČase}), kde se cookies odesílají při navázání spojení.
+To platí, jak pro komunikaci pomocí \gls{REST} (viz následující sekce~\ref{sec:restKomunikace}), tak i pro komunikaci ve skutečném čase (viz následující sekce~\ref{sec:komunikaceVeSkutečnémČase}), kde se cookies odesílají při navázání spojení.
 Nevýhodou tohoto řešení je, že obě části aplikace (klientská i serverová) musí být umístěny na stejné doméně.
 V případě navrhovaného prototypu toto ale není problém, jelikož klientská i serverová část jsou sloučeny do jedné aplikace (viz sekce~\ref{subsec:serverováČástAVystaveníKlientskéČásti} o zveřejnění klientské části) a tudíž sdílí jednu společnou doménu.

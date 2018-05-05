@@ -22,7 +22,7 @@ V této sekci následuje kompletní výpis druhů zpráv zasílaných mezi klien
 \subsubsection{Připojení k dokumentu} % join(callback), rejoin(callback)
 
 Zpráva Připojení k dokumentu je první zprávou, co klient serveru pošle.
-Server si klienta poznamená, zkontroluje jeho oprávnění, obeznámí ostatní klienty jeho připojením a pomocí zpětného volání vrátí klientu informace o dokumentu, ke kterému se právě připojil.
+Server si klienta poznamená, zkontroluje jeho oprávnění, obeznámí ostatní klienty s jeho připojením a pomocí zpětného volání vrátí klientu informace o dokumentu, ke kterému se právě připojil.
 
 Tato zpráva existuje ve dvou variantách, jako zpráva pro prvotní připojení k dokumentu a jako zpráva pro opakované připojení po obnovení přerušeného spojení mezi klientem a serverem.
 
@@ -52,7 +52,7 @@ Nakonec zpracování zprávy Operace server odešle autorovi zprávu Potvrzení.
 
 \subsubsection{Potvrzení} % ack()
 
-Zprávu Potvrzení odešle server klientovi jako odpověď na nově zaslanou zprávu Operace po té co zprávu zpracuje.
+Zprávu Potvrzení odešle server klientovi jako odpověď na nově zaslanou zprávu Operace, po té co ji zpracuje.
 Klient do doby přijetí zprávy Potvrzení nesmí odeslat na server další zprávu Operace (viz sekce~\ref{subsec:klientskáČást}).
 
 \subsubsection{Vybrání} % selection(selection)
@@ -60,7 +60,7 @@ Klient do doby přijetí zprávy Potvrzení nesmí odeslat na server další zpr
 Zpráva Vybrání slouží pro propagaci změny kurzoru (či vybrání části textu) mezi klienty.
 Server tuto zprávu nijak nezpracovává a pouze ji propaguje ostatním klientům.
 
-Tato zpráva je použita pouze pro případ, že se změnila pozice kurzoru bez změny textu (změna pozice kurzoru při změně textu je již obsažena ve zprávě Operace).
+Tato zpráva je použita pouze v případě, že se změnila pozice kurzoru bez změny textu (změna pozice kurzoru při změně textu je již obsažena ve zprávě Operace).
 
 \subsubsection{Nastavení} % settings(settings)
 
@@ -81,4 +81,4 @@ Její příčinou může být například nedostatečné oprávnění uživatele
 
 Součástí zprávy Chyba je stavový kód chyby, který může nabývat hodnot 404 nebo 403.
 Hodnota 404 značí, že nebyl nalezen požadovaný dokument nebo k němu neměl uživatel oprávnění.
-A hodnota 403 značí, že uživatel provedl operaci, ke které neměl dostatečné oprávnění.
+Hodnota 403 značí, že uživatel provedl operaci, ke které neměl dostatečné oprávnění.

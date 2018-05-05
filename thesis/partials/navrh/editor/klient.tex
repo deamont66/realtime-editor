@@ -5,7 +5,7 @@
 
 \subsection{Klientská část komponenty}\label{subsec:klientskáČást}
 
-Klientská část komponenty musí komunikovat se zvoleným textovým editorem, zachytávat uživatelský vstup a následně ho převést na abstraktní object operace, který lze dále použít v rámci algoritmu \gls{OT}.
+Klientská část komponenty musí komunikovat se zvoleným textovým editorem, zachytávat uživatelský vstup a následně ho převést na abstraktní objekt operace, který lze dále použít v rámci algoritmu \gls{OT}.
 Tato část také musí umět komunikovat pomocí zvolené komunikační technologie s částí serverovou (z důvodu propagace jednotlivých Operací mezi uživateli).
 
 Struktura klientské části je znázorněna pomocí třídního diagramu na obrázku~\ref{fig:EditorClient}.
@@ -26,7 +26,7 @@ Třída \texttt{Client} a tedy i třída \texttt{EditorClient} je navržena podl
 \end{figure}
 
 Třída \texttt{EditorClient} očekává implementaci třídy \texttt{AbstractEditorAdapter} (respektive \texttt{AbstractServerAdapter}), která slouží jako rozhraní pro komunikaci s textovým editorem (respektive serverovou částí).
-Tyto třídy jsou navrženy podle návrhového vzoru adaptér, tak jak je popsán v~\cite[str.~135]{gof:patterns}, a umožňují spolupráci rozdílných rozhraní (například rozhraní textového editoru a třídy \texttt{EditorClient}).
+Tyto třídy jsou navrženy podle návrhového vzoru adaptér tak, jak je popsán v~\cite[str.~135]{gof:patterns}, a umožňují spolupráci rozdílných rozhraní (například rozhraní textového editoru a třídy \texttt{EditorClient}).
 Použití abstraktních tříd umožňuje změnu jednotlivých částí aplikace (například změna komunikační technologie, či knihovny textového editoru) a to bez nutnosti zásahu do logiky synchronizace samotných textů.
 
 Tyto abstraktní třídy jsou také potomky třídy \texttt{EventEmitter}, která je ustálenou a rozšířenou implementací návrhového vzoru Pozorovatel (anglicky Observer)~\cite[str.~273]{gof:patterns} pro jazyk Javascript.
