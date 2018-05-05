@@ -4,15 +4,23 @@
 %\inputencoding{utf8}
 
 \begin{conclusion}
-    Zatím se jedná jen o popsanou struktury kapitoly.
 
-    Vše z cílů jsem splnil (cíle zopakovat a připomenou způsob splnění).
-    Šlo by to i lépe (něco vyberu jako příklad).
+    V rešeršní části práce byly nejprve analyzovány funkční a nefunkční požadavky tohoto nástroje a byl sestaven jeho doménový model.
+    Dále byly stručně představeny zadané technologie a existující webové komunikační protokoly včetně jejich využití a nevýhod.
+    Také byla představena problematika synchronizace textů ve skutečném čase spolu s nejčastěji používanými synchronizačními algoritmy, operační transformace a diferenciální synchronizace.
+    A rešeršní část byla zakončena představením existujících nástrojů pro kolaborativní editaci textů.
 
-    Komponenta bude využita v projektu Laplace-IDE, je ji ale nejdříve potřeba zbavit některých závislostí a exportovat jako samostatný balíček do npm (JavaScript package manager) registru, tak aby mohla být použita opravdu kdekoliv a kýmkoliv.
+    V praktické části práce byl navržen model pro uložení dat a komponenta kolaborativního textového editoru využívající algoritmu operační transformace.
+    Dále byl navržen a implementován prototyp aplikace implementující navrženou komponentu kolaborativního textového editoru.
+    Uživatelské rozhraní tohoto prototypu bylo úspěšně uživatelsky otestováno a implementace komponenty editoru v rámci prototypu byla otestována výkonnostně.
+
+    Vzniklý prototyp aplikace umožňuje jednoduchou kolaborativní editaci textů, obsahuje jednoduchou správu dokumentů a uživatelských účtů.
+    Jednotlivé dokumenty je možné sdílet pomocí jejich veřejných odkazů a to i pouze v režimu náhledu, kdy je dokument také synchronizován ve skutečném čase.
+
+    V budoucnosti by bylo možné navrženou komponentu editoru zbavit závislostí na knihovnách třetích stran (OT.js a Material-UI) a publikovat jako samostatný balíček do npm (JavaScript package manager) registru.
+    Takto implementovanou knihovnu by mohli jednoduše využívat i ostatní vývojáři, kteří chtějí vytvořit kolaborativní nástroj s podobnými vlastnostmi jako má implementovaný prototyp aplikace.
 
     % uvedení cílů či zaměření práce
     % způsob a míra splnění cílů
     % optional: výhled do budoucna
 \end{conclusion}
-
