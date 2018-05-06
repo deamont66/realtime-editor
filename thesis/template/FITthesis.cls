@@ -495,8 +495,6 @@ sp\^ osobom, ktor\'y nezni\v zuje hodnotu Diela (vr\'atane komer\v cn\'eho vyu\v
 		\ClassError{FITthesis}{Czech keywords unspecified}{Specify the keywords in Czech of your thesis using \keywordsCS command.}
 	\fi
 
-	\vfil
-
 	\cleardoublepage
 
 	\if@abstractendefined
@@ -521,7 +519,7 @@ sp\^ osobom, ktor\'y nezni\v zuje hodnotu Diela (vr\'atane komer\v cn\'eho vyu\v
 	\cleardoublepage
 % 	\setcounter{page}{3}
 	\titlepage
-	
+
 	\setcounter{page}{3}
 	\acknowledgementspage
 
