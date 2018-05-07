@@ -30,7 +30,7 @@ Poslední častou metodou je takzvané \textbf{třísměrné sloučení}.
 Uživatel odešle svůj změněný dokument na server, který provede sloučení s aktuální verzí na serveru a uživateli pošle novou sloučenou verzi zpět.
 Pokud uživatel provedl v době synchronizace v dokumentu změny novou verzi ignoruje a musí se o synchronizaci pokusit znovu později.
 
-Jedná se poloduplexní systém, dokud uživatel píše nedostává žádné aktualizace o dokumentu a ve chvíli, co psát přestane, se všechny změny od ostatních uživatel zobrazí nebo se zobrazí hláška o nastalé kolizi (to záleží na použitém slučovacím algoritmu).~\cite{ds:neil_paper}~\cite{ds:neil_video}
+Jedná se poloduplexní systém, dokud uživatel píše nedostává žádné aktualizace o dokumentu a ve chvíli, co psát přestane, se všechny změny od ostatních uživatel zobrazí nebo se zobrazí hláška o nastalé kolizi (to záleží na použitém slučovacím algoritmu).~\cite{ds:neil_paper},~\cite{ds:neil_video}
 
 \enquote{\textit{Tento systém lze přirovnat k automobilu s čelním sklem, které se stane během jízdy neprůhledné.
 Podívej se na cestu, pak jeď chvilku poslepu, pak zastav a podívej se znovu.
@@ -68,7 +68,7 @@ Důležité je, že pro správné fungování musí být kroky~\ref{krok:ds_apli
 
 Algoritmus předpokládá použití libovolného diff-patch algoritmu, který umožňuje aplikovat změny i na změněný dokument.
 Lze například použít diff-match-patch algoritmus od společnosti Google.
-Ten implementuje diff algoritmus od Eugene W. Myers považovaný za nejlepší obecně použitelný diff algoritmus~\cite{ds:myers_diff}.~\cite{ds:neil_paper}~\cite{ds:neil_video}
+Ten implementuje diff algoritmus od Eugene W. Myers považovaný za nejlepší obecně použitelný diff algoritmus~\cite{ds:myers_diff}.~\cite{ds:neil_paper},~\cite{ds:neil_video}
 
 \subsection{Operační transformace}\label{subsec:operacniTransformace}
 
