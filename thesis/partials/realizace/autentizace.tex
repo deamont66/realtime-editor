@@ -3,7 +3,7 @@
 % vim: set fenc=utf-8
 %\inputencoding{utf8}
 
-\section{Autentizace}\label{sec:autentizace}
+\section{Autentizace}\label{sec:realizaceAutentizace}
 
 Autentizace označuje proces ověření identity uživatele.
 Pro navržený prototyp aplikace se jedná o proces přihlášení uživatele.
@@ -33,7 +33,7 @@ Z bezpečnostních důvodů není vhodné v DB uchovávat hesla v čitelné podo
 Při implementaci autentizace pomocí hesla jsem se rozhodl pro použití kryptografické hašovací funkce, která poskytuje jednosměrnou transformaci vstupu na téměř náhodný výstup.
 Kryptografické hašovací funkce se od běžných hašovacích funkcí nezaměřují na rychlost, ale na kryptografické vlastnosti funkce.
 
-Jako hašovací funkci jsou zvolil \texttt{bcrypt}, která se řadí mezi pomalé kryptografické hašovací funkce.
+Jako hašovací funkci jsem zvolil \texttt{bcrypt}, která se řadí mezi pomalé kryptografické hašovací funkce.
 Tato funkce (na rozdíl od rychlých hašovacích funkcí standartu SHA-1 či SHA-2) má nastavitelný počet iterací, což umožňuje navyšovat její obtížnost vypočtu s rostoucím výkonem počítačů.
 Vyšší obtížnost výpočtu je vhodná pro hašování hesel z důvodu zpomalení útoku typu brutal force (opakované a náhodné pokusy o uhodnutí hesla).
 

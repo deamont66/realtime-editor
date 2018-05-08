@@ -15,7 +15,7 @@ Pro sestavení jsem využil již připravené konfigurace pro nástroj \texttt{W
 Balíček \texttt{create-react-app} obsahuje mimo nastavení pro produkční sestavení aplikace, i nastavení pro vývoj aplikace a to včetně automatického znovu načtení stránky v prohlížeči po provedení změn ve zdrojovém kódu.
 
 Sestavení klientské části lze spustit pomocí příkazu \texttt{yarn build} a sestavená klientská část aplikace je následně umístěně ve složce \texttt{client/build-prod}.
-Takto sestavenou klientskou část aplikace je možné jednoduše vystavil, protože se jedná oběžné statické webové stránky s jedním hlavním \gls{HTML} souborem.
+Takto sestavenou klientskou část aplikace je možné jednoduše vystavit, protože se jedná oběžné statické webové stránky s jedním hlavním \gls{HTML} souborem.
 
 \subsection{Serverová část a vystavení klientské části}\label{subsec:serverováČástAVystaveníKlientskéČásti}
 
@@ -45,7 +45,7 @@ Robot, jenž takový odkaz navštíví, získá \gls{HTML} soubor s vygenerovan�
 
 \subsection{Sestavení pomocí Dockeru}\label{subsec:sestaveníPomocíDockeru}
 
-Celý proces sestavení prototypu aplikace jsem zapouzdřil použitím vizualizačního nástroje Docker, který umožňuje definovat aplikace jako takzvané Docker obrazy.
+Celý proces sestavení prototypu aplikace jsem zapouzdřil použitím virtualizačního nástroje Docker, který umožňuje definovat aplikace jako takzvané Docker obrazy.
 Tyto obrazy následně běží v takzvaných Docker kontejnerech, ty jsou navzájem nezávislé a jsou jednoduše spravovatelné (lze je spouštět, duplikovat a tak podobně).
 
 Pro prototyp aplikace jsou připravené dva druhy obrazů, vývojový a produkční.
