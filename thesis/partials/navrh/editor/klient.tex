@@ -45,6 +45,8 @@ Seznam jednotlivých událostí je možné pozorovat na diagramu~\ref{fig:Abstra
     \caption{Diagram implementace třídy AbstractServerAdapter}\label{fig:AbstractServerAdapter}
 \end{figure}
 
+\pagebreak
+
 \texttt{EditorClient} také využívá třídu \texttt{UndoManager} z knihovny OT.js, díky které lze bezpečně použít funkce zpět a vykonat znovu (pokud jejich odchycení podporuje poskytnutá implementace třídy \texttt{AbstractEditorAdapter}).
 Historie je zaznamenávána pomocí jednotlivých operací vykonaných uživatelem a nikoliv podle změn samotného textu, jak by tomu bylo běžně.
 Na změnách textu se totiž může podílet více uživatelů najednou a je nežádoucí, aby například funkce zpět vracela i změny provedené jiným než lokálním uživatelem.
