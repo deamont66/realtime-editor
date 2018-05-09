@@ -42,7 +42,7 @@ Zpráva Operace slouží pro propagaci operací mezi připojenými klienty.
 Součástí zprávy Operace je číslo další očekávané operace od serveru, aby server mohl operaci transformovat vůči všem kolizním operacím (více o algoritmu v sekci~\ref{subsec:operacniTransformace}).
 
 Autor změny odešle zprávu Operace na server, který ji transformovanou uloží a následně odešle všem ostatním klientům, kteří jsou připojeni ke stejnému dokumentu.
-Nakonec zpracování zprávy Operace server odešle autorovi zprávu Potvrzení.
+Nakonec zpracování zprávy Operace server odešle autorovi zprávu Potvrzení (viz diagram na obrázku \ref{fig:ukazkaKomunikaceVeSkutečnémČase}).
 
 \begin{figure}[ht!]
     \centering
