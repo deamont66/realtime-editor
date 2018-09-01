@@ -8,7 +8,7 @@ const Message = require('../model/Message');
  * @param {Number} number
  * @return {Promise<Message[]>}
  */
-const getLastMessages = (document, lastDate, number = 10) => {
+const getLastMessages = (document, lastDate = null, number = 10) => {
     if(!lastDate) lastDate = new Date();
     return Message.find({document: document, date: {$lt: lastDate}})
         .sort('-date')

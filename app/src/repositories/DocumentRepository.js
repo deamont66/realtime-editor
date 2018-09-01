@@ -131,11 +131,9 @@ const removeDocument = (document) => {
  * Updates lastAckContent and lastChange of Document.
  *
  * @param {Document} document
- * @param {String} value
  * @return {Promise<Document>}
  */
-const updateLastContent = (document, value) => {
-    document.lastAckContent = value;
+const updateLastChange = (document) => {
     document.lastChange = Date.now();
     return document.save();
 };
@@ -260,7 +258,7 @@ module.exports = {
     getDocumentsDetails: getDocumentsDetails,
     createDocument: createDocument,
     removeDocument: removeDocument,
-    updateLastContent: updateLastContent,
+    updateLastChange: updateLastChange,
     updateSettings: updateSettings,
     updateUserAccess: updateUserAccess,
     getDocumentInvites: getDocumentInvites,

@@ -5,6 +5,7 @@ services:
       context: .
       args:
         - app_env=production
+    image: 'realtime-editor'
     environment:
       - SERVER_PORT=3003
     ports:

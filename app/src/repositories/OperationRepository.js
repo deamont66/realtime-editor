@@ -1,22 +1,33 @@
 const Operation = require('../model/Operation');
 
-const WrappedOperation = require('../../client/src/OperationalTransformation/WrappedOperation');
-const TextOperation = require('ot').TextOperation;
+const {TextOperation} = require('operational-transformation-text');
 
-/**
- * Gets last n operations by document.
- *
- * @param {ObjectId|String|Document} documentId
- * @param {Number} last
- * @return {Promise<WrappedOperation[]>}
- */
-const getLastOperationsByDocument = (documentId, last = 50) => {
+const updateCacheAndGetCurrentContent = (document) => {
+    return Promise.all([
+        getOperationsAfterRevisionByDocument(document, document.cacheRevision),
+        getLastRevisionByDocument(document)
+    ]).then(([operations, revision]) => {
+        if (operations.length) {
+            //console.log(document.cacheRevision, operations, revision);
+            const value = operations.reduce((value, op) => op.apply(value), document.cacheContent);
+            document.cacheRevision = revision;
+            document.cacheContent = value;
+            return document.save();
+        }
+        return document;
+    }).then((newDocument) => {
+        return newDocument;
+    });
+};
+
+const getLastRevisionByDocument = (documentId) => {
     return Operation.find({
         document: documentId,
-    }).sort('field -created').limit(last).exec().then((dbOperations) => {
-        return dbOperations.map((dbOperation) => {
-            return new WrappedOperation(TextOperation.fromJSON(JSON.parse(dbOperation.operations)), null);
-        });
+    }).sort('-revision').limit(1).exec().then(([operation]) => {
+        if (operation) {
+            return operation.revision;
+        }
+        return 0;
     });
 };
 
@@ -57,7 +68,8 @@ const saveOperation = (document, author, revision, operation) => {
 };
 
 module.exports = {
-    getLastOperationsByDocument: getLastOperationsByDocument,
+    updateCacheAndGetCurrentContent: updateCacheAndGetCurrentContent,
+    getLastRevisionByDocument: getLastRevisionByDocument,
     getOperationsAfterRevisionByDocument: getOperationsAfterRevisionByDocument,
     saveOperation: saveOperation
 };

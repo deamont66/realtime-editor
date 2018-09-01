@@ -1,14 +1,11 @@
 const debug = require('debug')('editor:socketroomserrver');
 
-const DocumentServer = require('./DocumentServer');
 const DocumentVoter = require('../security/DocumentVoter');
 const DocumentRepository = require('../repositories/DocumentRepository');
 const MessageRepository = require('../repositories/MessageRepository');
 const OperationRepository = require('../repositories/OperationRepository');
 
-const WrappedOperation = require('../../client/src/OperationalTransformation/WrappedOperation');
-const TextOperation = require('ot').TextOperation;
-const Selection = require('ot').Selection;
+const {WrappedOperation, TextOperation, Selection, DocumentServer, Signal} = require('operational-transformation-text');
 
 const animals = require('./animals');
 
@@ -58,13 +55,14 @@ class DocumentSocketIOServer extends DocumentServer {
 
     /**
      * @param document
-     * @param operations
+     * @param revision
      */
-    constructor(document, operations) {
-        super(document.lastAckContent, operations);
+    constructor(document, revision) {
+        super(revision);
 
-        this.documentId = document._id;
+        this.documentId = document._id || document;
         this.users = {};
+        this.roomEmpty = new Signal();
     }
 
     /**
@@ -148,13 +146,15 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {function} responseCallback
      */
     joinClient(document, allowedOperations, messages, responseCallback) {
-        responseCallback({
-            value: this.value,
-            revision: this.getRevision(),
-            clients: this.users,
-            settings: Object.assign({title: document.title}, document.settings.toJSON()),
-            operations: allowedOperations,
-            messages: allowedOperations.includes('chat') ? messages : [],
+        OperationRepository.updateCacheAndGetCurrentContent(document).then((newDocument) => {
+            responseCallback({
+                value: newDocument.cacheContent,
+                revision: newDocument.cacheRevision,
+                clients: this.users,
+                settings: Object.assign({title: document.title}, document.settings.toJSON()),
+                operations: allowedOperations,
+                messages: allowedOperations.includes('chat') ? messages : [],
+            });
         });
     }
 
@@ -188,18 +188,19 @@ class DocumentSocketIOServer extends DocumentServer {
      * @param {Selection} selectionJSON - new serialized Selection range from client
      */
     onOperation(socket, revision, operationJSON, selectionJSON) {
-        this.getDocumentAndValidateRights('write', socket).then((document) => {
+        this.getDocumentAndValidateRights('write', socket).then(async (document) => {
             const wrapped = createFromJSON(operationJSON, selectionJSON);
             if (!wrapped) return;
 
             try {
-                const transformedWrapped = this.receiveOperation(revision, wrapped);
+                const transformedWrapped = await this.receiveOperation(revision, wrapped);
+                this.currentRevision++;
                 socket.emit('ack');
                 socket.to(this.documentId)
-                    .emit('operation', socket.id, transformedWrapped.wrapped.toJSON(), transformedWrapped.meta);
+                    .emit('operation', socket.id, transformedWrapped.operation.toJSON(), transformedWrapped.selection);
 
-                this.getClient(socket).selection = transformedWrapped.meta;
-                this.onDocumentChange(socket, document, transformedWrapped.wrapped);
+                this.getClient(socket).selection = transformedWrapped.selection;
+                this.onDocumentChange(socket, document, transformedWrapped.operation);
             } catch (exc) {
                 debug(exc);
             }
@@ -270,7 +271,7 @@ class DocumentSocketIOServer extends DocumentServer {
      */
     onDocumentChange(socket, document, operation) {
         const revision = this.getRevision();
-        DocumentRepository.updateLastContent(document, this.value);
+        DocumentRepository.updateLastChange(document);
         OperationRepository.saveOperation(document, socket.request.user.logged_in ? socket.request.user : null, revision, operation);
     }
 
@@ -281,7 +282,7 @@ class DocumentSocketIOServer extends DocumentServer {
      */
     onDisconnect(socket) {
         if (!Object.keys(socket.server.sockets.adapter.rooms).includes(this.documentId)) {
-            this.emit('empty-room');
+            this.roomEmpty.emit();
         }
         console.log('Disconnected: ', socket.id);
         delete this.users[socket.id];
@@ -315,6 +316,10 @@ class DocumentSocketIOServer extends DocumentServer {
      */
     getClient(socket) {
         return this.users[socket.id] || (this.users[socket.id] = {});
+    }
+
+    getOperationsAfterRevision(revision) {
+        return OperationRepository.getOperationsAfterRevisionByDocument(this.document, revision);
     }
 }
 

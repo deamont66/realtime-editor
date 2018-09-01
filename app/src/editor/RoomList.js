@@ -26,7 +26,8 @@ class RoomList {
                    debug(`Rejoing (rev.${nextRevision}): `, documentId, socket.request.user._id);
                    server.addClient(socket, cb, nextRevision);
                 });
-            }).catch(() => {
+            }).catch((error) => {
+                debug(error);
                 debug('Disconnected: Document not found');
                 socket.emit('disconnect_error', 404);
                 socket.disconnect(true);
@@ -36,7 +37,7 @@ class RoomList {
 
     /**
      * Retrieves or creates DocumentServer instance for given documentId.
-     * @param {mongoose.Types.ObjectId} documentId
+     * @param {ObjectId} documentId
      *
      * @returns {Promise} DocumentServer instance
      */
@@ -47,8 +48,8 @@ class RoomList {
             }
             return Promise.resolve(this.rooms[documentId]).then((server) => {
                 if(!server) {
-                    return OperationRepository.getLastOperationsByDocument(documentId).then((operations) => {
-                        this.rooms[documentId] = new DocumentSocketIOServer(document, operations);
+                    return OperationRepository.getLastRevisionByDocument(documentId).then((revision) => {
+                        this.rooms[documentId] = new DocumentSocketIOServer(document, revision);
                         return this.rooms[documentId];
                     });
                 }

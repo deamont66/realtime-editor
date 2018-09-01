@@ -8,7 +8,8 @@ const documentSchema = new Schema({
     settings: {type: mongoose.Schema.Types.ObjectId, ref: 'DocumentSettings', required: true},
     owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true},
     shareLinkRights: {type: Number, min: 0, max: DocumentRightsEnum.length - 1, required: true, default: 0},
-    lastAckContent: {type: String, default: ''},
+    cacheContent: {type: String, default: ''},
+    cacheRevision: {type: Number, default: 0},
     lastChange: {type: Date, required: true, default: () => Date.now()},
     createdDate: {type: Date, required: true, default: () => Date.now()}
 });
