@@ -1,2 +1,5 @@
 app/node_modules
 app/client/node_modules
+thesis
+app/.env.example
+app/.env

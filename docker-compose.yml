@@ -8,6 +8,24 @@ services:
     image: 'realtime-editor'
     environment:
       - SERVER_PORT=3003
+      - MONGO_DB_URI=mongodb://admin:password123@mongodb/realtime-editor
+      - MONGO_SESSION_COLLECTION=sessions
+      - SESSION_SECRET=
+      - DEBUG=editor:*
+      - BASE_URL=http://locahost:3003
+      - CTU_CLIENT_ID=
+      - CTU_CLIENT_SECRET=
+      - GOOGLE_CLIENT_ID=
+      - GOOGLE_CLIENT_SECRET=
+      - FACEBOOK_APP_ID=
+      - FACEBOOK_APP_SECRET=
+      - TWITTER_CONSUMER_KEY=
+      - TWITTER_CONSUMER_SECRET=
+      - SMTP_HOST=
+      - SMTP_PORT=
+      - SMTP_SECURE=
+      - SMTP_USER=
+      - SMTP_PASSWORD=
     ports:
       - "3003:3003"
     networks:
